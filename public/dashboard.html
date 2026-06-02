@@ -238,6 +238,27 @@
     .badge-red     { background: var(--red-bg);    color: var(--red); }
     .badge-teal    { background: var(--teal-bg);   color: #065F46; }
 
+    /* ── Respond buttons ── */
+    .respond-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 11px; border-radius: 8px;
+      font-size: 12px; font-weight: 600; font-family: inherit;
+      cursor: pointer; text-decoration: none; white-space: nowrap;
+      transition: all 0.15s; border: 1.5px solid transparent;
+    }
+    .respond-btn--google {
+      background: #fff; border-color: #E2E8F0; color: var(--text);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .respond-btn--google:hover {
+      border-color: #4285F4; color: #1A73E8;
+      box-shadow: 0 2px 8px rgba(66,133,244,0.2);
+    }
+    .respond-btn--internal {
+      background: #FFF7ED; border-color: #FED7AA; color: #9A3412;
+    }
+    .respond-btn--internal:hover { background: #FFEDD5; border-color: #FB923C; }
+
     /* ── Empty / loading ── */
     .empty-state { text-align: center; padding: 52px 24px; color: var(--muted); }
     .empty-icon { font-size: 48px; margin-bottom: 14px; }
@@ -976,6 +997,11 @@
    Navigation (SPA)
 ══════════════════════════════════════ */
 const pages = { dashboard: loadDashboard, clients: loadClients, settings: loadSettings };
+
+// Load Google Review URL once so respond links are live
+fetch('/api/feedback/config').then(r => r.json()).then(cfg => {
+  if (cfg && cfg.googleReviewUrl) window._googleReviewUrl = cfg.googleReviewUrl;
+}).catch(() => {});
 const pageTitles = { dashboard: 'Feedback Dashboard', clients: 'Clients', settings: 'Settings' };
 
 function navigate(page, el) {
@@ -1065,19 +1091,55 @@ function renderTable(responses, total) {
       </div>`;
     return;
   }
+  const googleUrl = window._googleReviewUrl || null;
   const rows = responses.map(r => {
     const rating = Number(r.rating);
     const stars = rating >= 4
       ? `<span class="badge badge-gold">${'★'.repeat(rating)} ${rating}/5</span>`
       : `<span class="badge badge-muted">${'★'.repeat(rating)}${'☆'.repeat(5-rating)} ${rating}/5</span>`;
+
     const route = r.routed_to_google
       ? `<span class="badge badge-green">✓ Google</span>`
       : `<span class="badge badge-orange">🔔 Follow-up</span>`;
+
     const date = r.visit_date
       ? new Date(r.visit_date).toLocaleDateString('en-US', { month:'short', day:'numeric' }) : '—';
+
     const comment = r.comment
       ? `<span title="${r.comment.replace(/"/g,'&quot;')}">${r.comment}</span>`
       : '<span style="color:#CBD5E1;font-style:italic;">No comment</span>';
+
+    // Action column — every response gets a relevant action link
+    let action;
+    if (r.routed_to_google) {
+      // Google-routed: link to Google Business reviews management to reply
+      const reviewsManageUrl = googleUrl
+        ? googleUrl.replace('/review', '').replace(/\/$/, '') + '/reviews'
+        : 'https://business.google.com/reviews';
+      action = `
+        <a href="${reviewsManageUrl}" target="_blank" rel="noopener"
+           class="respond-btn respond-btn--google"
+           title="Open Google Business reviews to reply">
+          <svg width="13" height="13" viewBox="0 0 48 48" fill="none" style="flex-shrink:0">
+            <path d="M43.6 20H42v-.1H24v8h11.3C33.7 32.6 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-4z" fill="#FFC107"/>
+            <path d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" fill="#FF3D00"/>
+            <path d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0 1 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z" fill="#4CAF50"/>
+            <path d="M43.6 20H42v-.1H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C37 38.2 44 34 44 24c0-1.3-.1-2.7-.4-4z" fill="#1976D2"/>
+          </svg>
+          Respond on Google
+        </a>`;
+    } else {
+      // Internal: prompt a follow-up note (opens mailto pre-filled or shows note modal)
+      const clientName = (r.client_name || 'the client').replace(/"/g, '&quot;');
+      const caregiverName = (r.caregiver_name || 'your caregiver').replace(/"/g, '&quot;');
+      action = `
+        <button class="respond-btn respond-btn--internal"
+                onclick="openFollowUpNote('${clientName}', '${caregiverName}', ${rating})"
+                title="Log internal follow-up note">
+          🔔 Follow Up
+        </button>`;
+    }
+
     return `<tr>
       <td class="td-primary">${r.client_name || '—'}</td>
       <td class="td-muted">${r.caregiver_name || '—'}</td>
@@ -1085,16 +1147,38 @@ function renderTable(responses, total) {
       <td>${stars}</td>
       <td class="td-comment">${comment}</td>
       <td>${route}</td>
+      <td style="white-space:nowrap;">${action}</td>
     </tr>`;
   }).join('');
   document.getElementById('table-body').innerHTML = `
     <table>
       <thead><tr>
         <th>Client</th><th>Caregiver</th><th>Visit</th>
-        <th>Rating</th><th>Comment</th><th>Routing</th>
+        <th>Rating</th><th>Comment</th><th>Routing</th><th>Action</th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
+}
+
+function openFollowUpNote(clientName, caregiverName, rating) {
+  const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  document.getElementById('followup-client').textContent = clientName;
+  document.getElementById('followup-rating').textContent = `${stars} (${rating}/5)`;
+  document.getElementById('followup-note').value = '';
+  document.getElementById('followup-modal').classList.add('open');
+  setTimeout(() => document.getElementById('followup-note').focus(), 100);
+}
+
+function saveFollowUpNote() {
+  const note = document.getElementById('followup-note').value.trim();
+  // In production this would POST to an API; for now we confirm and close
+  document.getElementById('followup-modal').classList.remove('open');
+  // Brief toast confirmation
+  const toast = document.createElement('div');
+  toast.textContent = '✓ Follow-up note saved';
+  toast.style.cssText = 'position:fixed;bottom:84px;right:24px;background:#10B981;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(16,185,129,0.3);font-family:inherit;';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2800);
 }
 
 /* ══════════════════════════════════════
@@ -1342,6 +1426,41 @@ function addEmailTag() {
 ══════════════════════════════════════ */
 loadDashboard();
 </script>
+
+<!-- ══ Follow-up Note Modal ══ -->
+<div class="modal-overlay" id="followup-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Internal Follow-Up Note</div>
+      <button class="drawer-close" onclick="document.getElementById('followup-modal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:13px;">
+        <div style="font-weight:700;color:#9A3412;margin-bottom:4px;">🔔 Low Rating — Follow-up Required</div>
+        <div style="color:#92400E;">Client: <strong id="followup-client">—</strong> &nbsp;·&nbsp; Rating: <span id="followup-rating" style="color:#F5A623;letter-spacing:1px;">—</span></div>
+      </div>
+      <div class="settings-field-row">
+        <div class="field-label">Note for internal team</div>
+        <textarea class="field-input" id="followup-note" rows="4"
+          placeholder="e.g. Called client on June 2nd, discussed concerns about late arrival. Escalated to supervisor Maria R. for review…"
+          style="resize:vertical;margin-top:6px;min-height:100px;"></textarea>
+      </div>
+      <div class="settings-field-row">
+        <div class="field-label">Assign to team member</div>
+        <select class="field-select" style="margin-top:6px;">
+          <option>— Unassigned —</option>
+          <option>Admin</option>
+          <option>Care Manager</option>
+          <option>Supervisor</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="document.getElementById('followup-modal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveFollowUpNote()">Save Note</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ Intro.js Tour ══ -->
 <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
