@@ -158,7 +158,7 @@ async function query(text, params = []) {
   }
 
   // SELECT routed_to_google FROM feedback_responses WHERE feedback_request_id=$1
-  if (sql.includes('routed_to_google') && sql.includes('from feedback_responses')) {
+  if (sql.includes('routed_to_google') && sql.includes('from feedback_responses') && sql.includes('feedback_request_id') && sql.includes('where') && !sql.includes('order by')) {
     const reqId = parseInt(params[0]);
     const resp = store.feedback_responses.filter(r => r.feedback_request_id === reqId)
       .sort((a, b) => b.id - a.id)[0];
@@ -198,7 +198,7 @@ async function query(text, params = []) {
   if (sql.includes('count(*)') && sql.includes('from feedback_requests') && !sql.includes('join')) {
     return [{ count: String(store.feedback_requests.length) }];
   }
-  if (sql.includes('count(*)') && sql.includes('from feedback_responses') && !sql.includes('where')) {
+  if (sql.includes('count(*)') && sql.includes('from feedback_responses') && !sql.includes('where') && !sql.includes('group by')) {
     return [{ count: String(store.feedback_responses.length) }];
   }
   if (sql.includes('avg(rating)') && sql.includes('from feedback_responses')) {

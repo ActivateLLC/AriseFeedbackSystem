@@ -1,7 +1,7 @@
 {
   "version": 2,
   "builds": [
-    { "src": "src/server.js", "use": "@vercel/node" }
+    { "src": "src/server.js", "use": "@vercel/node", "config": { "includeFiles": ["public/**"] } }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "src/server.js" }
@@ -9,11 +9,11 @@
   "crons": [
     {
       "path": "/api/cron/process-requests",
-      "schedule": "0 * * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/cron/process-followups",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }

@@ -9,12 +9,15 @@
     "demo": "node -r dotenv/config src/server.js dotenv_config_path=.env.demo"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "nodemailer": "^6.9.8",
     "pg": "^8.11.3",
     "twilio": "^4.19.0",
-    "nodemailer": "^6.9.8",
-    "dotenv": "^16.3.1",
-    "uuid": "^9.0.0",
-    "express-rate-limit": "^7.1.5"
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
   }
 }

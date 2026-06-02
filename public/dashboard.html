@@ -3,662 +3,513 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arise Cares — Feedback Dashboard</title>
+  <title>Feedback Dashboard — Arise Cares</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & Base ─────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --blue:    #2d9cdb;
-      --green:   #27ae60;
-      --amber:   #f59e0b;
-      --red:     #e74c3c;
-      --text:    #1a1a2e;
-      --muted:   #6b7280;
-      --bg:      #f3f4f6;
-      --card:    #ffffff;
-      --border:  #e5e7eb;
-      --radius:  12px;
-      --shadow:  0 1px 8px rgba(0,0,0,0.07);
+      --blue:      #2563EB;
+      --blue-bg:   #EFF6FF;
+      --teal:      #0D9488;
+      --teal-bg:   #F0FDFA;
+      --gold:      #F59E0B;
+      --gold-bg:   #FFFBEB;
+      --green:     #10B981;
+      --green-bg:  #ECFDF5;
+      --red:       #EF4444;
+      --red-bg:    #FEF2F2;
+      --orange:    #F97316;
+      --sidebar:   #0F172A;
+      --text:      #0F172A;
+      --muted:     #64748B;
+      --border:    #E2E8F0;
+      --bg:        #F8FAFC;
+      --card:      #FFFFFF;
     }
-
     html, body {
+      height: 100%;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
       color: var(--text);
-      font-size: 15px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Header ───────────────────────────────────────── */
-    .header {
-      background: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
-      padding: 20px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+    .layout { display: flex; min-height: 100vh; }
 
-    .header-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .header-brand .logo-icon {
-      width: 38px; height: 38px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-    }
-
-    .header-brand h1 {
-      color: #fff;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.4px;
-    }
-
-    .header-brand p {
-      color: rgba(255,255,255,0.8);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .header-refresh {
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.35);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 8px 16px;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .header-refresh:hover { background: rgba(255,255,255,0.28); }
-
-    /* ── Container ────────────────────────────────────── */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 28px 24px 48px;
-    }
-
-    /* ── Stats Grid ───────────────────────────────────── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-
-    .stat-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px 20px;
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: var(--sidebar);
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      border-top: 4px solid var(--blue);
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
     }
-
-    .stat-card.green  { border-top-color: var(--green); }
-    .stat-card.amber  { border-top-color: var(--amber); }
-    .stat-card.red    { border-top-color: var(--red); }
-
-    .stat-label {
+    .sidebar-brand {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sidebar-brand .logo { font-size: 18px; font-weight: 700; color: #fff; }
+    .sidebar-brand .logo-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+    .sidebar-nav { padding: 16px 12px; flex: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 2px;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+    .nav-item.active { background: rgba(37,99,235,0.4); color: #fff; }
+    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
       font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
+      color: rgba(255,255,255,0.25);
     }
 
-    .stat-value {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1;
-    }
+    /* Main */
+    .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
-    .stat-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* ── Section heading ──────────────────────────────── */
-    .section-header {
+    /* Top bar */
+    .topbar {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-      gap: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
-
-    .section-header h2 {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .badge {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 600;
-      padding: 3px 10px;
-    }
-
-    /* ── Rating Distribution ──────────────────────────── */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 28px;
-    }
-    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
-
-    .card {
+    .topbar-title { font-size: 18px; font-weight: 700; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .last-updated { font-size: 13px; color: var(--muted); }
+    .refresh-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
       background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .refresh-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* Content */
+    .content { padding: 28px 32px; flex: 1; }
+
+    /* Demo banner */
+    .demo-banner {
+      background: linear-gradient(135deg, #EFF6FF, #F0FDFA);
+      border: 1.5px solid #BFDBFE;
+      border-radius: 12px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .demo-banner-text { font-size: 14px; color: #1E40AF; font-weight: 500; }
+    .demo-banner-text span { color: var(--muted); font-weight: 400; }
+    .seed-btn {
+      padding: 8px 18px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+    .seed-btn:hover { opacity: 0.88; }
+    .seed-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Stat cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      border-left: 4px solid transparent;
+      box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+      transition: transform 0.15s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(15,23,42,0.1); }
+    .stat-card.blue  { border-color: var(--blue);  }
+    .stat-card.gold  { border-color: var(--gold);  }
+    .stat-card.teal  { border-color: var(--teal);  }
+    .stat-card.green { border-color: var(--green); }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 10px;
+    }
+    .stat-value { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .stat-card.blue  .stat-value { color: var(--blue);  }
+    .stat-card.gold  .stat-value { color: var(--gold);  }
+    .stat-card.teal  .stat-value { color: var(--teal);  }
+    .stat-card.green .stat-value { color: var(--green); }
+    .stat-sub { font-size: 13px; color: var(--muted); }
+
+    /* Bottom grid */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      align-items: start;
     }
 
+    .panel {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .panel-body { padding: 16px 20px; }
+
+    /* Rating distribution */
     .dist-row {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 10px;
     }
-
     .dist-row:last-child { margin-bottom: 0; }
+    .dist-label { font-size: 13px; font-weight: 600; width: 24px; color: var(--muted); flex-shrink: 0; }
+    .dist-bar-bg { flex: 1; background: #F1F5F9; border-radius: 6px; height: 10px; overflow: hidden; }
+    .dist-bar { height: 100%; border-radius: 6px; background: var(--gold); transition: width 0.6s ease; }
+    .dist-count { font-size: 13px; color: var(--muted); width: 20px; text-align: right; flex-shrink: 0; }
 
-    .dist-stars {
-      font-size: 13px;
-      color: var(--amber);
-      white-space: nowrap;
-      min-width: 70px;
-    }
-
-    .dist-bar-wrap {
-      flex: 1;
-      background: var(--bg);
-      border-radius: 999px;
-      height: 12px;
-      overflow: hidden;
-    }
-
-    .dist-bar {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--amber), #f97316);
-      transition: width 0.5s ease;
-    }
-
-    .dist-count {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      min-width: 28px;
-      text-align: right;
-    }
-
-    /* ── Trend chart ──────────────────────────────────── */
-    #trend-chart {
-      width: 100%;
-      height: 160px;
-    }
-
-    /* ── Responses Table ──────────────────────────────── */
-    .table-wrap {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-
+    /* Table */
+    .table-wrapper { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
     thead th {
-      background: #f9fafb;
-      border-bottom: 1px solid var(--border);
-      padding: 11px 16px;
       text-align: left;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    tbody tr:hover { background: #fafafa; }
-
-    tbody td {
       padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-      vertical-align: top;
-    }
-
-    tbody tr:last-child td { border-bottom: none; }
-
-    .stars-cell { color: var(--amber); font-size: 15px; white-space: nowrap; }
-    .stars-cell .star-count { font-size: 12px; color: var(--muted); margin-left: 4px; }
-
-    .comment-cell {
-      max-width: 280px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 50px;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
     }
+    tbody tr { border-bottom: 1px solid #F8FAFC; transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #FAFBFF; }
+    td { padding: 13px 16px; vertical-align: middle; }
+    .td-name { font-weight: 600; white-space: nowrap; }
+    .td-caregiver { color: var(--muted); white-space: nowrap; }
+    .td-date { color: var(--muted); white-space: nowrap; font-size: 13px; }
+    .td-comment {
+      color: var(--muted);
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+    .star-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .star-badge.high { background: var(--gold-bg); color: #92400E; }
+    .star-badge.low  { background: #F1F5F9; color: var(--muted); }
+    .route-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .route-badge.google   { background: var(--green-bg); color: #065F46; }
+    .route-badge.internal { background: #FFF7ED; color: #9A3412; }
 
-    .pill-google { background: #e8f5e9; color: #2e7d32; }
-    .pill-flagged { background: #fff3e0; color: #e65100; }
-    .pill-neutral { background: #f3f4f6; color: var(--muted); }
-
-    /* ── Empty state ──────────────────────────────────── */
-    .empty {
+    /* Empty / loading states */
+    .empty-state {
       text-align: center;
       padding: 48px 24px;
       color: var(--muted);
     }
-    .empty p { margin-top: 8px; font-size: 14px; }
-
-    /* ── Loading spinner ──────────────────────────────── */
-    .spinner-inline {
-      display: inline-block;
-      width: 18px; height: 18px;
-      border: 2px solid var(--border);
+    .empty-icon { font-size: 44px; margin-bottom: 12px; }
+    .empty-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .empty-body { font-size: 14px; }
+    .loading-center {
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px;
+    }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 2.5px solid var(--border);
       border-top-color: var(--blue);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
-      vertical-align: middle;
-      margin-right: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .load-row { text-align: center; padding: 32px; color: var(--muted); }
-
-    /* ── Pagination ───────────────────────────────────── */
-    .pagination {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-      padding: 0 4px;
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .bottom-grid { grid-template-columns: 1fr; }
     }
-
-    .pagination button {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
-    .pagination button:not(:disabled):hover { background: var(--bg); border-color: var(--blue); }
-    .pagination .page-info { font-size: 13px; color: var(--muted); }
-
-    /* ── Mobile ───────────────────────────────────────── */
-    @media (max-width: 600px) {
-      .container { padding: 20px 12px 48px; }
-      .header { padding: 16px 20px; }
-      tbody td, thead th { padding: 10px 12px; }
-      .comment-cell { max-width: 160px; }
-      .hide-mobile { display: none; }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .topbar, .content { padding-left: 16px; padding-right: 16px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
     }
   </style>
 </head>
 <body>
+<div class="layout">
 
-<!-- Header -->
-<div class="header">
-  <div class="header-brand">
-    <div class="logo-icon">💙</div>
-    <div>
-      <h1>Arise Cares</h1>
-      <p>Feedback Dashboard</p>
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">❤️ Arise Cares</div>
+      <div class="logo-sub">Admin Dashboard</div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="#">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon">👥</span> Clients
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon">⚙️</span> Settings
+      </a>
+    </nav>
+    <div class="sidebar-footer">Arise Feedback System v1.0</div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Feedback Dashboard</div>
+      <div class="topbar-right">
+        <span class="last-updated" id="last-updated">Loading…</span>
+        <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="demo-banner" id="demo-banner" style="display:none;">
+        <div class="demo-banner-text">
+          🧪 Demo Mode &mdash; <span>Running with mock in-memory data. No API keys required.</span>
+        </div>
+        <button class="seed-btn" id="seed-btn" onclick="seedDemo()">Load Demo Data</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-label">Total Responses</div>
+          <div class="stat-value" id="stat-responses">—</div>
+          <div class="stat-sub" id="stat-requests">— requests sent</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">Average Rating</div>
+          <div class="stat-value" id="stat-avg">—</div>
+          <div class="stat-sub">out of 5 ★</div>
+        </div>
+        <div class="stat-card teal">
+          <div class="stat-label">Response Rate</div>
+          <div class="stat-value" id="stat-rate">—</div>
+          <div class="stat-sub">of all requests</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Google Reviews</div>
+          <div class="stat-value" id="stat-google">—</div>
+          <div class="stat-sub">clients prompted</div>
+        </div>
+      </div>
+
+      <div class="bottom-grid">
+        <div class="panel">
+          <div class="panel-header">Rating Distribution</div>
+          <div class="panel-body" id="dist-body">
+            <div class="loading-center"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">Recent Responses</div>
+          <div class="table-wrapper">
+            <div id="table-body">
+              <div class="loading-center"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-  <button class="header-refresh" onclick="loadAll()">↺ Refresh</button>
 </div>
 
-<!-- Main content -->
-<div class="container">
-
-  <!-- Stats row -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-label">Total Responses</div>
-      <div class="stat-value" id="stat-responses">—</div>
-      <div class="stat-sub" id="stat-requests-sub">of — requests sent</div>
-    </div>
-    <div class="stat-card green">
-      <div class="stat-label">Response Rate</div>
-      <div class="stat-value" id="stat-rate">—</div>
-      <div class="stat-sub">of all feedback requests</div>
-    </div>
-    <div class="stat-card amber">
-      <div class="stat-label">Avg. Rating</div>
-      <div class="stat-value" id="stat-avg">—</div>
-      <div class="stat-sub">out of 5.0</div>
-    </div>
-    <div class="stat-card green">
-      <div class="stat-label">Google Reviews</div>
-      <div class="stat-value" id="stat-google">—</div>
-      <div class="stat-sub">clients routed to Google</div>
-    </div>
-    <div class="stat-card red">
-      <div class="stat-label">Flagged</div>
-      <div class="stat-value" id="stat-flagged">—</div>
-      <div class="stat-sub">need follow-up</div>
-    </div>
-  </div>
-
-  <!-- Charts row -->
-  <div class="two-col">
-
-    <!-- Rating Distribution -->
-    <div class="card">
-      <div class="section-header">
-        <h2>Rating Distribution</h2>
-      </div>
-      <div id="dist-container">
-        <div class="load-row"><span class="spinner-inline"></span> Loading…</div>
-      </div>
-    </div>
-
-    <!-- Recent trend -->
-    <div class="card">
-      <div class="section-header">
-        <h2>30-Day Response Trend</h2>
-      </div>
-      <div id="trend-container" style="position:relative;height:160px;">
-        <div class="load-row"><span class="spinner-inline"></span> Loading…</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Responses table -->
-  <div class="section-header">
-    <h2>Recent Responses</h2>
-    <span class="badge" id="total-badge">…</span>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Rating</th>
-          <th>Client</th>
-          <th class="hide-mobile">Caregiver</th>
-          <th class="hide-mobile">Visit Date</th>
-          <th>Comment</th>
-          <th>Routing</th>
-          <th class="hide-mobile">Submitted</th>
-        </tr>
-      </thead>
-      <tbody id="responses-tbody">
-        <tr><td colspan="7" class="load-row"><span class="spinner-inline"></span> Loading…</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="pagination">
-    <button id="btn-prev" disabled onclick="prevPage()">← Prev</button>
-    <span class="page-info" id="page-info">Page 1</span>
-    <button id="btn-next" disabled onclick="nextPage()">Next →</button>
-  </div>
-
-</div><!-- /container -->
-
 <script>
-(function () {
-  'use strict';
+  async function loadData() {
+    document.getElementById('last-updated').textContent = 'Refreshing…';
+    try {
+      const [statsRes, respRes] = await Promise.all([
+        fetch('/api/dashboard/stats'),
+        fetch('/api/dashboard/responses?limit=50'),
+      ]);
+      const stats    = await statsRes.json();
+      const respData = await respRes.json();
 
-  var PAGE_SIZE = 20;
-  var currentPage = 0;
-  var totalResponses = 0;
+      document.getElementById('stat-responses').textContent = stats.totalResponses ?? '—';
+      document.getElementById('stat-requests').textContent  = `${stats.totalRequests ?? '—'} requests sent`;
+      document.getElementById('stat-avg').textContent       = stats.averageRating
+        ? `${parseFloat(stats.averageRating).toFixed(1)} ★` : '—';
+      document.getElementById('stat-rate').textContent      = stats.responseRate != null
+        ? `${stats.responseRate}%` : '—';
+      document.getElementById('stat-google').textContent    = stats.googlePrompted ?? '—';
 
-  // ── Fetch helpers ──────────────────────────────────────
-  function fetchJson(url, cb) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
-      if (xhr.status === 200) {
-        try { cb(null, JSON.parse(xhr.responseText)); }
-        catch (e) { cb(e, null); }
-      } else {
-        cb(new Error('HTTP ' + xhr.status), null);
+      renderDist(stats.ratingDistribution || []);
+      renderTable(respData.responses || []);
+
+      document.getElementById('last-updated').textContent =
+        'Updated ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+      // Show demo banner if /api/demo/seed exists (demo mode)
+      fetch('/api/demo/seed', { method: 'HEAD' })
+        .then(r => { if (r.status !== 404) document.getElementById('demo-banner').style.display = 'flex'; })
+        .catch(() => {});
+
+    } catch(e) {
+      document.getElementById('last-updated').textContent = 'Error — ' + e.message;
+    }
+  }
+
+  async function seedDemo() {
+    const btn = document.getElementById('seed-btn');
+    btn.disabled = true;
+    btn.textContent = 'Seeding…';
+    try {
+      const res  = await fetch('/api/demo/seed');
+      const data = await res.json();
+      if (data.success) {
+        btn.textContent = '✓ Done!';
+        setTimeout(loadData, 400);
       }
-    };
-    xhr.onerror = function () { cb(new Error('Network error'), null); };
-    xhr.send();
+    } catch(e) {
+      btn.disabled = false;
+      btn.textContent = 'Load Demo Data';
+    }
   }
 
-  // ── Formatting helpers ─────────────────────────────────
-  function formatDate(iso) {
-    if (!iso) return '—';
-    try {
-      return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    } catch (e) { return iso; }
-  }
-
-  function formatDateShort(iso) {
-    if (!iso) return '—';
-    try {
-      return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    } catch (e) { return iso; }
-  }
-
-  function escHtml(str) {
-    return String(str || '')
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
-
-  function renderStars(n) {
-    return '★'.repeat(n) + '☆'.repeat(5 - n);
-  }
-
-  // ── Load stats ─────────────────────────────────────────
-  function loadStats() {
-    fetchJson('/api/dashboard/stats', function (err, data) {
-      if (err) { console.error('Stats error:', err); return; }
-
-      document.getElementById('stat-responses').textContent = data.totalResponses;
-      document.getElementById('stat-requests-sub').textContent = 'of ' + data.totalRequests + ' requests sent';
-      document.getElementById('stat-rate').textContent = data.responseRate + '%';
-      document.getElementById('stat-avg').textContent = data.averageRating ? data.averageRating.toFixed(1) : '—';
-      document.getElementById('stat-google').textContent = data.googlePrompted;
-      document.getElementById('stat-flagged').textContent = data.internalFlagged;
-
-      renderDistribution(data.ratingDistribution, data.totalResponses);
-      renderTrend(data.trend);
-    });
-  }
-
-  // ── Rating Distribution bars ───────────────────────────
-  function renderDistribution(dist, total) {
-    var container = document.getElementById('dist-container');
-    if (!dist || dist.length === 0) {
-      container.innerHTML = '<div class="empty"><p>No responses yet.</p></div>';
+  function renderDist(dist) {
+    const max = Math.max(...dist.map(d => Number(d.count)), 1);
+    if (!dist.length) {
+      document.getElementById('dist-body').innerHTML =
+        '<div style="color:var(--muted);font-size:14px;text-align:center;padding:20px 0;">No responses yet</div>';
       return;
     }
-
-    // Build a map
-    var map = {};
-    dist.forEach(function (r) { map[r.rating] = r.count; });
-
-    var html = '';
-    for (var i = 5; i >= 1; i--) {
-      var count = map[i] || 0;
-      var pct   = total > 0 ? Math.round((count / total) * 100) : 0;
-      html += '<div class="dist-row">' +
-        '<div class="dist-stars">' + '★'.repeat(i) + '☆'.repeat(5 - i) + '</div>' +
-        '<div class="dist-bar-wrap"><div class="dist-bar" style="width:' + pct + '%"></div></div>' +
-        '<div class="dist-count">' + count + '</div>' +
-        '</div>';
-    }
-    container.innerHTML = html;
+    const html = [5,4,3,2,1].map(star => {
+      const entry = dist.find(d => Number(d.rating) === star);
+      const count = entry ? Number(entry.count) : 0;
+      const pct   = Math.round((count / max) * 100);
+      return `<div class="dist-row">
+        <span class="dist-label">${star}★</span>
+        <div class="dist-bar-bg"><div class="dist-bar" style="width:${pct}%"></div></div>
+        <span class="dist-count">${count}</span>
+      </div>`;
+    }).join('');
+    document.getElementById('dist-body').innerHTML = html;
   }
 
-  // ── Simple SVG trend chart ─────────────────────────────
-  function renderTrend(trend) {
-    var container = document.getElementById('trend-container');
-    if (!trend || trend.length < 2) {
-      container.innerHTML = '<div class="empty"><p>Not enough data yet.</p></div>';
+  function renderTable(responses) {
+    if (!responses.length) {
+      document.getElementById('table-body').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div class="empty-title">No responses yet</div>
+          <div class="empty-body">Responses will appear here once clients submit feedback.</div>
+        </div>`;
       return;
     }
+    const rows = responses.map(r => {
+      const rating  = Number(r.rating);
+      const stars   = rating >= 4
+        ? `<span class="star-badge high">${'★'.repeat(rating)} ${rating}/5</span>`
+        : `<span class="star-badge low">${'★'.repeat(rating)}${'☆'.repeat(5-rating)} ${rating}/5</span>`;
+      const route   = r.routed_to_google
+        ? `<span class="route-badge google">✓ Google</span>`
+        : `<span class="route-badge internal">🔔 Follow-up</span>`;
+      const date    = r.visit_date
+        ? new Date(r.visit_date).toLocaleDateString('en-US', { month:'short', day:'numeric' })
+        : '—';
+      const comment = r.comment
+        ? `<span title="${r.comment.replace(/"/g,'&quot;')}">${r.comment}</span>`
+        : '<span style="color:#CBD5E1">No comment</span>';
+      return `<tr>
+        <td class="td-name">${r.client_name || '—'}</td>
+        <td class="td-caregiver">${r.caregiver_name || '—'}</td>
+        <td class="td-date">${date}</td>
+        <td>${stars}</td>
+        <td class="td-comment">${comment}</td>
+        <td>${route}</td>
+      </tr>`;
+    }).join('');
 
-    var W = 400, H = 140, padL = 28, padR = 12, padT = 10, padB = 24;
-    var maxCount = Math.max.apply(null, trend.map(function (d) { return d.responses; })) || 1;
-    var n = trend.length;
-
-    function xPos(i) { return padL + (i / (n - 1)) * (W - padL - padR); }
-    function yPos(v) { return padT + (1 - v / maxCount) * (H - padT - padB); }
-
-    // Area path
-    var areaPath = 'M ' + xPos(0) + ',' + yPos(trend[0].responses);
-    for (var i = 1; i < n; i++) {
-      areaPath += ' L ' + xPos(i) + ',' + yPos(trend[i].responses);
-    }
-    var closedArea = areaPath + ' L ' + xPos(n - 1) + ',' + (H - padB) + ' L ' + xPos(0) + ',' + (H - padB) + ' Z';
-
-    // Date labels (first and last)
-    var labelFirst = formatDateShort(trend[0].date);
-    var labelLast  = formatDateShort(trend[n - 1].date);
-
-    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">' +
-      '<defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">' +
-        '<stop offset="0%" stop-color="#2d9cdb" stop-opacity="0.25"/>' +
-        '<stop offset="100%" stop-color="#2d9cdb" stop-opacity="0.02"/>' +
-      '</linearGradient></defs>' +
-      '<path d="' + closedArea + '" fill="url(#tg)"/>' +
-      '<path d="' + areaPath + '" fill="none" stroke="#2d9cdb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' +
-      // Dots
-      (function () {
-        var dots = '';
-        for (var j = 0; j < n; j++) {
-          dots += '<circle cx="' + xPos(j) + '" cy="' + yPos(trend[j].responses) + '" r="3" fill="#2d9cdb"/>';
-        }
-        return dots;
-      })() +
-      // Baseline
-      '<line x1="' + padL + '" y1="' + (H - padB) + '" x2="' + (W - padR) + '" y2="' + (H - padB) + '" stroke="#e5e7eb" stroke-width="1"/>' +
-      // Labels
-      '<text x="' + padL + '" y="' + H + '" font-size="10" fill="#9ca3af">' + labelFirst + '</text>' +
-      '<text x="' + (W - padR) + '" y="' + H + '" font-size="10" fill="#9ca3af" text-anchor="end">' + labelLast + '</text>' +
-      '</svg>';
-
-    container.innerHTML = svg;
+    document.getElementById('table-body').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th><th>Caregiver</th><th>Visit</th>
+            <th>Rating</th><th>Comment</th><th>Routed</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
   }
 
-  // ── Load responses table ───────────────────────────────
-  function loadResponses(page) {
-    var offset = page * PAGE_SIZE;
-    var tbody = document.getElementById('responses-tbody');
-    tbody.innerHTML = '<tr><td colspan="7" class="load-row"><span class="spinner-inline"></span> Loading…</td></tr>';
-
-    fetchJson('/api/dashboard/responses?limit=' + PAGE_SIZE + '&offset=' + offset, function (err, data) {
-      if (err) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty"><p>Failed to load responses.</p></td></tr>';
-        return;
-      }
-
-      totalResponses = data.total;
-      document.getElementById('total-badge').textContent = totalResponses + ' total';
-      updatePagination(page);
-
-      if (!data.responses || data.responses.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7">' +
-          '<div class="empty"><div style="font-size:36px;">📬</div><p>No responses yet. Send your first feedback request to get started!</p></div>' +
-          '</td></tr>';
-        return;
-      }
-
-      var html = '';
-      data.responses.forEach(function (r) {
-        var routing = r.routed_to_google
-          ? '<span class="pill pill-google">Google ★</span>'
-          : r.internal_flagged
-            ? '<span class="pill pill-flagged">Flagged</span>'
-            : '<span class="pill pill-neutral">—</span>';
-
-        html += '<tr>' +
-          '<td class="stars-cell">' + renderStars(r.rating) + '<span class="star-count">' + r.rating + '/5</span></td>' +
-          '<td>' + escHtml(r.client_name) + '</td>' +
-          '<td class="hide-mobile">' + escHtml(r.caregiver_name) + '</td>' +
-          '<td class="hide-mobile">' + formatDate(r.visit_date) + '</td>' +
-          '<td class="comment-cell">' + (r.comment ? escHtml(r.comment) : '<em style="color:var(--muted)">No comment</em>') + '</td>' +
-          '<td>' + routing + '</td>' +
-          '<td class="hide-mobile">' + formatDate(r.submitted_at) + '</td>' +
-          '</tr>';
-      });
-      tbody.innerHTML = html;
-    });
-  }
-
-  // ── Pagination ─────────────────────────────────────────
-  function updatePagination(page) {
-    var totalPages = Math.ceil(totalResponses / PAGE_SIZE) || 1;
-    document.getElementById('page-info').textContent = 'Page ' + (page + 1) + ' of ' + totalPages;
-    document.getElementById('btn-prev').disabled = page === 0;
-    document.getElementById('btn-next').disabled = (page + 1) >= totalPages;
-  }
-
-  window.prevPage = function () {
-    if (currentPage > 0) { currentPage--; loadResponses(currentPage); }
-  };
-
-  window.nextPage = function () {
-    if ((currentPage + 1) * PAGE_SIZE < totalResponses) {
-      currentPage++;
-      loadResponses(currentPage);
-    }
-  };
-
-  // ── Main load ──────────────────────────────────────────
-  window.loadAll = function () {
-    currentPage = 0;
-    loadStats();
-    loadResponses(0);
-  };
-
-  loadAll();
-})();
+  loadData();
 </script>
 </body>
 </html>
