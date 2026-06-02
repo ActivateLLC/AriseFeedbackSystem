@@ -42,6 +42,10 @@ function getMailer() {
  * @param {string} body Message text
  */
 async function sendSMS(to, body) {
+  if (process.env.DEMO_MODE === 'true') {
+    console.log(`[DEMO SMS] To: ${to}\n${body}`);
+    return { sid: 'DEMO_SID_' + Date.now() };
+  }
   const from = process.env.TWILIO_PHONE_NUMBER;
   if (!from) throw new Error('TWILIO_PHONE_NUMBER not set');
 
@@ -58,6 +62,10 @@ async function sendSMS(to, body) {
  * @param {string} htmlBody HTML email body
  */
 async function sendEmail(to, subject, htmlBody) {
+  if (process.env.DEMO_MODE === 'true') {
+    console.log(`[DEMO EMAIL] To: ${to} | Subject: ${subject}`);
+    return { messageId: 'demo-' + Date.now() };
+  }
   const fromName    = process.env.EMAIL_FROM_NAME    || 'Arise Cares Team';
   const fromAddress = process.env.EMAIL_FROM_ADDRESS || process.env.SMTP_USER;
   const transport   = getMailer();

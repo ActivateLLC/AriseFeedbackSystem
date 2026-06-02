@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "demo": "node -r dotenv/config src/server.js dotenv_config_path=.env.demo"
   },
   "dependencies": {
     "express": "^4.18.2",

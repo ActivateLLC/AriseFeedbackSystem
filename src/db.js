@@ -1,5 +1,10 @@
 'use strict';
 
+if (process.env.DEMO_MODE === 'true' && !process.env.DATABASE_URL) {
+  console.log('[DB] DEMO_MODE: using in-memory mock database');
+  module.exports = require('./db-mock');
+} else {
+
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -30,3 +35,5 @@ async function queryOne(text, params) {
 }
 
 module.exports = { pool, query, queryOne };
+
+} // end DEMO_MODE else block
