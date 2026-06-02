@@ -9,22 +9,24 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue:      #2563EB;
-      --blue-bg:   #EFF6FF;
-      --teal:      #0D9488;
+      --navy:      #2D3250;
+      --navy-dark: #1E2340;
+      --navy-bg:   #ECEDF3;
+      --teal:      #0A8F82;
       --teal-bg:   #F0FDFA;
-      --gold:      #F59E0B;
-      --gold-bg:   #FFFBEB;
+      --gold:      #F5A623;
+      --gold-dark: #E09510;
+      --gold-bg:   #FFF8EC;
       --green:     #10B981;
       --green-bg:  #ECFDF5;
       --red:       #EF4444;
       --red-bg:    #FEF2F2;
       --orange:    #F97316;
-      --sidebar:   #0F172A;
-      --text:      #0F172A;
+      --sidebar:   #2D3250;
+      --text:      #2D3250;
       --muted:     #64748B;
       --border:    #E2E8F0;
-      --bg:        #F8FAFC;
+      --bg:        #F8F7F4;
       --card:      #FFFFFF;
     }
     html, body {
@@ -51,8 +53,9 @@
       padding: 24px 20px 20px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .sidebar-brand .logo { font-size: 18px; font-weight: 700; color: #fff; }
-    .sidebar-brand .logo-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+    .logo-wrap { display: flex; align-items: center; gap: 8px; }
+    .logo { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+    .logo-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; letter-spacing: 0.5px; }
     .sidebar-nav { padding: 16px 12px; flex: 1; }
     .nav-item {
       display: flex;
@@ -69,7 +72,7 @@
       margin-bottom: 2px;
     }
     .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
-    .nav-item.active { background: rgba(37,99,235,0.4); color: #fff; }
+    .nav-item.active { background: rgba(245,166,35,0.25); color: #fff; }
     .nav-icon { font-size: 16px; width: 20px; text-align: center; }
     .sidebar-footer {
       padding: 16px 20px;
@@ -111,15 +114,15 @@
       font-family: inherit;
       transition: border-color 0.15s, color 0.15s;
     }
-    .refresh-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .refresh-btn:hover { border-color: #F5A623; color: #F5A623; }
 
     /* Content */
     .content { padding: 28px 32px; flex: 1; }
 
     /* Demo banner */
     .demo-banner {
-      background: linear-gradient(135deg, #EFF6FF, #F0FDFA);
-      border: 1.5px solid #BFDBFE;
+      background: linear-gradient(135deg, #FFF8EC, #F8F7F4);
+      border: 1.5px solid #F5A623;
       border-radius: 12px;
       padding: 14px 20px;
       display: flex;
@@ -129,12 +132,12 @@
       gap: 12px;
       flex-wrap: wrap;
     }
-    .demo-banner-text { font-size: 14px; color: #1E40AF; font-weight: 500; }
+    .demo-banner-text { font-size: 14px; color: #2D3250; font-weight: 500; }
     .demo-banner-text span { color: var(--muted); font-weight: 400; }
     .seed-btn {
       padding: 8px 18px;
-      background: var(--blue);
-      color: #fff;
+      background: #F5A623;
+      color: #2D3250;
       border: none;
       border-radius: 8px;
       font-size: 13px;
@@ -163,7 +166,7 @@
       transition: transform 0.15s;
     }
     .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(15,23,42,0.1); }
-    .stat-card.blue  { border-color: var(--blue);  }
+    .stat-card.blue  { border-color: var(--navy);  }
     .stat-card.gold  { border-color: var(--gold);  }
     .stat-card.teal  { border-color: var(--teal);  }
     .stat-card.green { border-color: var(--green); }
@@ -176,7 +179,7 @@
       margin-bottom: 10px;
     }
     .stat-value { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
-    .stat-card.blue  .stat-value { color: var(--blue);  }
+    .stat-card.blue  .stat-value { color: var(--navy);  }
     .stat-card.gold  .stat-value { color: var(--gold);  }
     .stat-card.teal  .stat-value { color: var(--teal);  }
     .stat-card.green .stat-value { color: var(--green); }
@@ -287,7 +290,7 @@
     .spinner {
       width: 24px; height: 24px;
       border: 2.5px solid var(--border);
-      border-top-color: var(--blue);
+      border-top-color: var(--navy);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
     }
@@ -311,8 +314,14 @@
 
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <div class="logo">❤️ Arise Cares</div>
-      <div class="logo-sub">Admin Dashboard</div>
+      <div class="logo-wrap">
+        <svg width="22" height="27" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 24 16 24S32 26 32 16C32 7.163 24.837 0 16 0z" fill="#F5A623"/>
+          <path d="M16 10l1.545 4.753H22.5l-4.045 2.94 1.545 4.753L16 19.506l-3.999 2.94 1.545-4.753L9.5 14.753h4.955z" fill="white"/>
+        </svg>
+        <span class="logo">arise cares</span>
+      </div>
+      <div class="logo-sub">home care &amp; aging services</div>
     </div>
     <nav class="sidebar-nav">
       <a class="nav-item active" href="#">

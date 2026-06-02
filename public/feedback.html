@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#2563EB" />
+  <meta name="theme-color" content="#2D3250" />
   <title>Share Your Feedback — Arise Cares</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -11,20 +11,20 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue:       #2563EB;
-      --blue-light: #EFF6FF;
-      --teal:       #0D9488;
-      --gold:       #F59E0B;
-      --gold-light: #FFFBEB;
+      --navy:       #2D3250;
+      --navy-dark:  #1E2340;
+      --gold:       #F5A623;
+      --gold-dark:  #E09510;
+      --gold-light: #FFF8EC;
       --green:      #10B981;
       --red:        #EF4444;
-      --text:       #0F172A;
+      --text:       #2D3250;
       --muted:      #64748B;
       --border:     #E2E8F0;
-      --bg:         #F1F5F9;
+      --bg:         #F8F7F4;
       --card:       #FFFFFF;
       --radius:     24px;
-      --shadow:     0 8px 40px rgba(15,23,42,0.12);
+      --shadow:     0 8px 40px rgba(45,50,80,0.12);
     }
 
     html, body {
@@ -54,22 +54,28 @@
 
     /* Header */
     .header {
-      background: linear-gradient(135deg, #2563EB 0%, #0D9488 100%);
+      background: linear-gradient(135deg, #2D3250 0%, #3D4570 100%);
       padding: 28px 32px 24px;
       text-align: center;
     }
-    .header-logo {
-      font-size: 22px;
+    .header-logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .header-brand {
+      font-size: 24px;
       font-weight: 700;
       color: #fff;
-      letter-spacing: -0.3px;
+      letter-spacing: 1.5px;
     }
-    .header-logo span { opacity: 0.9; }
     .header-subtitle {
-      font-size: 13px;
-      color: rgba(255,255,255,0.75);
-      margin-top: 4px;
-      font-weight: 500;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.8px;
+      text-transform: lowercase;
     }
 
     /* Steps */
@@ -157,7 +163,7 @@
       transition: border-color 0.2s;
       background: #FAFAFA;
     }
-    textarea:focus { border-color: var(--blue); background: #fff; }
+    textarea:focus { border-color: var(--navy); background: #fff; }
     textarea::placeholder { color: #94A3B8; }
 
     .submit-btn {
@@ -167,7 +173,7 @@
       padding: 16px;
       border: none;
       border-radius: 50px;
-      background: linear-gradient(135deg, #2563EB, #0D9488);
+      background: linear-gradient(135deg, #2D3250, #F5A623);
       color: #fff;
       font-size: 16px;
       font-weight: 700;
@@ -199,12 +205,8 @@
       font-size: 36px;
       margin: 0 auto 20px;
     }
-    .thankyou-icon.positive {
-      background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
-    }
-    .thankyou-icon.negative {
-      background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
-    }
+    .thankyou-icon.positive { background: linear-gradient(135deg, #FFF3CD, #FFE5A0); }
+    .thankyou-icon.negative { background: linear-gradient(135deg, #E8EAF6, #C5CAE9); }
     .thankyou-heading {
       font-size: 22px;
       font-weight: 700;
@@ -253,7 +255,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     .google-btn:hover {
-      border-color: #4285F4;
+      border-color: #F5A623;
       box-shadow: 0 4px 16px rgba(66,133,244,0.18);
     }
 
@@ -267,7 +269,7 @@
       width: 36px;
       height: 36px;
       border: 3px solid var(--border);
-      border-top-color: var(--blue);
+      border-top-color: var(--navy);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       margin: 0 auto 16px;
@@ -300,8 +302,14 @@
 
 <div class="card">
   <div class="header">
-    <div class="header-logo">❤️ Arise Cares</div>
-    <div class="header-subtitle">Home Care Feedback</div>
+    <div class="header-logo-wrap">
+      <svg width="28" height="35" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 24 16 24S32 26 32 16C32 7.163 24.837 0 16 0z" fill="#F5A623"/>
+        <path d="M16 10l1.545 4.753H22.5l-4.045 2.94 1.545 4.753L16 19.506l-3.999 2.94 1.545-4.753L9.5 14.753h4.955z" fill="white"/>
+      </svg>
+      <span class="header-brand">arise cares</span>
+    </div>
+    <div class="header-subtitle">home care &amp; aging services</div>
   </div>
 
   <!-- Loading -->
