@@ -3,137 +3,213 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Getting Started — Arise Cares Feedback System</title>
+  <title>Team Guide — Arise Cares Feedback System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --navy: #2D3250; --navy-dark: #1E2340; --gold: #F5A623;
-      --text: #1A1D2E; --muted: #64748B; --border: #E8ECF1;
-      --bg: #F4F5F9; --card: #fff; --green: #10B981;
+      --navy: #2D3250; --navy-dark: #1E2340; --navy-mid: #3D4570;
+      --gold: #F5A623; --gold-dark: #E09510; --gold-bg: #FFF8EC;
+      --green: #10B981; --green-bg: #ECFDF5;
+      --red: #EF4444; --red-bg: #FEF2F2;
+      --orange-bg: #FFF7ED;
+      --text: #1A1D2E; --muted: #64748B;
+      --border: #E8ECF1; --bg: #F4F5F9; --card: #fff;
     }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+    html, body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
 
-    /* Nav */
-    .topnav { background: var(--navy); padding: 14px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-    .topnav img { height: 32px; }
-    .topnav-links { display: flex; gap: 20px; }
-    .topnav-links a { color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500; text-decoration: none; }
-    .topnav-links a:hover { color: #fff; }
+    /* ── Top nav ── */
+    .topnav {
+      background: var(--navy); padding: 0 40px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topnav img { height: 34px; }
+    .topnav a {
+      color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 8px; transition: all 0.15s;
+    }
+    .topnav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-    /* Hero */
+    /* ── Hero ── */
     .hero {
-      background: linear-gradient(145deg, var(--navy-dark) 0%, var(--navy) 60%, #3D4570 100%);
-      padding: 72px 40px 64px; text-align: center;
+      background: linear-gradient(145deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%);
+      padding: 60px 40px 52px; text-align: center;
     }
-    .hero-tag { display: inline-block; background: rgba(245,166,35,0.2); color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 14px; border-radius: 99px; margin-bottom: 20px; }
-    .hero-title { font-size: 42px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 16px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,166,35,0.15); color: var(--gold);
+      font-size: 12px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 99px; margin-bottom: 20px;
+    }
+    .hero-title { font-size: 38px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 14px; }
     .hero-title span { color: var(--gold); }
-    .hero-sub { font-size: 17px; color: rgba(255,255,255,0.65); line-height: 1.7; max-width: 600px; margin: 0 auto 36px; }
-    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; border: none; font-family: inherit; transition: all 0.15s; }
-    .btn-gold { background: var(--gold); color: var(--navy); }
-    .btn-gold:hover { background: #E09510; }
-    .btn-outline-white { background: transparent; border: 1.5px solid rgba(255,255,255,0.3); color: #fff; }
-    .btn-outline-white:hover { background: rgba(255,255,255,0.08); }
+    .hero-sub { font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.7; max-width: 560px; margin: 0 auto 32px; }
+    .hero-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold); color: var(--navy);
+      padding: 13px 26px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .hero-btn:hover { background: var(--gold-dark); }
 
-    /* Feature pills */
-    .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 28px 40px; background: var(--navy); border-top: 1px solid rgba(255,255,255,0.06); }
-    .pill { display: flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 99px; background: rgba(255,255,255,0.07); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); }
+    /* ── Quick nav pills ── */
+    .quick-nav {
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 0 40px; display: flex; align-items: center; gap: 4px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    .quick-nav a {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 16px 14px; font-size: 13px; font-weight: 600;
+      color: var(--muted); text-decoration: none; white-space: nowrap;
+      border-bottom: 2px solid transparent; transition: all 0.15s;
+    }
+    .quick-nav a:hover { color: var(--navy); border-color: var(--navy); }
 
-    /* Layout */
-    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
-    .section { padding: 64px 0 0; }
-    .section-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gold); margin-bottom: 10px; }
-    .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; }
-    .section-sub { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
+    /* ── Page layout ── */
+    .page-wrap { max-width: 840px; margin: 0 auto; padding: 48px 24px 80px; }
 
-    /* Steps */
-    .steps { display: flex; flex-direction: column; gap: 20px; }
+    /* ── Section headers ── */
+    .section { margin-bottom: 56px; }
+    .section-anchor { display: block; margin-top: -70px; padding-top: 70px; } /* offset for sticky nav */
+    .section-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.2px; color: var(--gold); margin-bottom: 8px;
+    }
+    .section-title { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
+    .section-sub { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+
+    /* ── Step cards ── */
+    .steps { display: flex; flex-direction: column; gap: 16px; }
     .step-card {
-      background: var(--card); border-radius: 16px; padding: 26px 28px;
-      display: flex; gap: 20px; align-items: flex-start;
+      background: var(--card); border-radius: 16px;
       border: 1px solid var(--border);
       box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+      display: flex; gap: 0; overflow: hidden;
+    }
+    .step-side {
+      width: 56px; flex-shrink: 0;
+      background: var(--navy); display: flex; align-items: flex-start;
+      justify-content: center; padding-top: 22px;
     }
     .step-num {
-      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
-      background: var(--navy); color: #fff;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold); color: var(--navy);
+      font-size: 13px; font-weight: 800;
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 800;
     }
-    .step-body {}
-    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .step-content { padding: 20px 22px; flex: 1; }
+    .step-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
     .step-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
-    .step-desc code { background: #EEF0FF; color: var(--navy); padding: 2px 7px; border-radius: 5px; font-size: 12px; font-family: 'SF Mono','Fira Code',monospace; }
-    .step-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; }
-    .step-link:hover { color: var(--gold); }
+    .step-desc strong { color: var(--text); font-weight: 600; }
+    .step-tip {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: var(--gold-bg); border-radius: 8px;
+      padding: 10px 12px; margin-top: 12px;
+      font-size: 13px; color: #92400E; line-height: 1.5;
+    }
 
-    /* Feature cards */
-    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    .feature-card {
-      background: var(--card); border-radius: 14px; padding: 24px;
+    /* ── Info cards ── */
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .info-card {
+      background: var(--card); border-radius: 14px; padding: 20px;
       border: 1px solid var(--border);
       box-shadow: 0 1px 4px rgba(15,23,42,0.05);
     }
-    .feature-icon { font-size: 28px; margin-bottom: 12px; }
-    .feature-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .feature-tag { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; }
-    .tag-live { background: #ECFDF5; color: #065F46; }
-    .tag-config { background: #FFF8EC; color: #92400E; }
-    .tag-optional { background: #EEF0FF; color: var(--navy); }
+    .info-icon { font-size: 26px; margin-bottom: 10px; }
+    .info-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .info-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
-    /* Env table */
-    .env-table { width: 100%; border-collapse: collapse; font-size: 13px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
-    .env-table thead th { background: #F8F9FC; padding: 11px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
-    .env-table tbody tr:last-child td { border-bottom: none; }
-    .env-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
-    .env-table td:first-child { font-family: 'SF Mono','Fira Code',monospace; font-size: 12px; color: var(--navy); white-space: nowrap; }
-    .env-table td:last-child { font-size: 12px; }
-    .req-badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 700; }
-    .req-yes { background: #FEF2F2; color: #DC2626; }
-    .req-no  { background: #F1F5F9; color: var(--muted); }
-
-    /* Embed box */
-    .code-box { background: var(--navy-dark); border-radius: 12px; padding: 20px 22px; font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; color: #A5B4FC; line-height: 1.7; overflow-x: auto; margin: 16px 0; }
-    .code-box .hl { color: var(--gold); }
-    .code-box .cm { color: #64748B; }
-
-    /* Flow diagram */
-    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0; margin: 24px 0; }
-    .flow-node {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 16px; text-align: center;
-      font-size: 13px; font-weight: 600; min-width: 120px;
-      box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+    /* ── Routing diagram ── */
+    .routing-diagram {
+      background: var(--card); border-radius: 16px; padding: 28px 24px;
+      border: 1px solid var(--border);
     }
-    .flow-node.gold { background: #FFF8EC; border-color: var(--gold); color: #92400E; }
-    .flow-node.green { background: #ECFDF5; border-color: #6EE7B7; color: #065F46; }
-    .flow-node.orange { background: #FFF7ED; border-color: #FED7AA; color: #9A3412; }
-    .flow-node.navy { background: #EEF0FF; border-color: #C7D2FE; color: var(--navy); }
-    .flow-arrow { font-size: 20px; color: var(--muted); padding: 0 6px; flex-shrink: 0; }
+    .routing-row { display: flex; align-items: stretch; gap: 0; margin-bottom: 14px; }
+    .routing-row:last-child { margin-bottom: 0; }
+    .routing-trigger {
+      background: var(--navy); color: #fff; border-radius: 10px;
+      padding: 14px 18px; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; gap: 8px; min-width: 160px;
+    }
+    .routing-arrow {
+      display: flex; align-items: center; padding: 0 12px;
+      font-size: 18px; color: var(--muted); flex-shrink: 0;
+    }
+    .routing-result {
+      flex: 1; border-radius: 10px; padding: 14px 16px;
+      font-size: 13px; font-weight: 600; line-height: 1.5;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .routing-result.positive { background: var(--green-bg); color: #065F46; border: 1px solid #A7F3D0; }
+    .routing-result.negative { background: var(--orange-bg); color: #9A3412; border: 1px solid #FED7AA; }
+    .routing-result-icon { font-size: 20px; flex-shrink: 0; }
 
-    /* FAQ */
-    .faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 12px; }
-    .faq-q { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    /* ── FAQ ── */
+    .faq-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; margin-bottom: 10px;
+    }
+    .faq-q {
+      padding: 16px 20px; font-size: 14px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      user-select: none;
+    }
+    .faq-q:hover { background: #FAFBFC; }
+    .faq-chevron { font-size: 12px; color: var(--muted); transition: transform 0.2s; }
+    .faq-a {
+      display: none; padding: 0 20px 16px;
+      font-size: 14px; color: var(--muted); line-height: 1.7;
+    }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
 
-    /* CTA footer */
-    .cta-section { background: var(--navy); margin-top: 72px; padding: 56px 40px; text-align: center; }
-    .cta-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 12px; }
-    .cta-sub { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 28px; }
+    /* ── Scenario cards ── */
+    .scenario {
+      background: var(--card); border-radius: 14px; padding: 22px 24px;
+      border: 1px solid var(--border); margin-bottom: 14px;
+    }
+    .scenario-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .scenario-badge {
+      padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 700;
+    }
+    .scenario-badge.positive { background: var(--green-bg); color: #065F46; }
+    .scenario-badge.negative { background: var(--red-bg); color: var(--red); }
+    .scenario-badge.neutral { background: #F1F5F9; color: var(--muted); }
+    .scenario-title { font-size: 15px; font-weight: 700; }
+    .scenario-body { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .scenario-body strong { color: var(--text); }
+    .scenario-actions {
+      margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .action-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      background: #EEF0FF; color: var(--navy);
+    }
 
-    /* Responsive */
+    /* ── CTA footer ── */
+    .cta-bar {
+      background: var(--navy); padding: 48px 40px; text-align: center; margin-top: 0;
+    }
+    .cta-title { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .cta-sub { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 24px; }
+
     @media (max-width: 640px) {
-      .hero { padding: 48px 20px 40px; }
-      .hero-title { font-size: 28px; }
-      .container { padding: 0 16px; }
-      .topnav { padding: 14px 20px; }
-      .pills { padding: 20px; }
-      .flow { flex-direction: column; align-items: flex-start; }
-      .flow-arrow { transform: rotate(90deg); }
+      .hero { padding: 44px 20px 38px; }
+      .hero-title { font-size: 26px; }
+      .topnav { padding: 0 16px; }
+      .quick-nav { padding: 0 16px; }
+      .page-wrap { padding: 32px 16px 60px; }
+      .routing-row { flex-direction: column; gap: 8px; }
+      .routing-trigger { min-width: unset; }
+      .routing-arrow { transform: rotate(90deg); width: fit-content; }
+      .cta-bar { padding: 40px 20px; }
     }
   </style>
 </head>
@@ -142,292 +218,439 @@
 <!-- Nav -->
 <nav class="topnav">
   <img src="/logo.svg" alt="Arise Cares" style="filter:brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(5deg);" />
-  <div class="topnav-links">
-    <a href="/dashboard.html">Dashboard</a>
-    <a href="/widget-preview.html">Widget Preview</a>
-  </div>
+  <a href="/dashboard.html">← Back to Dashboard</a>
 </nav>
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-tag">Getting Started Guide</div>
-  <div class="hero-title">The <span>Arise Cares</span><br/>Feedback System</div>
-  <div class="hero-sub">A fully automated post-visit feedback platform — collect ratings, route reviews to Google, flag concerns internally, and display testimonials on your website.</div>
-  <div class="hero-btns">
-    <a href="/dashboard.html" class="btn btn-gold">Open Dashboard →</a>
-    <a href="/widget-preview.html" class="btn btn-outline-white">Preview Review Widget</a>
-  </div>
+  <div class="hero-eyebrow">📖 Team Guide</div>
+  <div class="hero-title">How to Use the<br/><span>Arise Cares</span> Feedback System</div>
+  <div class="hero-sub">Everything you need to know to add clients, log visits, respond to feedback, and keep your team on top of every client experience.</div>
+  <a href="/dashboard.html" class="hero-btn">Open Dashboard →</a>
 </div>
 
-<div class="pills">
-  <div class="pill">📱 SMS + Email delivery</div>
-  <div class="pill">⭐ Smart Google routing</div>
-  <div class="pill">🔔 Internal alerts</div>
-  <div class="pill">🤖 Fully automated</div>
-  <div class="pill">📊 Live dashboard</div>
-  <div class="pill">🌐 Embeddable widget</div>
-  <div class="pill">🔒 Privacy-first</div>
+<!-- Quick nav -->
+<div class="quick-nav">
+  <a href="#adding-clients">👥 Adding Clients</a>
+  <a href="#logging-visits">📅 Logging Visits</a>
+  <a href="#how-feedback-works">⭐ How Feedback Works</a>
+  <a href="#checking-responses">📋 Checking Responses</a>
+  <a href="#responding">💬 Responding</a>
+  <a href="#scenarios">📖 Real Scenarios</a>
+  <a href="#faq">❓ FAQ</a>
 </div>
 
-<div class="container">
+<div class="page-wrap">
 
-  <!-- ── How it works ── -->
-  <div class="section">
-    <div class="section-tag">Overview</div>
-    <div class="section-title">How the System Works</div>
-    <div class="section-sub">From the moment a visit is logged, everything runs automatically — no manual steps required.</div>
-    <div class="flow">
-      <div class="flow-node navy">📅 Visit Logged</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node">📨 SMS / Email Sent</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node gold">⭐ Client Rates 1–5★</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node green">4–5★ → Google Review</div>
-    </div>
-    <div class="flow" style="margin-top:8px;">
-      <div class="flow-node" style="visibility:hidden;min-width:120px;"></div>
-      <div class="flow-arrow" style="visibility:hidden;">→</div>
-      <div class="flow-node" style="visibility:hidden;"></div>
-      <div class="flow-arrow" style="visibility:hidden;">→</div>
-      <div class="flow-node" style="visibility:hidden;"></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-node orange">1–3★ → Team Alert</div>
+  <!-- ── Overview ── -->
+  <div class="section" style="margin-top:8px;">
+    <div class="section-label">Overview</div>
+    <div class="section-title">What this system does for you</div>
+    <div class="section-sub">After every care visit, the system automatically reaches out to clients to ask how things went. You don't need to do anything — it handles the messages, collects the responses, and brings everything back to your dashboard.</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">📱</div>
+        <div class="info-title">Sends feedback requests automatically</div>
+        <div class="info-desc">As soon as you log a visit, a text message (or email) goes out to the client asking them to rate their experience. No manual follow-up needed.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">⭐</div>
+        <div class="info-title">Routes responses smartly</div>
+        <div class="info-desc">Happy clients (4–5★) are gently invited to share a Google review. Clients who had concerns (1–3★) are kept internal so your team can follow up privately.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📊</div>
+        <div class="info-title">Shows you everything in one place</div>
+        <div class="info-desc">Your dashboard shows all responses, ratings, comments, and flags — so nothing falls through the cracks.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🔒</div>
+        <div class="info-title">Private and respectful</div>
+        <div class="info-desc">Negative feedback never goes public. Clients' personal details are never shared. Every message includes an easy opt-out.</div>
+      </div>
     </div>
   </div>
 
-  <!-- ── Setup steps ── -->
+  <!-- ── Adding Clients ── -->
   <div class="section">
-    <div class="section-tag">Setup</div>
-    <div class="section-title">Go Live in 4 Steps</div>
-    <div class="section-sub">The system runs in Demo Mode out of the box. Follow these steps to connect real services.</div>
+    <span class="section-anchor" id="adding-clients"></span>
+    <div class="section-label">Step 1 — Clients Page</div>
+    <div class="section-title">Adding a new client</div>
+    <div class="section-sub">Every client you serve should be in the system so feedback requests can go out after their visits.</div>
     <div class="steps">
-
       <div class="step-card">
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <div class="step-title">Connect your database (Supabase)</div>
-          <div class="step-desc">
-            Create a free project at <strong>supabase.com</strong>, then copy the connection string into your Vercel environment variables as <code>DATABASE_URL</code>. Run the schema migrations in <code>schema.sql</code> to create all tables automatically.
-          </div>
+        <div class="step-side"><div class="step-num">1</div></div>
+        <div class="step-content">
+          <div class="step-title">Open the Clients page</div>
+          <div class="step-desc">Click <strong>Clients</strong> in the left-hand sidebar on your dashboard.</div>
         </div>
       </div>
-
       <div class="step-card">
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <div class="step-title">Add your Twilio credentials for SMS</div>
-          <div class="step-desc">
-            Sign up at <strong>twilio.com</strong>, get a phone number, then set <code>TWILIO_SID</code>, <code>TWILIO_TOKEN</code>, and <code>TWILIO_FROM</code> in Vercel. SMS will activate automatically — no code changes needed.
-          </div>
+        <div class="step-side"><div class="step-num">2</div></div>
+        <div class="step-content">
+          <div class="step-title">Click "+ Add Client"</div>
+          <div class="step-desc">You'll find this button in the top-right corner of the Clients page.</div>
         </div>
       </div>
-
       <div class="step-card">
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <div class="step-title">Set your Google Business review link</div>
+        <div class="step-side"><div class="step-num">3</div></div>
+        <div class="step-content">
+          <div class="step-title">Fill in the client's details</div>
           <div class="step-desc">
-            Go to your Google Business Profile → Get more reviews → copy the direct link. Set it as <code>GOOGLE_REVIEW_URL</code> in Vercel. Clients who rate 4–5★ will see a button that opens directly to your Google review form.
+            Enter their <strong>full name</strong> (required), <strong>phone number</strong>, and <strong>email address</strong>.<br/><br/>
+            Choose their <strong>preferred contact method</strong> — SMS or email. Most clients respond faster to text.
           </div>
+          <div class="step-tip">💡 You only need a name to save a client. You can add contact details later by clicking the client's row to edit.</div>
         </div>
       </div>
-
       <div class="step-card">
-        <div class="step-num">4</div>
-        <div class="step-body">
-          <div class="step-title">Embed the reviews widget on your website</div>
-          <div class="step-desc">
-            Paste two lines of code anywhere on your Webflow or website page. The widget auto-loads verified 4–5★ reviews with client names and comments. Supports light and dark themes.
-          </div>
-          <a href="/widget-preview.html" class="step-link">Preview &amp; copy embed code →</a>
+        <div class="step-side"><div class="step-num">4</div></div>
+        <div class="step-content">
+          <div class="step-title">Click "Add Client"</div>
+          <div class="step-desc">The client is saved and will appear in your client list, ready for visits to be logged.</div>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- ── Features ── -->
+  <!-- ── Logging Visits ── -->
   <div class="section">
-    <div class="section-tag">Features</div>
-    <div class="section-title">Everything Included</div>
-    <div class="section-sub">All features work in Demo Mode. Real SMS/email/Google routing activates when env vars are set.</div>
-    <div class="feature-grid">
-
-      <div class="feature-card">
-        <div class="feature-icon">📨</div>
-        <div class="feature-title">Automated Feedback Requests</div>
-        <div class="feature-desc">Triggered automatically when a visit is logged. Sent via SMS (preferred) or email. Personalized with client and caregiver name.</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
+    <span class="section-anchor" id="logging-visits"></span>
+    <div class="section-label">Step 2 — Recording a Visit</div>
+    <div class="section-title">How to log a visit</div>
+    <div class="section-sub">Logging a visit is what kicks off the whole feedback process. Once you record it, the system takes over — the client gets a message, and you'll see their response in the dashboard when they reply.</div>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">1</div></div>
+        <div class="step-content">
+          <div class="step-title">Find the client in the Clients list</div>
+          <div class="step-desc">Use the search bar to find them by name, phone, or email.</div>
+        </div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">⭐</div>
-        <div class="feature-title">1–5 Star Rating Form</div>
-        <div class="feature-desc">Mobile-first form, under 30 seconds. One tap to rate, optional comment with smart quick-tags. No login required.</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">2</div></div>
+        <div class="step-content">
+          <div class="step-title">Click "+ Visit" on their row</div>
+          <div class="step-desc">You'll see a small button at the end of each client's row. You can also click the client's name to open their full profile, then choose "Record Visit" there.</div>
+        </div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🌟</div>
-        <div class="feature-title">Smart Google Routing</div>
-        <div class="feature-desc">4–5★ ratings show a "Leave a Google Review" button with a direct link. 1–3★ ratings go internal — never to Google.</div>
-        <span class="feature-tag tag-config">Needs GOOGLE_REVIEW_URL</span>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">3</div></div>
+        <div class="step-content">
+          <div class="step-title">Enter the visit date and caregiver's name</div>
+          <div class="step-desc">Both fields are required. The caregiver's name will be included in the feedback message so the client knows which visit you're asking about — <em>"How was your visit with Maria Rodriguez on June 3rd?"</em></div>
+        </div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🔔</div>
-        <div class="feature-title">Internal Alerts</div>
-        <div class="feature-desc">Low ratings are flagged and tracked in the dashboard. Team notification emails can be configured in Settings.</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">4</div></div>
+        <div class="step-content">
+          <div class="step-title">Click "Record Visit"</div>
+          <div class="step-desc">That's it. A feedback request is sent to the client automatically within minutes. You don't need to do anything else.</div>
+          <div class="step-tip">💡 If the client hasn't replied after 3 days, the system sends one gentle follow-up reminder on its own.</div>
+        </div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📱</div>
-        <div class="feature-title">SMS Delivery (Twilio)</div>
-        <div class="feature-desc">Personalized text message sent to client's phone. Includes opt-out link per compliance requirements.</div>
-        <span class="feature-tag tag-config">Needs Twilio keys</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📧</div>
-        <div class="feature-title">Email Delivery (SMTP)</div>
-        <div class="feature-desc">Branded email sent when SMS is unavailable or email is preferred. Configurable sender name and address.</div>
-        <span class="feature-tag tag-config">Needs SMTP keys</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🤖</div>
-        <div class="feature-title">Follow-Up Automation</div>
-        <div class="feature-desc">If a client doesn't respond within 3 days, a gentle reminder is sent automatically via Vercel Cron Jobs (daily).</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">👥</div>
-        <div class="feature-title">Client Management</div>
-        <div class="feature-desc">Add clients, record visits, edit contact preferences, toggle opt-out status — all from the Clients page.</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <div class="feature-title">Reporting Dashboard</div>
-        <div class="feature-desc">Live stats: response rate, average rating, Google reviews prompted, flagged responses, rating distribution.</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🌐</div>
-        <div class="feature-title">Embeddable Reviews Widget</div>
-        <div class="feature-desc">Drop verified client reviews onto any page — Webflow, WordPress, or plain HTML. Light and dark themes. One script tag.</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">⚙️</div>
-        <div class="feature-title">Settings Panel</div>
-        <div class="feature-desc">Configure routing thresholds, alert recipients, SMS/email templates, integrations, and team info — all in the UI.</div>
-        <span class="feature-tag tag-live">✓ Live in Demo</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🔒</div>
-        <div class="feature-title">Privacy &amp; Compliance</div>
-        <div class="feature-desc">Every feedback link is single-use and tokenized. Clients can opt out with one tap. No data shared with Google without consent.</div>
-        <span class="feature-tag tag-live">✓ Built-in</span>
-      </div>
-
     </div>
   </div>
 
-  <!-- ── Env vars ── -->
+  <!-- ── How Feedback Works ── -->
   <div class="section">
-    <div class="section-tag">Configuration</div>
-    <div class="section-title">Environment Variables</div>
-    <div class="section-sub">Set these in your Vercel project settings under <strong>Settings → Environment Variables</strong>.</div>
-    <table class="env-table">
-      <thead>
-        <tr><th>Variable</th><th>Purpose</th><th>Required?</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>DATABASE_URL</td><td>Supabase / PostgreSQL connection string. Without it, app runs in Demo Mode with in-memory data.</td><td><span class="req-badge req-yes">Production</span></td></tr>
-        <tr><td>TWILIO_SID</td><td>Twilio Account SID for SMS sending</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>TWILIO_TOKEN</td><td>Twilio Auth Token</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>TWILIO_FROM</td><td>Twilio phone number (e.g. <code>+15550001234</code>)</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>SMTP_HOST</td><td>SMTP server hostname for email sending</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>SMTP_PORT</td><td>SMTP port (default: 587)</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>SMTP_USER</td><td>SMTP username / email address</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>SMTP_PASS</td><td>SMTP password or app password</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>SMTP_FROM</td><td>From address shown to client (e.g. <code>feedback@arisecares.com</code>)</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>GOOGLE_REVIEW_URL</td><td>Your Google Business direct review link. Shown to 4–5★ clients.</td><td><span class="req-badge req-no">Optional</span></td></tr>
-        <tr><td>BASE_URL</td><td>Your public URL (e.g. <code>https://arisecares.vercel.app</code>) — used in SMS/email links</td><td><span class="req-badge req-yes">Production</span></td></tr>
-        <tr><td>CRON_SECRET</td><td>Secret token for securing automated cron job endpoints</td><td><span class="req-badge req-yes">Production</span></td></tr>
-      </tbody>
-    </table>
+    <span class="section-anchor" id="how-feedback-works"></span>
+    <div class="section-label">Step 3 — The Client Experience</div>
+    <div class="section-title">What the client sees</div>
+    <div class="section-sub">The feedback form is designed to be as easy as possible — especially for older adults. No app, no login, no lengthy surveys.</div>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">1</div></div>
+        <div class="step-content">
+          <div class="step-title">Client receives a text or email</div>
+          <div class="step-desc">The message is personalised: <em>"Hi Margaret, how was your visit with Maria Rodriguez on June 3rd? We'd love your feedback."</em> — with a link to tap.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">2</div></div>
+        <div class="step-content">
+          <div class="step-title">They tap one link — no login needed</div>
+          <div class="step-desc">The link opens a simple, mobile-friendly page. No passwords, no account creation. The whole form takes under 30 seconds.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">3</div></div>
+        <div class="step-content">
+          <div class="step-title">They tap a star rating (1–5)</div>
+          <div class="step-desc">One tap selects their rating. They can optionally add a comment. That's all they have to do.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">4</div></div>
+        <div class="step-content">
+          <div class="step-title">The system routes their response automatically</div>
+          <div class="step-desc">See the chart below for what happens next based on their rating.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="section-label" style="margin-bottom:14px;">What happens after they rate</div>
+      <div class="routing-diagram">
+        <div class="routing-row">
+          <div class="routing-trigger">⭐⭐⭐⭐⭐ &nbsp;4 or 5 stars</div>
+          <div class="routing-arrow">→</div>
+          <div class="routing-result positive">
+            <div class="routing-result-icon">🌟</div>
+            <div>Client sees a <strong>Google review prompt</strong>. A button takes them directly to your Google Business page to leave a public review. Our team is not alerted.</div>
+          </div>
+        </div>
+        <div class="routing-row">
+          <div class="routing-trigger">⭐⭐⭐ &nbsp;1, 2 or 3 stars</div>
+          <div class="routing-arrow">→</div>
+          <div class="routing-result negative">
+            <div class="routing-result-icon">🔔</div>
+            <div>Client sees a warm message saying the team will be in touch. The response is flagged in the dashboard for <strong>internal follow-up</strong>. Nothing goes to Google.</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- ── Widget embed ── -->
+  <!-- ── Checking Responses ── -->
   <div class="section">
-    <div class="section-tag">Website Integration</div>
-    <div class="section-title">Embedding Reviews on Your Website</div>
-    <div class="section-sub">Add the following two lines anywhere in your page HTML. Works in Webflow custom code, WordPress, or any site builder.</div>
-    <div class="code-box">
-      <span class="cm">&lt;!-- 1. Target container (place where you want the widget) --&gt;</span><br/>
-      &lt;<span class="hl">div</span> id=<span class="hl">"arise-reviews"</span>&gt;&lt;/div&gt;<br/><br/>
-      <span class="cm">&lt;!-- 2. Widget script (paste before &lt;/body&gt;) --&gt;</span><br/>
-      &lt;<span class="hl">script</span><br/>
-      &nbsp;&nbsp;src=<span class="hl">"https://YOUR-DOMAIN.com/widget.js"</span><br/>
-      &nbsp;&nbsp;data-limit=<span class="hl">"6"</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">&lt;!-- number of reviews to show --&gt;</span><br/>
-      &nbsp;&nbsp;data-theme=<span class="hl">"light"</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">&lt;!-- "light" or "dark" --&gt;</span><br/>
-      &nbsp;&nbsp;data-target=<span class="hl">"arise-reviews"</span> <span class="cm">&lt;!-- matches the div id above --&gt;</span><br/>
-      &gt;&lt;/<span class="hl">script</span>&gt;
+    <span class="section-anchor" id="checking-responses"></span>
+    <div class="section-label">Step 4 — Dashboard</div>
+    <div class="section-title">Checking responses on your dashboard</div>
+    <div class="section-sub">Your dashboard is the home base for all feedback. Check it regularly — we recommend once a day, especially first thing in the morning.</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">📨</div>
+        <div class="info-title">Total Requests</div>
+        <div class="info-desc">How many feedback requests have gone out in total, and how many responses have come back.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">⭐</div>
+        <div class="info-title">Average Rating</div>
+        <div class="info-desc">Your overall satisfaction score across all responses. Aim to keep this above 4.0.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📈</div>
+        <div class="info-title">Response Rate</div>
+        <div class="info-desc">The percentage of clients who replied. A healthy response rate is above 40%.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🔔</div>
+        <div class="info-title">Internal Flags</div>
+        <div class="info-desc">The number of low-rating responses waiting for a follow-up from your team. This should be kept at zero — action these promptly.</div>
+      </div>
     </div>
-    <a href="/widget-preview.html" class="btn btn-gold" style="font-size:14px;">See Live Preview &amp; Copy Code →</a>
+
+    <div style="margin-top:24px;">
+      <div class="section-label" style="margin-bottom:14px;">Reading the response table</div>
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-side"><div class="step-num" style="font-size:11px;">TIP</div></div>
+          <div class="step-content">
+            <div class="step-title">Each row is one client's response</div>
+            <div class="step-desc">You'll see the <strong>client name</strong>, <strong>caregiver</strong>, <strong>visit date</strong>, <strong>star rating</strong>, their <strong>comment</strong>, and whether their response went to Google or was flagged internally.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-side"><div class="step-num" style="font-size:11px;">TIP</div></div>
+          <div class="step-content">
+            <div class="step-title">Green "✓ Google" badge = review was prompted</div>
+            <div class="step-desc">This means the client was shown the Google review button after submitting their rating. They may or may not have followed through — check your Google Business profile to see if a review appeared.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-side"><div class="step-num" style="font-size:11px;">TIP</div></div>
+          <div class="step-content">
+            <div class="step-title">Orange "🔔 Follow-up" badge = action needed</div>
+            <div class="step-desc">This client rated 1–3 stars. Their response was kept private. Your team needs to reach out to understand their concern and make things right.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Responding ── -->
+  <div class="section">
+    <span class="section-anchor" id="responding"></span>
+    <div class="section-label">Step 5 — Taking Action</div>
+    <div class="section-title">How to respond to feedback</div>
+    <div class="section-sub">Every response in the table has an action button in the last column. What you do depends on whether the response was positive or a concern.</div>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">A</div></div>
+        <div class="step-content">
+          <div class="step-title">For 4–5★ responses — "Respond on Google"</div>
+          <div class="step-desc">
+            Click the <strong>Respond on Google</strong> button. This opens your Google Business reviews page directly.<br/><br/>
+            Find the client's review and click <strong>Reply</strong> to write a response. A short, warm reply goes a long way — it shows other families that Arise Cares is attentive and appreciative.
+          </div>
+          <div class="step-tip">💡 Example reply: <em>"Thank you so much, Margaret! We're thrilled to hear Maria made such a positive difference. It means everything to our team. 💛"</em></div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">B</div></div>
+        <div class="step-content">
+          <div class="step-title">For 1–3★ responses — "🔔 Follow Up"</div>
+          <div class="step-desc">
+            Click the <strong>Follow Up</strong> button. A note panel opens where you can:<br/><br/>
+            • Write down what steps you're taking<br/>
+            • Assign it to the right team member (Care Manager, Supervisor, etc.)<br/>
+            • Record the outcome after you've spoken with the client
+          </div>
+          <div class="step-tip">💡 Best practice: call the client within 24 hours. Acknowledge their concern, thank them for the feedback, and explain what action is being taken. Most clients respond very positively to a personal call.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Real scenarios ── -->
+  <div class="section">
+    <span class="section-anchor" id="scenarios"></span>
+    <div class="section-label">Examples</div>
+    <div class="section-title">Real-world scenarios</div>
+    <div class="section-sub">Here's how to handle the most common situations you'll come across.</div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge positive">⭐⭐⭐⭐⭐ 5 Stars</span>
+        <span class="scenario-title">A client leaves a glowing review</span>
+      </div>
+      <div class="scenario-body">
+        <strong>Margaret J.</strong> rates her visit 5 stars and comments: <em>"Maria was absolutely wonderful — so kind and attentive with my mother!"</em><br/><br/>
+        The system automatically shows Margaret a Google review prompt. On your dashboard, her row shows a green <strong>✓ Google</strong> badge. Your job is to click <strong>Respond on Google</strong>, find her review on your Google Business page, and leave a warm thank-you reply.
+      </div>
+      <div class="scenario-actions">
+        <span class="action-tag">✅ Check Google Business for her review</span>
+        <span class="action-tag">💬 Reply to thank her</span>
+        <span class="action-tag">🌟 Share with the caregiver</span>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge negative">⭐⭐ 2 Stars</span>
+        <span class="scenario-title">A client had a concern</span>
+      </div>
+      <div class="scenario-body">
+        <strong>Robert C.</strong> rates his visit 2 stars and comments: <em>"The caregiver arrived 45 minutes late and seemed distracted."</em><br/><br/>
+        The system flags this internally — Robert does not see any Google review prompt. His row on the dashboard shows an orange <strong>🔔 Follow-up</strong> badge. Click <strong>Follow Up</strong>, log the concern, and call Robert within 24 hours to apologise and understand what happened.
+      </div>
+      <div class="scenario-actions">
+        <span class="action-tag">📞 Call Robert within 24 hours</span>
+        <span class="action-tag">📝 Log note in the system</span>
+        <span class="action-tag">🔍 Speak with the caregiver</span>
+        <span class="action-tag">👤 Assign to supervisor</span>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge neutral">No response</span>
+        <span class="scenario-title">A client hasn't replied after a few days</span>
+      </div>
+      <div class="scenario-body">
+        <strong>Dorothy W.</strong> received a feedback request three days ago but hasn't responded. The system has already sent her one automatic reminder — you don't need to chase this manually. If she still doesn't respond, that's fine — some clients simply prefer not to share feedback and that's always respected.
+      </div>
+      <div class="scenario-actions">
+        <span class="action-tag">✅ System sends reminder automatically</span>
+        <span class="action-tag">🙏 Respect if they don't reply</span>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge neutral">Opt-out request</span>
+        <span class="scenario-title">A client asks to stop receiving messages</span>
+      </div>
+      <div class="scenario-body">
+        If a client calls or tells you directly they don't want to receive feedback messages, go to <strong>Clients</strong>, click their name, and toggle <strong>Opt-out</strong> to on. They will no longer receive any feedback requests. The change takes effect immediately.
+      </div>
+      <div class="scenario-actions">
+        <span class="action-tag">👥 Go to Clients page</span>
+        <span class="action-tag">✏️ Open client profile</span>
+        <span class="action-tag">🔕 Toggle Opt-out on</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Editing a client ── -->
+  <div class="section">
+    <div class="section-label">Managing Clients</div>
+    <div class="section-title">Updating a client's information</div>
+    <div class="section-sub">If a client changes their phone number, email, or contact preference, it's easy to update in the system.</div>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">1</div></div>
+        <div class="step-content">
+          <div class="step-title">Go to Clients and click the client's name</div>
+          <div class="step-desc">Clicking anywhere on their row opens a slide-out panel with all their details.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">2</div></div>
+        <div class="step-content">
+          <div class="step-title">Edit any field directly</div>
+          <div class="step-desc">Click into any field — name, phone, email, or preferred contact — and type the updated information.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-side"><div class="step-num">3</div></div>
+        <div class="step-content">
+          <div class="step-title">Click "Save Changes"</div>
+          <div class="step-desc">All future feedback requests will use the updated details.</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ── FAQ ── -->
-  <div class="section" style="padding-bottom:0;">
-    <div class="section-tag">FAQ</div>
-    <div class="section-title">Common Questions</div>
-    <div class="section-sub" style="margin-bottom:24px;"></div>
+  <div class="section">
+    <span class="section-anchor" id="faq"></span>
+    <div class="section-label">Common Questions</div>
+    <div class="section-title">Frequently asked questions</div>
+    <div class="section-sub" style="margin-bottom:20px;"></div>
 
-    <div class="faq-item">
-      <div class="faq-q">Does this work without real API keys?</div>
-      <div class="faq-a">Yes — the system runs in Demo Mode automatically when no <code>DATABASE_URL</code> is set. All features are fully testable with in-memory mock data. Click "Load Sample Data" on the dashboard to populate it.</div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What if a client calls to complain before I see the feedback? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">Handle the call as you normally would. Afterwards, go to the dashboard, find their response in the table, click Follow Up, and log what happened during the call. This keeps everything in one place for the rest of your team.</div>
     </div>
-    <div class="faq-item">
-      <div class="faq-q">Can clients opt out of feedback messages?</div>
-      <div class="faq-a">Yes. Every feedback request includes an unsubscribe link. Clicking it marks the client as opted-out and they won't receive future messages. You can also toggle opt-out manually per client in the Clients page.</div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can a client accidentally see their rating or comment on the dashboard? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">No. The dashboard is for your team only. Clients only ever see their own personalised feedback form — they never see the dashboard or any other client's information.</div>
     </div>
-    <div class="faq-item">
-      <div class="faq-q">What happens to negative reviews — do they go to Google?</div>
-      <div class="faq-a">Never. Ratings of 1–3★ are routed internally only. The client sees a warm message saying the team will follow up. Only 4–5★ clients are prompted to leave a Google review.</div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What if a client submits feedback twice? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">Each feedback link is single-use. If a client tries to open their link a second time, they'll see a message letting them know their response was already received. No duplicate entries.</div>
     </div>
-    <div class="faq-item">
-      <div class="faq-q">How are feedback requests triggered?</div>
-      <div class="faq-a">When a visit is recorded via the Clients page (or via API), a feedback request is created and sent automatically. Cron jobs run daily to process pending requests and send follow-up reminders.</div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Do I need to log every visit, or only certain ones? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">Log every completed care visit. The more feedback you collect, the more useful your reporting becomes — and the better picture you have of each caregiver's performance and each client's satisfaction.</div>
     </div>
-    <div class="faq-item">
-      <div class="faq-q">Are client names shown publicly in the widget?</div>
-      <div class="faq-a">No — the widget shows only the first name and last initial (e.g. "Margaret J."), never the full name. Comments are shown verbatim only if they were submitted.</div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">A client says they never received the text message. What do I do? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">First, check that their phone number is saved correctly in their client profile. If it is, they may have a carrier filter blocking automated texts — try switching their preferred contact to Email and logging a new visit. If neither works, let your system administrator know.</div>
     </div>
-    <div class="faq-item">
-      <div class="faq-q">Can I customize the message templates?</div>
-      <div class="faq-a">Yes — go to Settings → Messaging to edit the SMS and email templates. Templates support <code>{client_name}</code>, <code>{caregiver_name}</code>, and <code>{link}</code> variables.</div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How do I know if a client actually left a Google review? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">The dashboard only tells you that a client was <em>shown</em> the Google review prompt — it can't confirm whether they actually posted a review. To check, log into your Google Business Profile and look at the Reviews section. New reviews from clients will appear there.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can I see past feedback for a specific caregiver? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">Yes — on the dashboard's response table, each row shows the caregiver's name. You can see all feedback mentioning a specific caregiver by scrolling through the table. A more detailed filter view is coming in a future update.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What should I do if I see the same issue mentioned by multiple clients? <span class="faq-chevron">▼</span></div>
+      <div class="faq-a">That's a strong signal worth acting on. Log follow-up notes for each response, escalate to your supervisor, and consider addressing the pattern in your next team meeting. The Rating Distribution chart on the dashboard can help you spot trends over time.</div>
     </div>
   </div>
 
 </div>
 
 <!-- CTA -->
-<div class="cta-section">
-  <div class="cta-title">Ready to go live?</div>
-  <div class="cta-sub">Add your Supabase, Twilio, and Google Review URL to Vercel — the system handles everything else automatically.</div>
-  <div class="hero-btns">
-    <a href="/dashboard.html" class="btn btn-gold">Open Dashboard →</a>
-    <a href="/widget-preview.html" class="btn btn-outline-white">Preview Widget</a>
-  </div>
+<div class="cta-bar">
+  <div class="cta-title">Ready to get started?</div>
+  <div class="cta-sub">Head to the dashboard, add your first client, and log a visit to see the full workflow in action.</div>
+  <a href="/dashboard.html" class="hero-btn">Open Dashboard →</a>
 </div>
 
 </body>
