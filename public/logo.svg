@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 72" fill="none">
+  <!-- Gold location pin icon -->
+  <g transform="translate(4, 4)">
+    <!-- Pin body -->
+    <path d="M32 0C19.3 0 9 10.3 9 23c0 17.5 23 41 23 41S55 40.5 55 23C55 10.3 44.7 0 32 0z" fill="#F5A623"/>
+    <!-- White heart inside pin -->
+    <path d="M32 14c-3.5 0-6.3 2.8-6.3 6.3 0 1.4 0.5 2.7 1.2 3.7L32 31l5.1-7c0.8-1 1.2-2.3 1.2-3.7C38.3 16.8 35.5 14 32 14z" fill="white"/>
+  </g>
+  <!-- Navy wordmark -->
+  <text x="72" y="34" font-family="'Trebuchet MS', Arial, sans-serif" font-size="26" font-weight="700" fill="#2D3250" letter-spacing="1.5">arise cares</text>
+  <!-- Gold tagline -->
+  <text x="73" y="56" font-family="'Trebuchet MS', Arial, sans-serif" font-size="13" fill="#F5A623" letter-spacing="2">home care &amp; aging services</text>
+</svg>

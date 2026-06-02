@@ -53,9 +53,7 @@
       padding: 24px 20px 20px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .logo-wrap { display: flex; align-items: center; gap: 8px; }
-    .logo { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: 1px; }
-    .logo-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; letter-spacing: 0.5px; }
+    .sidebar-logo { height: 44px; width: auto; display: block; filter: brightness(0) invert(1); }
     .sidebar-nav { padding: 16px 12px; flex: 1; }
     .nav-item {
       display: flex;
@@ -314,14 +312,7 @@
 
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <div class="logo-wrap">
-        <svg width="22" height="27" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 24 16 24S32 26 32 16C32 7.163 24.837 0 16 0z" fill="#F5A623"/>
-          <path d="M16 10l1.545 4.753H22.5l-4.045 2.94 1.545 4.753L16 19.506l-3.999 2.94 1.545-4.753L9.5 14.753h4.955z" fill="white"/>
-        </svg>
-        <span class="logo">arise cares</span>
-      </div>
-      <div class="logo-sub">home care &amp; aging services</div>
+      <img src="/logo.svg" alt="Arise Cares" class="sidebar-logo" />
     </div>
     <nav class="sidebar-nav">
       <a class="nav-item active" href="#">

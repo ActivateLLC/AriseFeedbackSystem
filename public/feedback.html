@@ -58,24 +58,12 @@
       padding: 28px 32px 24px;
       text-align: center;
     }
-    .header-logo-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-    .header-brand {
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 1.5px;
-    }
-    .header-subtitle {
-      font-size: 12px;
-      color: rgba(255,255,255,0.6);
-      letter-spacing: 0.8px;
-      text-transform: lowercase;
+    .header-logo {
+      height: 52px;
+      width: auto;
+      display: block;
+      margin: 0 auto;
+      filter: brightness(0) invert(1);
     }
 
     /* Steps */
@@ -302,14 +290,7 @@
 
 <div class="card">
   <div class="header">
-    <div class="header-logo-wrap">
-      <svg width="28" height="35" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 24 16 24S32 26 32 16C32 7.163 24.837 0 16 0z" fill="#F5A623"/>
-        <path d="M16 10l1.545 4.753H22.5l-4.045 2.94 1.545 4.753L16 19.506l-3.999 2.94 1.545-4.753L9.5 14.753h4.955z" fill="white"/>
-      </svg>
-      <span class="header-brand">arise cares</span>
-    </div>
-    <div class="header-subtitle">home care &amp; aging services</div>
+    <img src="/logo.svg" alt="Arise Cares" class="header-logo" />
   </div>
 
   <!-- Loading -->
