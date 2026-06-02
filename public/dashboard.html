@@ -472,14 +472,14 @@
       <a class="nav-item active" onclick="navigate('dashboard', this)">
         <span class="nav-icon-wrap">📊</span> Dashboard
       </a>
-      <a class="nav-item" onclick="navigate('clients', this)" data-intro="The <strong>Clients page</strong> lets you add new clients, record visits, edit contact preferences, and toggle opt-out status. Recording a visit automatically triggers a feedback request." data-step="3" data-title="Clients">
+      <a id="nav-clients" class="nav-item" onclick="navigate('clients', this)">
         <span class="nav-icon-wrap">👥</span> Clients
       </a>
       <div class="nav-section-label" style="margin-top:8px;">System</div>
-      <a class="nav-item" onclick="navigate('settings', this)">
+      <a id="nav-settings" class="nav-item" onclick="navigate('settings', this)">
         <span class="nav-icon-wrap">⚙️</span> Settings
       </a>
-      <a class="nav-item" href="/widget-preview.html" target="_blank">
+      <a id="nav-widget" class="nav-item" href="/widget-preview.html" target="_blank">
         <span class="nav-icon-wrap">🌐</span> Review Widget
       </a>
       <a class="nav-item" href="/guide.html" target="_blank">
@@ -522,7 +522,7 @@
 
       <!-- ══ Dashboard Page ══ -->
       <div class="page active" id="page-dashboard">
-        <div class="stats-grid" data-intro="These <strong>four summary cards</strong> give you a live overview — total feedback requests sent, average star rating, response rate, and how many clients were prompted to leave a Google review." data-step="2" data-title="📊 Summary Stats">
+        <div id="stats-grid-anchor" class="stats-grid" data-intro="These <strong>four summary cards</strong> give you a live overview — total feedback requests sent, average star rating, response rate, and how many clients were prompted to leave a Google review." data-step="2" data-title="📊 Summary Stats">
           <div class="stat-card">
             <div class="stat-icon blue">📨</div>
             <div class="stat-label">Total Requests</div>
@@ -544,7 +544,7 @@
             <div class="stat-sub">of all requests</div>
             <div class="stat-accent"></div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card" id="stat-card-google">
             <div class="stat-icon green">🌟</div>
             <div class="stat-label">Google Prompted</div>
             <div class="stat-value" id="stat-google">—</div>
@@ -563,7 +563,7 @@
                 <div class="spinner-wrap"><div class="spinner"></div></div>
               </div>
             </div>
-            <div class="panel">
+            <div class="panel" id="panel-alerts">
               <div class="panel-header"><span class="panel-title">Internal Alerts</span></div>
               <div class="panel-body">
                 <div class="flag-count-box">
@@ -1351,76 +1351,202 @@ loadDashboard();
 </button>
 
 <script>
+// Tour step definitions — each maps to one of the 7 core features
+// Steps that need a specific page active are flagged with _page
+var TOUR_STEPS = [
+  // ── Welcome ──────────────────────────────────────────────────────────────
+  {
+    title: '👋 Welcome to Arise Cares Feedback',
+    intro:
+      'This short tour walks you through all <strong>7 core features</strong> of the system — ' +
+      'from collecting client feedback to displaying reviews on your website. ' +
+      'It takes under 2 minutes. Press <em>Next</em> to begin.',
+  },
+
+  // ── Feature 1: Client Feedback Collection ────────────────────────────────
+  {
+    _page: 'clients',
+    _el: 'nav-clients',
+    title: 'Feature 1 of 7 — Client Feedback Collection',
+    intro:
+      '<strong>After every visit, a feedback request goes out automatically.</strong><br/><br/>' +
+      'The <em>Clients</em> page is where you manage people and log visits. ' +
+      'Click <strong>+ Visit</strong> next to any client and the system immediately schedules a feedback request — ' +
+      'no manual follow-up needed.<br/><br/>' +
+      '📱 <strong>SMS</strong> is sent first (higher response rates).<br/>' +
+      '📧 <strong>Email</strong> is the fallback if SMS isn\'t available.<br/><br/>' +
+      'The form itself is a single rating tap + optional comment — completable in under 30 seconds on any phone.',
+    position: 'right',
+  },
+
+  // ── Feature 2: Smart Routing ──────────────────────────────────────────────
+  {
+    _page: 'dashboard',
+    _el: 'panel-alerts',
+    title: 'Feature 2 of 7 — Smart Routing Based on Feedback',
+    intro:
+      '<strong>Every response is automatically routed based on the star rating.</strong><br/><br/>' +
+      '🌟 <strong>4–5 stars</strong> → Client is shown a "Leave a Google Review" button with a direct link. ' +
+      'Positive sentiment stays public.<br/><br/>' +
+      '⚠️ <strong>1–3 stars</strong> → Response is routed <em>internally only</em>. ' +
+      'The client sees a warm message, your team gets an alert, and nothing goes to Google.<br/><br/>' +
+      'This panel shows how many low-rating responses are currently flagged and waiting for team follow-up.',
+    position: 'top',
+  },
+
+  // ── Feature 3: Google Review Integration ─────────────────────────────────
+  {
+    _page: 'dashboard',
+    _el: 'stat-card-google',
+    title: 'Feature 3 of 7 — Google Review Integration',
+    intro:
+      '<strong>This card tracks how many clients were prompted to leave a Google review.</strong><br/><br/>' +
+      'When a client rates 4–5★, they immediately see a button that opens <em>directly</em> to your Google review ' +
+      'submission screen — no searching required, works seamlessly on mobile.<br/><br/>' +
+      'The messaging is warm and natural:<br/>' +
+      '<em>"If you\'ve had a great experience, we\'d truly appreciate a quick Google review — it helps other families find us."</em><br/><br/>' +
+      '⚙️ Set your <strong>Google Business review URL</strong> in Settings → Team to activate this.',
+    position: 'bottom',
+  },
+
+  // ── Feature 4: Automation ─────────────────────────────────────────────────
+  {
+    _page: 'settings',
+    _el: 'nav-settings',
+    title: 'Feature 4 of 7 — Full Automation',
+    intro:
+      '<strong>Once a visit is logged, everything runs without any manual steps.</strong><br/><br/>' +
+      '🤖 <strong>Instant trigger</strong> — feedback request sent immediately after visit is recorded.<br/>' +
+      '⏰ <strong>Scheduled follow-up</strong> — if the client hasn\'t responded in 3 days, a gentle reminder goes out automatically.<br/>' +
+      '🔁 <strong>Daily cron jobs</strong> handle all processing in the background (powered by Vercel Cron).<br/><br/>' +
+      'In <em>Settings → Messaging</em> you can customize the SMS/email templates, send delay, and follow-up timing. ' +
+      'In <em>Settings → Notifications</em> you control who gets alerted for low ratings.',
+    position: 'right',
+  },
+
+  // ── Feature 5: Website Review Widget ─────────────────────────────────────
+  {
+    _page: 'dashboard',
+    _el: 'nav-widget',
+    title: 'Feature 5 of 7 — Website Reviews Widget',
+    intro:
+      '<strong>Display verified client testimonials directly on your website.</strong><br/><br/>' +
+      'Click <em>Review Widget</em> in the sidebar to open a live preview and copy your embed code. ' +
+      'It\'s two lines of HTML — paste it into any Webflow page, WordPress site, or custom page.<br/><br/>' +
+      '✅ Only shows 4–5★ reviews with real comments<br/>' +
+      '🎨 Light and dark themes to match your site<br/>' +
+      '🔒 Client names are anonymised (e.g. "Margaret J.")<br/>' +
+      '⭐ Displays aggregate score and "Verified Client" badge<br/><br/>' +
+      'The widget auto-updates as new positive reviews come in — no maintenance required.',
+    position: 'right',
+  },
+
+  // ── Feature 6: Reporting ──────────────────────────────────────────────────
+  {
+    _page: 'dashboard',
+    _el: 'stats-grid-anchor',
+    title: 'Feature 6 of 7 — Reporting & Visibility',
+    intro:
+      '<strong>Your live dashboard gives you everything you need to monitor effectiveness.</strong><br/><br/>' +
+      '📨 <strong>Response rate</strong> — what % of clients submitted feedback<br/>' +
+      '⭐ <strong>Average rating</strong> — overall satisfaction score<br/>' +
+      '🌟 <strong>Google reviews prompted</strong> — volume of clients sent to Google<br/>' +
+      '🔔 <strong>Internal flags</strong> — responses needing service recovery<br/>' +
+      '📊 <strong>Rating distribution</strong> — breakdown across 1–5 stars<br/>' +
+      '📋 <strong>Full response log</strong> — every client, rating, comment, and routing outcome<br/><br/>' +
+      'No complex reports, no dashboards to configure — just the numbers that matter.',
+    position: 'bottom',
+  },
+
+  // ── Feature 7: Simplicity & UX ───────────────────────────────────────────
+  {
+    _page: 'dashboard',
+    _el: 'table-body',
+    title: 'Feature 7 of 7 — Simplicity & User Experience',
+    intro:
+      '<strong>The entire experience is designed for older adults and family members.</strong><br/><br/>' +
+      '📱 <strong>Mobile-first</strong> — the feedback form works perfectly on any phone screen<br/>' +
+      '⚡ <strong>Under 30 seconds</strong> — one tap to rate, optional comment, done<br/>' +
+      '🔑 <strong>No login required</strong> — clients tap a link in a text or email, rate, and they\'re done<br/>' +
+      '🎯 <strong>No friction</strong> — no app to download, no account to create<br/>' +
+      '💬 <strong>Natural language</strong> — messages feel personal, not automated<br/><br/>' +
+      'Everything is built around making it as easy as possible for clients to respond — because higher response rates mean better insights for you.',
+  },
+
+  // ── Done ──────────────────────────────────────────────────────────────────
+  {
+    title: '🚀 You\'re all set!',
+    intro:
+      'The system is fully functional in Demo Mode right now. ' +
+      'To go live, add your credentials in Vercel:<br/><br/>' +
+      '🗄️ <code>DATABASE_URL</code> — Supabase<br/>' +
+      '📱 <code>TWILIO_SID / TOKEN / FROM</code> — SMS<br/>' +
+      '⭐ <code>GOOGLE_REVIEW_URL</code> — Google Reviews<br/>' +
+      '🔗 <code>BASE_URL</code> — your public domain<br/><br/>' +
+      'Open the <strong>Guide</strong> in the sidebar for step-by-step setup instructions. ' +
+      'Click <em>Load Sample Data</em> on the dashboard to explore with realistic mock data.',
+  },
+];
+
 function startTour() {
-  introJs().setOptions({
-    steps: [
-      {
-        title: '👋 Welcome to Arise Cares Feedback',
-        intro: 'This is your <strong>automated client feedback system</strong>. Take a 60-second tour to learn how everything works — or skip and dive right in.',
-      },
-      {
-        element: document.querySelector('.sidebar'),
-        title: '🗂️ Navigation',
-        intro: 'Use the sidebar to switch between <strong>Dashboard</strong>, <strong>Clients</strong>, <strong>Settings</strong>, the <strong>Review Widget</strong>, and the full <strong>Guide</strong>.',
-        position: 'right',
-      },
-      {
-        element: document.querySelector('.stats-grid'),
-        title: '📊 Summary Stats',
-        intro: 'Four live metrics: <strong>total requests sent</strong>, <strong>average star rating</strong>, <strong>response rate</strong>, and <strong>clients prompted to leave a Google review</strong>.',
-        position: 'bottom',
-      },
-      {
-        element: document.getElementById('demo-banner'),
-        title: '🧪 Demo Mode',
-        intro: 'No API keys? No problem. The system runs fully in-memory. Click <em>Load Sample Data</em> to see the dashboard populated with realistic example data.',
-        position: 'bottom',
-      },
-      {
-        element: document.querySelector('[data-step="5"]'),
-        title: '⭐ Rating Distribution',
-        intro: 'See how ratings break down across 1–5 stars. The bars update live as responses come in. High 4–5★ counts mean your Google review pipeline is firing.',
-        position: 'right',
-      },
-      {
-        element: document.querySelector('[data-step="6"]'),
-        title: '📋 Recent Responses',
-        intro: 'Every submitted response appears here — with client, caregiver, rating, comment, and routing outcome: <strong>Google Review</strong> or <strong>Internal Follow-up</strong>.',
-        position: 'left',
-      },
-      {
-        title: '👥 Clients Page',
-        intro: 'Head to <strong>Clients</strong> in the sidebar to add clients, record visits, and manage contact preferences. Recording a visit <em>automatically triggers a feedback request</em>.',
-      },
-      {
-        title: '⚙️ Settings',
-        intro: 'In <strong>Settings</strong> you can configure routing thresholds, notification recipients, SMS/email templates, and connect real integrations (Twilio, SMTP, Google Reviews, Supabase).',
-      },
-      {
-        title: '🌐 Reviews Widget',
-        intro: 'From the sidebar, open <strong>Review Widget</strong> to get an embeddable code snippet. Paste it into your Webflow or website to display verified client testimonials automatically.',
-      },
-      {
-        title: '🚀 Ready to Go Live?',
-        intro: 'Add your environment variables in Vercel (<code>DATABASE_URL</code>, <code>TWILIO_SID</code>, <code>GOOGLE_REVIEW_URL</code>, etc.) and the system activates fully — no code changes needed. Visit the <strong>Guide</strong> for step-by-step instructions.',
-      },
-    ],
+  // Ensure we start on the dashboard page
+  navigate('dashboard', document.querySelector('.nav-item.active'));
+
+  var intro = introJs();
+
+  // Build steps dynamically so element refs are live at start time
+  function buildSteps() {
+    return TOUR_STEPS.map(function (s) {
+      var step = { title: s.title, intro: s.intro };
+      if (s._el) {
+        var el = document.getElementById(s._el);
+        if (el) step.element = el;
+      }
+      if (s.position) step.position = s.position;
+      return step;
+    });
+  }
+
+  intro.setOptions({
+    steps: buildSteps(),
     showProgress: true,
-    showBullets: false,
-    exitOnOverlayClick: true,
+    showBullets: true,
+    exitOnOverlayClick: false,
     scrollToElement: true,
     nextLabel: 'Next →',
     prevLabel: '← Back',
-    doneLabel: 'Got it! ✓',
+    doneLabel: '✓ Done',
     tooltipClass: '',
     highlightClass: '',
-  }).start();
+  });
+
+  // Switch page before each step if needed
+  intro.onbeforechange(function (el) {
+    var stepIndex = intro._currentStep;
+    if (stepIndex >= TOUR_STEPS.length) return;
+    var stepDef = TOUR_STEPS[stepIndex];
+    if (!stepDef._page) return;
+
+    var page = stepDef._page;
+    var currentActive = document.querySelector('.page.active');
+    if (currentActive && currentActive.id === 'page-' + page) return;
+
+    // Find the matching nav item and switch page
+    var navMap = {
+      dashboard: document.querySelector('.nav-item:first-of-type'),
+      clients: document.getElementById('nav-clients'),
+      settings: document.getElementById('nav-settings'),
+    };
+    navigate(page, navMap[page]);
+  });
+
+  intro.start();
 }
 
 // Auto-start tour for first-time visitors
-if (!localStorage.getItem('ac_tour_done')) {
-  setTimeout(startTour, 1200);
-  localStorage.setItem('ac_tour_done', '1');
+if (!localStorage.getItem('ac_tour_done_v2')) {
+  setTimeout(startTour, 1400);
+  localStorage.setItem('ac_tour_done_v2', '1');
 }
 </script>
 </body>
