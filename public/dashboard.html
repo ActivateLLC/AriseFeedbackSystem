@@ -3,513 +3,1311 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feedback Dashboard — Arise Cares</title>
+  <title>Admin Dashboard — Arise Cares</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --navy:      #2D3250;
       --navy-dark: #1E2340;
-      --navy-bg:   #ECEDF3;
-      --teal:      #0A8F82;
-      --teal-bg:   #F0FDFA;
+      --navy-mid:  #3D4570;
       --gold:      #F5A623;
       --gold-dark: #E09510;
       --gold-bg:   #FFF8EC;
+      --teal:      #0A8F82;
+      --teal-bg:   #F0FDFA;
       --green:     #10B981;
       --green-bg:  #ECFDF5;
       --red:       #EF4444;
       --red-bg:    #FEF2F2;
-      --orange:    #F97316;
-      --sidebar:   #2D3250;
-      --text:      #2D3250;
+      --text:      #1A1D2E;
       --muted:     #64748B;
-      --border:    #E2E8F0;
-      --bg:        #F8F7F4;
+      --border:    #E8ECF1;
+      --bg:        #F4F5F9;
       --card:      #FFFFFF;
+      --sidebar-w: 256px;
     }
-    html, body {
-      height: 100%;
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-    }
+    html, body { height: 100%; font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
 
+    /* ── Layout ── */
     .layout { display: flex; min-height: 100vh; }
+    .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
-    /* Sidebar */
+    /* ── Sidebar ── */
     .sidebar {
-      width: 240px;
-      background: var(--sidebar);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 100;
+      width: var(--sidebar-w);
+      background: var(--navy);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0;
+      z-index: 200;
     }
     .sidebar-brand {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 26px 22px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
-    .sidebar-logo { height: 44px; width: auto; display: block; color: #fff; }
-    .sidebar-nav { padding: 16px 12px; flex: 1; }
+    .sidebar-logo { height: 40px; width: auto; display: block; }
+    .sidebar-nav { padding: 14px 12px; flex: 1; overflow-y: auto; }
+    .nav-section-label {
+      font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3);
+      letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 12px 12px 6px;
+    }
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.5);
-      cursor: pointer;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 14px; border-radius: 10px;
+      font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      cursor: pointer; text-decoration: none;
       transition: background 0.15s, color 0.15s;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
-    .nav-item.active { background: rgba(245,166,35,0.25); color: #fff; }
-    .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.9); }
+    .nav-item.active { background: rgba(245,166,35,0.2); color: #fff; font-weight: 600; }
+    .nav-item.active .nav-icon-wrap { background: var(--gold); }
+    .nav-icon-wrap {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+      transition: background 0.15s;
+    }
     .sidebar-footer {
-      padding: 16px 20px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 12px;
-      color: rgba(255,255,255,0.25);
+      padding: 16px 22px;
+      border-top: 1px solid rgba(255,255,255,0.07);
     }
+    .sidebar-footer-user {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--gold); color: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .footer-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.85); }
+    .footer-role { font-size: 11px; color: rgba(255,255,255,0.35); }
 
-    /* Main */
-    .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
-
-    /* Top bar */
+    /* ── Topbar ── */
     .topbar {
       background: var(--card);
       border-bottom: 1px solid var(--border);
-      padding: 16px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      padding: 0 32px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
     }
-    .topbar-title { font-size: 18px; font-weight: 700; }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .last-updated { font-size: 13px; color: var(--muted); }
-    .refresh-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      background: var(--card);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      font-family: inherit;
-      transition: border-color 0.15s, color 0.15s;
+    .topbar-left { display: flex; align-items: center; gap: 8px; }
+    .page-title { font-size: 17px; font-weight: 700; }
+    .page-badge {
+      font-size: 11px; font-weight: 700; background: var(--gold-bg);
+      color: var(--gold-dark); padding: 3px 8px; border-radius: 20px;
     }
-    .refresh-btn:hover { border-color: #F5A623; color: #F5A623; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .topbar-time { font-size: 13px; color: var(--muted); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 16px; border-radius: 9px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all 0.15s; border: none;
+    }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-primary { background: var(--navy); color: #fff; }
+    .btn-primary:hover { background: var(--navy-mid); }
+    .btn-gold { background: var(--gold); color: var(--navy); }
+    .btn-gold:hover { background: var(--gold-dark); }
+    .btn-danger { background: var(--red-bg); color: var(--red); border: 1.5px solid #FECACA; }
+    .btn-danger:hover { background: #FECACA; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
 
-    /* Content */
+    /* ── Content ── */
     .content { padding: 28px 32px; flex: 1; }
 
-    /* Demo banner */
-    .demo-banner {
-      background: linear-gradient(135deg, #FFF8EC, #F8F7F4);
-      border: 1.5px solid #F5A623;
-      border-radius: 12px;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .demo-banner-text { font-size: 14px; color: #2D3250; font-weight: 500; }
-    .demo-banner-text span { color: var(--muted); font-weight: 400; }
-    .seed-btn {
-      padding: 8px 18px;
-      background: #F5A623;
-      color: #2D3250;
-      border: none;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity 0.15s;
-    }
-    .seed-btn:hover { opacity: 0.88; }
-    .seed-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    /* ── Pages (SPA) ── */
+    .page { display: none; }
+    .page.active { display: block; }
 
-    /* Stat cards */
+    /* ── Demo banner ── */
+    .demo-banner {
+      background: linear-gradient(135deg, var(--gold-bg), #FDECC8);
+      border: 1.5px solid var(--gold);
+      border-radius: 12px; padding: 13px 18px;
+      display: none; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; gap: 12px; flex-wrap: wrap;
+    }
+    .demo-banner.visible { display: flex; }
+    .demo-banner-text { font-size: 14px; color: var(--navy); font-weight: 500; }
+    .demo-banner-text small { color: var(--muted); font-weight: 400; }
+
+    /* ── Stats grid ── */
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 16px;
       margin-bottom: 24px;
     }
     .stat-card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 20px;
-      border-left: 4px solid transparent;
-      box-shadow: 0 1px 4px rgba(15,23,42,0.06);
-      transition: transform 0.15s;
+      background: var(--card); border-radius: 16px;
+      padding: 22px 20px; position: relative; overflow: hidden;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(15,23,42,0.1); }
-    .stat-card.blue  { border-color: var(--navy);  }
-    .stat-card.gold  { border-color: var(--gold);  }
-    .stat-card.teal  { border-color: var(--teal);  }
-    .stat-card.green { border-color: var(--green); }
-    .stat-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-      margin-bottom: 10px;
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.09); }
+    .stat-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 14px;
     }
-    .stat-value { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
-    .stat-card.blue  .stat-value { color: var(--navy);  }
-    .stat-card.gold  .stat-value { color: var(--gold);  }
-    .stat-card.teal  .stat-value { color: var(--teal);  }
-    .stat-card.green .stat-value { color: var(--green); }
+    .stat-icon.blue  { background: #EEF0FF; }
+    .stat-icon.gold  { background: var(--gold-bg); }
+    .stat-icon.teal  { background: var(--teal-bg); }
+    .stat-icon.green { background: var(--green-bg); }
+    .stat-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+    .stat-value { font-size: 34px; font-weight: 800; line-height: 1; margin-bottom: 6px; color: var(--text); }
     .stat-sub { font-size: 13px; color: var(--muted); }
-
-    /* Bottom grid */
-    .bottom-grid {
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 20px;
-      align-items: start;
+    .stat-accent {
+      position: absolute; bottom: 0; right: 0;
+      width: 60px; height: 60px; border-radius: 50%;
+      transform: translate(20px, 20px); opacity: 0.07;
     }
+    .stat-card:nth-child(1) .stat-accent { background: var(--navy); }
+    .stat-card:nth-child(2) .stat-accent { background: var(--gold); }
+    .stat-card:nth-child(3) .stat-accent { background: var(--teal); }
+    .stat-card:nth-child(4) .stat-accent { background: var(--green); }
 
+    /* ── Grid ── */
+    .grid-2 { display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start; }
+
+    /* ── Panel ── */
     .panel {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+      background: var(--card); border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.06);
       overflow: hidden;
     }
     .panel-header {
-      padding: 16px 20px;
+      padding: 18px 22px 14px;
+      display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      font-weight: 700;
     }
-    .panel-body { padding: 16px 20px; }
+    .panel-title { font-size: 14px; font-weight: 700; }
+    .panel-body { padding: 18px 22px; }
 
-    /* Rating distribution */
-    .dist-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
+    /* ── Dist bars ── */
+    .dist-row { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
     .dist-row:last-child { margin-bottom: 0; }
-    .dist-label { font-size: 13px; font-weight: 600; width: 24px; color: var(--muted); flex-shrink: 0; }
-    .dist-bar-bg { flex: 1; background: #F1F5F9; border-radius: 6px; height: 10px; overflow: hidden; }
-    .dist-bar { height: 100%; border-radius: 6px; background: var(--gold); transition: width 0.6s ease; }
-    .dist-count { font-size: 13px; color: var(--muted); width: 20px; text-align: right; flex-shrink: 0; }
+    .dist-label { font-size: 12px; font-weight: 700; width: 26px; color: var(--muted); flex-shrink: 0; }
+    .dist-bar-bg { flex: 1; background: #F1F5F9; border-radius: 99px; height: 9px; overflow: hidden; }
+    .dist-bar { height: 100%; border-radius: 99px; background: var(--gold); transition: width 0.7s cubic-bezier(.4,0,.2,1); }
+    .dist-count { font-size: 12px; color: var(--muted); width: 20px; text-align: right; flex-shrink: 0; }
 
-    /* Table */
-    .table-wrapper { overflow-x: auto; }
+    /* ── Internal flagged box ── */
+    .flag-count-box {
+      margin-top: 16px; padding: 12px 14px;
+      background: #FFF7ED; border-radius: 10px; border: 1px solid #FED7AA;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .flag-count-box .flag-num { font-size: 22px; font-weight: 800; color: #C2410C; }
+    .flag-count-box .flag-label { font-size: 13px; color: #9A3412; font-weight: 500; }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     thead th {
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
+      text-align: left; padding: 11px 16px;
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+      background: #FAFBFC;
     }
-    tbody tr { border-bottom: 1px solid #F8FAFC; transition: background 0.1s; }
+    tbody tr { border-bottom: 1px solid #F4F5F9; transition: background 0.1s; }
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: #FAFBFF; }
+    tbody tr:hover { background: #F8F9FF; }
     td { padding: 13px 16px; vertical-align: middle; }
-    .td-name { font-weight: 600; white-space: nowrap; }
-    .td-caregiver { color: var(--muted); white-space: nowrap; }
-    .td-date { color: var(--muted); white-space: nowrap; font-size: 13px; }
-    .td-comment {
-      color: var(--muted);
-      max-width: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 13px;
+    .td-primary { font-weight: 600; }
+    .td-muted { color: var(--muted); font-size: 13px; }
+    .td-comment { color: var(--muted); max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 99px;
+      font-size: 12px; font-weight: 600; white-space: nowrap;
     }
-    .star-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .star-badge.high { background: var(--gold-bg); color: #92400E; }
-    .star-badge.low  { background: #F1F5F9; color: var(--muted); }
-    .route-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .route-badge.google   { background: var(--green-bg); color: #065F46; }
-    .route-badge.internal { background: #FFF7ED; color: #9A3412; }
+    .badge-gold    { background: var(--gold-bg);  color: #92400E; }
+    .badge-muted   { background: #F1F5F9;          color: var(--muted); }
+    .badge-green   { background: var(--green-bg);  color: #065F46; }
+    .badge-orange  { background: #FFF7ED;           color: #9A3412; }
+    .badge-navy    { background: #EEF0FF;           color: var(--navy); }
+    .badge-red     { background: var(--red-bg);    color: var(--red); }
+    .badge-teal    { background: var(--teal-bg);   color: #065F46; }
 
-    /* Empty / loading states */
-    .empty-state {
-      text-align: center;
-      padding: 48px 24px;
-      color: var(--muted);
-    }
-    .empty-icon { font-size: 44px; margin-bottom: 12px; }
+    /* ── Empty / loading ── */
+    .empty-state { text-align: center; padding: 52px 24px; color: var(--muted); }
+    .empty-icon { font-size: 48px; margin-bottom: 14px; }
     .empty-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-    .empty-body { font-size: 14px; }
-    .loading-center {
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px;
-    }
-    .spinner {
-      width: 24px; height: 24px;
-      border: 2.5px solid var(--border);
-      border-top-color: var(--navy);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
+    .empty-body { font-size: 14px; line-height: 1.6; }
+    .spinner-wrap { display: flex; align-items: center; justify-content: center; padding: 40px; }
+    .spinner { width: 26px; height: 26px; border: 2.5px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Responsive */
+    /* ── Clients page ── */
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+    .page-heading { font-size: 20px; font-weight: 800; }
+    .page-sub { font-size: 14px; color: var(--muted); margin-top: 3px; }
+    .search-bar {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+    }
+    .search-input {
+      flex: 1; padding: 10px 14px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 14px; font-family: inherit;
+      color: var(--text); background: var(--card); outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--navy); }
+    .search-input::placeholder { color: #94A3B8; }
+
+    /* Client detail drawer */
+    .drawer-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35); z-index: 500;
+      backdrop-filter: blur(2px);
+    }
+    .drawer-overlay.open { display: block; }
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 420px; background: var(--card); z-index: 600;
+      box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+      display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .drawer-title { font-size: 16px; font-weight: 700; }
+    .drawer-close {
+      width: 32px; height: 32px; border-radius: 8px; border: none;
+      background: #F1F5F9; cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: background 0.15s;
+    }
+    .drawer-close:hover { background: #E2E8F0; color: var(--text); }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    .drawer-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 10px;
+    }
+    .field-group { margin-bottom: 18px; }
+    .field-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+    .field-value { font-size: 15px; color: var(--text); font-weight: 500; }
+    .field-muted { font-size: 14px; color: var(--muted); }
+    .field-input {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: 9px; font-size: 14px; font-family: inherit;
+      color: var(--text); background: #FAFBFC; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .field-input:focus { border-color: var(--navy); background: #fff; }
+    .field-select {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: 9px; font-size: 14px; font-family: inherit;
+      color: var(--text); background: #FAFBFC; outline: none;
+      cursor: pointer;
+    }
+    .field-select:focus { border-color: var(--navy); }
+    .drawer-section-title { font-size: 13px; font-weight: 700; color: var(--text); margin: 22px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+    /* Add client modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 700;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--card); border-radius: 18px;
+      width: 100%; max-width: 480px; margin: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      animation: modalIn 0.2s ease;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: none; } }
+    .modal-head {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-size: 17px; font-weight: 700; }
+    .modal-body { padding: 22px 24px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+    /* Record visit modal */
+    .notice-box {
+      background: var(--teal-bg); border: 1px solid #99F6E4;
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 13px; color: #065F46; margin-bottom: 16px;
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+
+    /* ── Settings page ── */
+    .settings-grid { display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: start; }
+    .settings-nav { background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+    .settings-nav-item {
+      padding: 13px 18px; font-size: 14px; font-weight: 500;
+      color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid var(--border); transition: background 0.1s, color 0.1s;
+    }
+    .settings-nav-item:last-child { border-bottom: none; }
+    .settings-nav-item:hover { background: #F8F9FF; color: var(--text); }
+    .settings-nav-item.active { background: #EEF0FF; color: var(--navy); font-weight: 600; }
+    .settings-panel { display: none; }
+    .settings-panel.active { display: block; }
+    .settings-card { background: var(--card); border-radius: 14px; box-shadow: 0 1px 3px rgba(15,23,42,0.06); margin-bottom: 20px; overflow: hidden; }
+    .settings-card-head { padding: 18px 22px 14px; border-bottom: 1px solid var(--border); }
+    .settings-card-title { font-size: 15px; font-weight: 700; }
+    .settings-card-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .settings-card-body { padding: 18px 22px; }
+    .settings-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 0; border-bottom: 1px solid var(--border);
+    }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-row-label { font-size: 14px; font-weight: 600; }
+    .settings-row-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    /* Toggle switch */
+    .toggle { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0; background: #CBD5E1;
+      border-radius: 99px; cursor: pointer; transition: 0.2s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px; left: 3px; bottom: 3px;
+      background: #fff; border-radius: 50%; transition: 0.2s;
+    }
+    .toggle input:checked + .toggle-slider { background: var(--green); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+    .settings-field-row { margin-bottom: 14px; }
+    .settings-field-row:last-child { margin-bottom: 0; }
+    .settings-tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .settings-tag {
+      padding: 5px 12px; border-radius: 99px;
+      font-size: 13px; font-weight: 600;
+      background: #EEF0FF; color: var(--navy);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .settings-tag .rm { cursor: pointer; opacity: 0.5; font-size: 11px; transition: opacity 0.15s; }
+    .settings-tag .rm:hover { opacity: 1; }
+    .integration-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+    }
+    .integration-card:last-child { border-bottom: none; }
+    .integration-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; background: #F8F9FA; flex-shrink: 0;
+    }
+    .integration-name { font-size: 14px; font-weight: 600; }
+    .integration-desc { font-size: 13px; color: var(--muted); }
+    .integration-actions { margin-left: auto; }
+
+    /* ── Responsive ── */
     @media (max-width: 1100px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .bottom-grid { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .settings-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
       .sidebar { display: none; }
       .main { margin-left: 0; }
-      .topbar, .content { padding-left: 16px; padding-right: 16px; }
+      .topbar { padding: 0 16px; }
+      .content { padding: 20px 16px; }
       .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .drawer { width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 <div class="layout">
 
+  <!-- ══ Sidebar ══ -->
   <aside class="sidebar">
     <div class="sidebar-brand">
       <img src="/logo.svg" alt="Arise Cares" class="sidebar-logo" />
     </div>
     <nav class="sidebar-nav">
-      <a class="nav-item active" href="#">
-        <span class="nav-icon">📊</span> Dashboard
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" onclick="navigate('dashboard', this)">
+        <span class="nav-icon-wrap">📊</span> Dashboard
       </a>
-      <a class="nav-item" href="#">
-        <span class="nav-icon">👥</span> Clients
+      <a class="nav-item" onclick="navigate('clients', this)">
+        <span class="nav-icon-wrap">👥</span> Clients
       </a>
-      <a class="nav-item" href="#">
-        <span class="nav-icon">⚙️</span> Settings
+      <div class="nav-section-label" style="margin-top:8px;">System</div>
+      <a class="nav-item" onclick="navigate('settings', this)">
+        <span class="nav-icon-wrap">⚙️</span> Settings
       </a>
     </nav>
-    <div class="sidebar-footer">Arise Feedback System v1.0</div>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-user">
+        <div class="avatar">AC</div>
+        <div>
+          <div class="footer-name">Arise Cares</div>
+          <div class="footer-role">Admin</div>
+        </div>
+      </div>
+    </div>
   </aside>
 
+  <!-- ══ Main ══ -->
   <div class="main">
     <div class="topbar">
-      <div class="topbar-title">Feedback Dashboard</div>
+      <div class="topbar-left">
+        <div class="page-title" id="topbar-title">Feedback Dashboard</div>
+        <span class="page-badge" id="topbar-badge" style="display:none;">DEMO</span>
+      </div>
       <div class="topbar-right">
-        <span class="last-updated" id="last-updated">Loading…</span>
-        <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+        <span class="topbar-time" id="last-updated">—</span>
+        <button class="btn btn-outline" id="topbar-action" onclick="loadDashboard()">↻ Refresh</button>
       </div>
     </div>
 
     <div class="content">
 
-      <div class="demo-banner" id="demo-banner" style="display:none;">
+      <!-- ══ Demo banner ══ -->
+      <div class="demo-banner" id="demo-banner">
         <div class="demo-banner-text">
-          🧪 Demo Mode &mdash; <span>Running with mock in-memory data. No API keys required.</span>
+          🧪 <strong>Demo Mode</strong> &mdash; <small>Running with in-memory mock data. No API keys required.</small>
         </div>
-        <button class="seed-btn" id="seed-btn" onclick="seedDemo()">Load Demo Data</button>
+        <button class="btn btn-gold btn-sm" id="seed-btn" onclick="seedDemo()">Load Sample Data</button>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card blue">
-          <div class="stat-label">Total Responses</div>
-          <div class="stat-value" id="stat-responses">—</div>
-          <div class="stat-sub" id="stat-requests">— requests sent</div>
-        </div>
-        <div class="stat-card gold">
-          <div class="stat-label">Average Rating</div>
-          <div class="stat-value" id="stat-avg">—</div>
-          <div class="stat-sub">out of 5 ★</div>
-        </div>
-        <div class="stat-card teal">
-          <div class="stat-label">Response Rate</div>
-          <div class="stat-value" id="stat-rate">—</div>
-          <div class="stat-sub">of all requests</div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-label">Google Reviews</div>
-          <div class="stat-value" id="stat-google">—</div>
-          <div class="stat-sub">clients prompted</div>
-        </div>
-      </div>
-
-      <div class="bottom-grid">
-        <div class="panel">
-          <div class="panel-header">Rating Distribution</div>
-          <div class="panel-body" id="dist-body">
-            <div class="loading-center"><div class="spinner"></div></div>
+      <!-- ══ Dashboard Page ══ -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">📨</div>
+            <div class="stat-label">Total Requests</div>
+            <div class="stat-value" id="stat-requests">—</div>
+            <div class="stat-sub" id="stat-responses-sub">— responses received</div>
+            <div class="stat-accent"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon gold">⭐</div>
+            <div class="stat-label">Average Rating</div>
+            <div class="stat-value" id="stat-avg">—</div>
+            <div class="stat-sub">out of 5.0</div>
+            <div class="stat-accent"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal">📈</div>
+            <div class="stat-label">Response Rate</div>
+            <div class="stat-value" id="stat-rate">—</div>
+            <div class="stat-sub">of all requests</div>
+            <div class="stat-accent"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">🌟</div>
+            <div class="stat-label">Google Prompted</div>
+            <div class="stat-value" id="stat-google">—</div>
+            <div class="stat-sub">clients sent to review</div>
+            <div class="stat-accent"></div>
           </div>
         </div>
 
-        <div class="panel">
-          <div class="panel-header">Recent Responses</div>
-          <div class="table-wrapper">
-            <div id="table-body">
-              <div class="loading-center"><div class="spinner"></div></div>
+        <div class="grid-2">
+          <div>
+            <div class="panel" style="margin-bottom:16px;">
+              <div class="panel-header">
+                <span class="panel-title">Rating Distribution</span>
+              </div>
+              <div class="panel-body" id="dist-body">
+                <div class="spinner-wrap"><div class="spinner"></div></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header"><span class="panel-title">Internal Alerts</span></div>
+              <div class="panel-body">
+                <div class="flag-count-box">
+                  <div class="flag-num" id="stat-flagged">—</div>
+                  <div>
+                    <div class="flag-label">Flagged responses</div>
+                    <div style="font-size:12px;color:var(--muted);margin-top:2px;">Need follow-up from team</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">Recent Responses</span>
+              <span id="total-count-label" style="font-size:13px;color:var(--muted);"></span>
+            </div>
+            <div class="table-wrap">
+              <div id="table-body">
+                <div class="spinner-wrap"><div class="spinner"></div></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- ══ Clients Page ══ -->
+      <div class="page" id="page-clients">
+        <div class="page-header">
+          <div>
+            <div class="page-heading">Clients</div>
+            <div class="page-sub">Manage client profiles and log new visits</div>
+          </div>
+          <button class="btn btn-primary" onclick="openAddClientModal()">＋ Add Client</button>
+        </div>
+        <div class="search-bar">
+          <input class="search-input" type="text" placeholder="Search by name, phone, or email…" id="client-search" oninput="filterClients()" />
+        </div>
+        <div class="panel">
+          <div id="clients-table-body">
+            <div class="spinner-wrap"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Settings Page ══ -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <div>
+            <div class="page-heading">Settings</div>
+            <div class="page-sub">Configure your feedback system preferences</div>
+          </div>
+        </div>
+        <div class="settings-grid">
+          <div class="settings-nav">
+            <div class="settings-nav-item active" onclick="switchSettings('notifications', this)">🔔 Notifications</div>
+            <div class="settings-nav-item" onclick="switchSettings('routing', this)">🗺️ Routing Rules</div>
+            <div class="settings-nav-item" onclick="switchSettings('messaging', this)">💬 Messaging</div>
+            <div class="settings-nav-item" onclick="switchSettings('integrations', this)">🔗 Integrations</div>
+            <div class="settings-nav-item" onclick="switchSettings('team', this)">👤 Team</div>
+          </div>
+          <div>
+            <!-- Notifications -->
+            <div class="settings-panel active" id="settings-notifications">
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Alert Preferences</div>
+                  <div class="settings-card-sub">Control when and how you receive internal notifications</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">Low rating alerts</div>
+                      <div class="settings-row-sub">Notify team when rating is 3★ or below</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">Email summary</div>
+                      <div class="settings-row-sub">Daily digest of new responses sent to your inbox</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">No-response follow-up</div>
+                      <div class="settings-row-sub">Send a reminder if client hasn't responded in 3 days</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">New client notification</div>
+                      <div class="settings-row-sub">Alert when a new client is added to the system</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Notification Recipients</div>
+                  <div class="settings-card-sub">Who receives internal alerts when low ratings come in</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="settings-tag-list">
+                    <span class="settings-tag">admin@arisecares.com <span class="rm" onclick="this.parentElement.remove()">✕</span></span>
+                    <span class="settings-tag">manager@arisecares.com <span class="rm" onclick="this.parentElement.remove()">✕</span></span>
+                  </div>
+                  <div style="margin-top:14px;display:flex;gap:8px;">
+                    <input class="field-input" id="add-email-input" type="email" placeholder="Add email address…" style="flex:1;" />
+                    <button class="btn btn-outline btn-sm" onclick="addEmailTag()">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Routing Rules -->
+            <div class="settings-panel" id="settings-routing">
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Smart Routing</div>
+                  <div class="settings-card-sub">Decide how feedback is handled based on rating</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">Google review prompt</div>
+                      <div class="settings-row-sub">Show "Leave a Google Review" button to high-rated clients</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">Internal flag for low ratings</div>
+                      <div class="settings-row-sub">Automatically flag responses rated 1–3★ for follow-up</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Routing Threshold</div>
+                  <div class="settings-card-sub">Ratings at or above this value are routed to Google</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="settings-field-row">
+                    <div class="field-label">Google Review Threshold</div>
+                    <select class="field-select" style="width:auto;min-width:160px;margin-top:6px;">
+                      <option>4★ and above (recommended)</option>
+                      <option>5★ only</option>
+                      <option>3★ and above</option>
+                    </select>
+                  </div>
+                  <div style="margin-top:12px;padding:12px 14px;background:var(--green-bg);border-radius:10px;border:1px solid #A7F3D0;font-size:13px;color:#065F46;">
+                    ✓ Currently: ratings of <strong>4★ or 5★</strong> prompt Google review. Ratings 1–3★ trigger internal follow-up.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Messaging -->
+            <div class="settings-panel" id="settings-messaging">
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">SMS Settings</div>
+                  <div class="settings-card-sub">Configure how feedback requests are sent via SMS</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">SMS enabled</div>
+                      <div class="settings-row-sub">Send feedback requests via text message</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="settings-field-row" style="margin-top:14px;">
+                    <div class="field-label">Send delay after visit (hours)</div>
+                    <input class="field-input" type="number" value="2" min="0" max="48" style="width:100px;margin-top:6px;" />
+                  </div>
+                  <div class="settings-field-row">
+                    <div class="field-label">SMS message template</div>
+                    <textarea class="field-input" rows="3" style="resize:vertical;margin-top:6px;">Hi {client_name}, thank you for choosing Arise Cares! We'd love to hear how {caregiver_name}'s visit went. Please take a moment to share your feedback: {link}</textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Email Settings</div>
+                  <div class="settings-card-sub">Configure feedback request emails</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="settings-row">
+                    <div>
+                      <div class="settings-row-label">Email enabled</div>
+                      <div class="settings-row-sub">Send feedback requests via email</div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="settings-field-row" style="margin-top:14px;">
+                    <div class="field-label">From email address</div>
+                    <input class="field-input" type="email" value="feedback@arisecares.com" style="margin-top:6px;" />
+                  </div>
+                  <div class="settings-field-row">
+                    <div class="field-label">From name</div>
+                    <input class="field-input" type="text" value="Arise Cares Team" style="margin-top:6px;" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Integrations -->
+            <div class="settings-panel" id="settings-integrations">
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Connected Integrations</div>
+                  <div class="settings-card-sub">Third-party services connected to your feedback system</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="integration-card">
+                    <div class="integration-icon">📱</div>
+                    <div>
+                      <div class="integration-name">Twilio SMS</div>
+                      <div class="integration-desc">Send feedback requests via SMS</div>
+                    </div>
+                    <div class="integration-actions">
+                      <span class="badge badge-orange" id="twilio-status">Not configured</span>
+                    </div>
+                  </div>
+                  <div class="integration-card">
+                    <div class="integration-icon">📧</div>
+                    <div>
+                      <div class="integration-name">SMTP Email</div>
+                      <div class="integration-desc">Send feedback requests via email</div>
+                    </div>
+                    <div class="integration-actions">
+                      <span class="badge badge-orange" id="smtp-status">Not configured</span>
+                    </div>
+                  </div>
+                  <div class="integration-card">
+                    <div class="integration-icon">⭐</div>
+                    <div>
+                      <div class="integration-name">Google Reviews</div>
+                      <div class="integration-desc">Direct satisfied clients to your Google Business page</div>
+                    </div>
+                    <div class="integration-actions">
+                      <span class="badge badge-orange" id="google-status">Not configured</span>
+                    </div>
+                  </div>
+                  <div class="integration-card">
+                    <div class="integration-icon">🗄️</div>
+                    <div>
+                      <div class="integration-name">PostgreSQL / Supabase</div>
+                      <div class="integration-desc">Production database for all data</div>
+                    </div>
+                    <div class="integration-actions">
+                      <span class="badge badge-orange" id="db-status">Not configured</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Environment Variables</div>
+                  <div class="settings-card-sub">Set these in your hosting provider (Vercel) to activate integrations</div>
+                </div>
+                <div class="settings-card-body">
+                  <table style="font-size:13px;width:100%;">
+                    <thead><tr>
+                      <th style="text-align:left;padding:6px 8px;color:var(--muted);font-size:11px;text-transform:uppercase;">Variable</th>
+                      <th style="text-align:left;padding:6px 8px;color:var(--muted);font-size:11px;text-transform:uppercase;">Purpose</th>
+                      <th style="text-align:left;padding:6px 8px;color:var(--muted);font-size:11px;text-transform:uppercase;">Status</th>
+                    </tr></thead>
+                    <tbody id="env-table"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Team -->
+            <div class="settings-panel" id="settings-team">
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Team Members</div>
+                  <div class="settings-card-sub">Manage who has access to the dashboard</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="integration-card">
+                    <div class="avatar" style="width:38px;height:38px;">AC</div>
+                    <div>
+                      <div class="integration-name">Arise Cares Admin</div>
+                      <div class="integration-desc">admin@arisecares.com</div>
+                    </div>
+                    <div class="integration-actions"><span class="badge badge-navy">Owner</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-card">
+                <div class="settings-card-head">
+                  <div class="settings-card-title">Business Information</div>
+                  <div class="settings-card-sub">Your organization details used in messages and reports</div>
+                </div>
+                <div class="settings-card-body">
+                  <div class="settings-field-row">
+                    <div class="field-label">Business name</div>
+                    <input class="field-input" type="text" value="Arise Cares" style="margin-top:6px;" />
+                  </div>
+                  <div class="settings-field-row">
+                    <div class="field-label">Business phone</div>
+                    <input class="field-input" type="tel" placeholder="+1 (555) 000-0000" style="margin-top:6px;" />
+                  </div>
+                  <div class="settings-field-row">
+                    <div class="field-label">Google Business URL</div>
+                    <input class="field-input" type="url" placeholder="https://g.page/r/your-business-id/review" style="margin-top:6px;" />
+                  </div>
+                  <div style="margin-top:16px;">
+                    <button class="btn btn-primary">Save Changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Client Drawer ══ -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="client-drawer">
+  <div class="drawer-head">
+    <div class="drawer-title" id="drawer-title">Client Details</div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body">
+    <div class="spinner-wrap"><div class="spinner"></div></div>
+  </div>
+  <div class="drawer-footer" id="drawer-footer"></div>
+</div>
+
+<!-- ══ Add Client Modal ══ -->
+<div class="modal-overlay" id="add-client-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Add New Client</div>
+      <button class="drawer-close" onclick="closeAddClientModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-field-row">
+        <div class="field-label">Full Name <span style="color:var(--red)">*</span></div>
+        <input class="field-input" id="new-client-name" type="text" placeholder="e.g. Margaret Johnson" style="margin-top:6px;" />
+      </div>
+      <div class="settings-field-row">
+        <div class="field-label">Phone Number</div>
+        <input class="field-input" id="new-client-phone" type="tel" placeholder="+1 (555) 000-0000" style="margin-top:6px;" />
+      </div>
+      <div class="settings-field-row">
+        <div class="field-label">Email Address</div>
+        <input class="field-input" id="new-client-email" type="email" placeholder="client@example.com" style="margin-top:6px;" />
+      </div>
+      <div class="settings-field-row">
+        <div class="field-label">Preferred Contact</div>
+        <select class="field-select" id="new-client-contact" style="margin-top:6px;">
+          <option value="sms">SMS / Text Message</option>
+          <option value="email">Email</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeAddClientModal()">Cancel</button>
+      <button class="btn btn-primary" id="save-client-btn" onclick="saveNewClient()">Add Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Record Visit Modal ══ -->
+<div class="modal-overlay" id="visit-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Record Visit</div>
+      <button class="drawer-close" onclick="closeVisitModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="notice-box">
+        ℹ️ A feedback request will be sent automatically after the visit is recorded.
+      </div>
+      <input type="hidden" id="visit-client-id" />
+      <div class="settings-field-row">
+        <div class="field-label">Visit Date <span style="color:var(--red)">*</span></div>
+        <input class="field-input" id="visit-date" type="date" style="margin-top:6px;" />
+      </div>
+      <div class="settings-field-row">
+        <div class="field-label">Caregiver Name <span style="color:var(--red)">*</span></div>
+        <input class="field-input" id="visit-caregiver" type="text" placeholder="e.g. Maria Rodriguez" style="margin-top:6px;" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeVisitModal()">Cancel</button>
+      <button class="btn btn-gold" id="save-visit-btn" onclick="saveVisit()">Record Visit</button>
     </div>
   </div>
 </div>
 
 <script>
-  async function loadData() {
-    document.getElementById('last-updated').textContent = 'Refreshing…';
-    try {
-      const [statsRes, respRes] = await Promise.all([
-        fetch('/api/dashboard/stats'),
-        fetch('/api/dashboard/responses?limit=50'),
-      ]);
-      const stats    = await statsRes.json();
-      const respData = await respRes.json();
+/* ══════════════════════════════════════
+   Navigation (SPA)
+══════════════════════════════════════ */
+const pages = { dashboard: loadDashboard, clients: loadClients, settings: loadSettings };
+const pageTitles = { dashboard: 'Feedback Dashboard', clients: 'Clients', settings: 'Settings' };
 
-      document.getElementById('stat-responses').textContent = stats.totalResponses ?? '—';
-      document.getElementById('stat-requests').textContent  = `${stats.totalRequests ?? '—'} requests sent`;
-      document.getElementById('stat-avg').textContent       = stats.averageRating
-        ? `${parseFloat(stats.averageRating).toFixed(1)} ★` : '—';
-      document.getElementById('stat-rate').textContent      = stats.responseRate != null
-        ? `${stats.responseRate}%` : '—';
-      document.getElementById('stat-google').textContent    = stats.googlePrompted ?? '—';
+function navigate(page, el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('topbar-title').textContent = pageTitles[page];
+  const btn = document.getElementById('topbar-action');
+  if (page === 'dashboard') { btn.textContent = '↻ Refresh'; btn.onclick = loadDashboard; btn.style.display = ''; }
+  else if (page === 'clients') { btn.textContent = '↻ Refresh'; btn.onclick = loadClients; btn.style.display = ''; }
+  else { btn.style.display = 'none'; }
+  if (pages[page]) pages[page]();
+}
 
-      renderDist(stats.ratingDistribution || []);
-      renderTable(respData.responses || []);
+/* ══════════════════════════════════════
+   Dashboard
+══════════════════════════════════════ */
+async function loadDashboard() {
+  document.getElementById('last-updated').textContent = 'Refreshing…';
+  try {
+    const [sr, rr] = await Promise.all([
+      fetch('/api/dashboard/stats'),
+      fetch('/api/dashboard/responses?limit=50'),
+    ]);
+    const stats = await sr.json();
+    const respData = await rr.json();
 
-      document.getElementById('last-updated').textContent =
-        'Updated ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    document.getElementById('stat-requests').textContent   = stats.totalRequests ?? '—';
+    document.getElementById('stat-responses-sub').textContent = `${stats.totalResponses ?? 0} responses received`;
+    document.getElementById('stat-avg').textContent        = stats.averageRating ? parseFloat(stats.averageRating).toFixed(1) : '—';
+    document.getElementById('stat-rate').textContent       = stats.responseRate != null ? `${stats.responseRate}%` : '—';
+    document.getElementById('stat-google').textContent     = stats.googlePrompted ?? '—';
+    document.getElementById('stat-flagged').textContent    = stats.internalFlagged ?? '—';
 
-      // Show demo banner if /api/demo/seed exists (demo mode)
-      fetch('/api/demo/seed', { method: 'HEAD' })
-        .then(r => { if (r.status !== 404) document.getElementById('demo-banner').style.display = 'flex'; })
-        .catch(() => {});
+    renderDist(stats.ratingDistribution || []);
+    renderTable(respData.responses || [], respData.total);
 
-    } catch(e) {
-      document.getElementById('last-updated').textContent = 'Error — ' + e.message;
-    }
+    document.getElementById('last-updated').textContent =
+      'Updated ' + new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    fetch('/api/demo/seed', { method: 'HEAD' }).then(r => {
+      const show = r.status !== 404;
+      document.getElementById('demo-banner').classList.toggle('visible', show);
+      document.getElementById('topbar-badge').style.display = show ? '' : 'none';
+    }).catch(() => {});
+  } catch(e) {
+    document.getElementById('last-updated').textContent = 'Error — ' + e.message;
   }
+}
 
-  async function seedDemo() {
-    const btn = document.getElementById('seed-btn');
-    btn.disabled = true;
-    btn.textContent = 'Seeding…';
-    try {
-      const res  = await fetch('/api/demo/seed');
-      const data = await res.json();
-      if (data.success) {
-        btn.textContent = '✓ Done!';
-        setTimeout(loadData, 400);
-      }
-    } catch(e) {
-      btn.disabled = false;
-      btn.textContent = 'Load Demo Data';
-    }
+async function seedDemo() {
+  const btn = document.getElementById('seed-btn');
+  btn.disabled = true; btn.textContent = 'Seeding…';
+  try {
+    const d = await (await fetch('/api/demo/seed')).json();
+    if (d.success) { btn.textContent = '✓ Done!'; setTimeout(loadDashboard, 400); }
+  } catch { btn.disabled = false; btn.textContent = 'Load Sample Data'; }
+}
+
+function renderDist(dist) {
+  const max = Math.max(...dist.map(d => Number(d.count)), 1);
+  if (!dist.length) {
+    document.getElementById('dist-body').innerHTML = '<p style="color:var(--muted);font-size:14px;text-align:center;padding:16px 0;">No responses yet</p>';
+    return;
   }
+  document.getElementById('dist-body').innerHTML = [5,4,3,2,1].map(star => {
+    const entry = dist.find(d => Number(d.rating) === star);
+    const count = entry ? Number(entry.count) : 0;
+    const pct = Math.round((count / max) * 100);
+    return `<div class="dist-row">
+      <span class="dist-label">${star}★</span>
+      <div class="dist-bar-bg"><div class="dist-bar" style="width:${pct}%"></div></div>
+      <span class="dist-count">${count}</span>
+    </div>`;
+  }).join('');
+}
 
-  function renderDist(dist) {
-    const max = Math.max(...dist.map(d => Number(d.count)), 1);
-    if (!dist.length) {
-      document.getElementById('dist-body').innerHTML =
-        '<div style="color:var(--muted);font-size:14px;text-align:center;padding:20px 0;">No responses yet</div>';
-      return;
-    }
-    const html = [5,4,3,2,1].map(star => {
-      const entry = dist.find(d => Number(d.rating) === star);
-      const count = entry ? Number(entry.count) : 0;
-      const pct   = Math.round((count / max) * 100);
-      return `<div class="dist-row">
-        <span class="dist-label">${star}★</span>
-        <div class="dist-bar-bg"><div class="dist-bar" style="width:${pct}%"></div></div>
-        <span class="dist-count">${count}</span>
-      </div>`;
-    }).join('');
-    document.getElementById('dist-body').innerHTML = html;
-  }
-
-  function renderTable(responses) {
-    if (!responses.length) {
-      document.getElementById('table-body').innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📭</div>
-          <div class="empty-title">No responses yet</div>
-          <div class="empty-body">Responses will appear here once clients submit feedback.</div>
-        </div>`;
-      return;
-    }
-    const rows = responses.map(r => {
-      const rating  = Number(r.rating);
-      const stars   = rating >= 4
-        ? `<span class="star-badge high">${'★'.repeat(rating)} ${rating}/5</span>`
-        : `<span class="star-badge low">${'★'.repeat(rating)}${'☆'.repeat(5-rating)} ${rating}/5</span>`;
-      const route   = r.routed_to_google
-        ? `<span class="route-badge google">✓ Google</span>`
-        : `<span class="route-badge internal">🔔 Follow-up</span>`;
-      const date    = r.visit_date
-        ? new Date(r.visit_date).toLocaleDateString('en-US', { month:'short', day:'numeric' })
-        : '—';
-      const comment = r.comment
-        ? `<span title="${r.comment.replace(/"/g,'&quot;')}">${r.comment}</span>`
-        : '<span style="color:#CBD5E1">No comment</span>';
-      return `<tr>
-        <td class="td-name">${r.client_name || '—'}</td>
-        <td class="td-caregiver">${r.caregiver_name || '—'}</td>
-        <td class="td-date">${date}</td>
-        <td>${stars}</td>
-        <td class="td-comment">${comment}</td>
-        <td>${route}</td>
-      </tr>`;
-    }).join('');
-
+function renderTable(responses, total) {
+  document.getElementById('total-count-label').textContent = total ? `${total} total` : '';
+  if (!responses.length) {
     document.getElementById('table-body').innerHTML = `
-      <table>
-        <thead>
-          <tr>
-            <th>Client</th><th>Caregiver</th><th>Visit</th>
-            <th>Rating</th><th>Comment</th><th>Routed</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">No responses yet</div>
+        <div class="empty-body">Responses will appear here once clients submit feedback.</div>
+      </div>`;
+    return;
   }
+  const rows = responses.map(r => {
+    const rating = Number(r.rating);
+    const stars = rating >= 4
+      ? `<span class="badge badge-gold">${'★'.repeat(rating)} ${rating}/5</span>`
+      : `<span class="badge badge-muted">${'★'.repeat(rating)}${'☆'.repeat(5-rating)} ${rating}/5</span>`;
+    const route = r.routed_to_google
+      ? `<span class="badge badge-green">✓ Google</span>`
+      : `<span class="badge badge-orange">🔔 Follow-up</span>`;
+    const date = r.visit_date
+      ? new Date(r.visit_date).toLocaleDateString('en-US', { month:'short', day:'numeric' }) : '—';
+    const comment = r.comment
+      ? `<span title="${r.comment.replace(/"/g,'&quot;')}">${r.comment}</span>`
+      : '<span style="color:#CBD5E1;font-style:italic;">No comment</span>';
+    return `<tr>
+      <td class="td-primary">${r.client_name || '—'}</td>
+      <td class="td-muted">${r.caregiver_name || '—'}</td>
+      <td class="td-muted">${date}</td>
+      <td>${stars}</td>
+      <td class="td-comment">${comment}</td>
+      <td>${route}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('table-body').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Client</th><th>Caregiver</th><th>Visit</th>
+        <th>Rating</th><th>Comment</th><th>Routing</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
 
-  loadData();
+/* ══════════════════════════════════════
+   Clients
+══════════════════════════════════════ */
+let allClients = [];
+
+async function loadClients() {
+  document.getElementById('clients-table-body').innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
+  try {
+    allClients = await (await fetch('/api/clients')).json();
+    renderClientsTable(allClients);
+  } catch(e) {
+    document.getElementById('clients-table-body').innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error loading clients</div><div class="empty-body">${e.message}</div></div>`;
+  }
+}
+
+function filterClients() {
+  const q = document.getElementById('client-search').value.toLowerCase();
+  const filtered = allClients.filter(c =>
+    (c.name||'').toLowerCase().includes(q) ||
+    (c.phone||'').includes(q) ||
+    (c.email||'').toLowerCase().includes(q)
+  );
+  renderClientsTable(filtered);
+}
+
+function renderClientsTable(clients) {
+  if (!clients.length) {
+    document.getElementById('clients-table-body').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">👥</div>
+        <div class="empty-title">No clients found</div>
+        <div class="empty-body">Add your first client or try a different search.</div>
+      </div>`;
+    return;
+  }
+  const rows = clients.map(c => {
+    const contact = c.preferred_contact === 'email'
+      ? `<span class="badge badge-navy">📧 Email</span>`
+      : `<span class="badge badge-teal">📱 SMS</span>`;
+    const optOut = c.opt_out
+      ? `<span class="badge badge-red">Opted Out</span>`
+      : `<span class="badge badge-green">Active</span>`;
+    const joined = c.created_at
+      ? new Date(c.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+    return `<tr style="cursor:pointer;" onclick="openClientDrawer(${c.id})">
+      <td class="td-primary">${c.name || '—'}</td>
+      <td class="td-muted">${c.phone || '—'}</td>
+      <td class="td-muted">${c.email || '—'}</td>
+      <td>${contact}</td>
+      <td><strong>${c.visit_count || 0}</strong></td>
+      <td>${optOut}</td>
+      <td class="td-muted">${joined}</td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openVisitModal(${c.id}, '${(c.name||'').replace(/'/g,'\\\'')}')" style="white-space:nowrap;">+ Visit</button>
+      </td>
+    </tr>`;
+  }).join('');
+  document.getElementById('clients-table-body').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Name</th><th>Phone</th><th>Email</th>
+        <th>Contact</th><th>Visits</th><th>Status</th><th>Joined</th><th></th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+/* ── Client Drawer ── */
+async function openClientDrawer(id) {
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('client-drawer').classList.add('open');
+  document.getElementById('drawer-body').innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
+  document.getElementById('drawer-footer').innerHTML = '';
+  try {
+    const c = await (await fetch(`/api/clients/${id}`)).json();
+    document.getElementById('drawer-title').textContent = c.name;
+    const contact = c.preferred_contact === 'email' ? 'Email' : 'SMS';
+    document.getElementById('drawer-body').innerHTML = `
+      <div class="field-group">
+        <div class="field-label">Full Name</div>
+        <input class="field-input" id="edit-name" type="text" value="${c.name || ''}" />
+      </div>
+      <div class="field-group">
+        <div class="field-label">Phone</div>
+        <input class="field-input" id="edit-phone" type="tel" value="${c.phone || ''}" />
+      </div>
+      <div class="field-group">
+        <div class="field-label">Email</div>
+        <input class="field-input" id="edit-email" type="email" value="${c.email || ''}" />
+      </div>
+      <div class="field-group">
+        <div class="field-label">Preferred Contact</div>
+        <select class="field-select" id="edit-contact">
+          <option value="sms" ${c.preferred_contact === 'sms' ? 'selected' : ''}>SMS / Text</option>
+          <option value="email" ${c.preferred_contact === 'email' ? 'selected' : ''}>Email</option>
+        </select>
+      </div>
+      <div class="drawer-section-title">Status</div>
+      <div class="settings-row" style="padding:10px 0;">
+        <div>
+          <div class="settings-row-label">Opt-out</div>
+          <div class="settings-row-sub">Client will not receive feedback requests</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="edit-optout" ${c.opt_out ? 'checked' : ''} /><span class="toggle-slider"></span></label>
+      </div>
+      <input type="hidden" id="edit-id" value="${c.id}" />`;
+    document.getElementById('drawer-footer').innerHTML = `
+      <button class="btn btn-primary" onclick="saveClientEdit()" style="flex:1;">Save Changes</button>
+      <button class="btn btn-outline btn-sm" onclick="openVisitModal(${c.id}, '${(c.name||'').replace(/'/g,'\\\'')}'); closeDrawer();">+ Record Visit</button>`;
+  } catch(e) {
+    document.getElementById('drawer-body').innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error</div><div class="empty-body">${e.message}</div></div>`;
+  }
+}
+
+function closeDrawer() {
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('client-drawer').classList.remove('open');
+}
+
+async function saveClientEdit() {
+  const id = document.getElementById('edit-id').value;
+  const body = {
+    name: document.getElementById('edit-name').value,
+    phone: document.getElementById('edit-phone').value || null,
+    email: document.getElementById('edit-email').value || null,
+    preferred_contact: document.getElementById('edit-contact').value,
+    opt_out: document.getElementById('edit-optout').checked,
+  };
+  try {
+    const res = await fetch(`/api/clients/${id}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error('Save failed');
+    closeDrawer();
+    loadClients();
+  } catch(e) { alert('Could not save: ' + e.message); }
+}
+
+/* ── Add Client Modal ── */
+function openAddClientModal() {
+  ['new-client-name','new-client-phone','new-client-email'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('new-client-contact').value = 'sms';
+  document.getElementById('add-client-modal').classList.add('open');
+  setTimeout(() => document.getElementById('new-client-name').focus(), 100);
+}
+function closeAddClientModal() { document.getElementById('add-client-modal').classList.remove('open'); }
+async function saveNewClient() {
+  const name = document.getElementById('new-client-name').value.trim();
+  if (!name) { document.getElementById('new-client-name').focus(); return; }
+  const btn = document.getElementById('save-client-btn');
+  btn.disabled = true; btn.textContent = 'Adding…';
+  try {
+    const res = await fetch('/api/clients', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        phone: document.getElementById('new-client-phone').value || null,
+        email: document.getElementById('new-client-email').value || null,
+        preferred_contact: document.getElementById('new-client-contact').value,
+      }),
+    });
+    if (!res.ok) throw new Error('Add failed');
+    closeAddClientModal();
+    loadClients();
+  } catch(e) { alert('Could not add client: ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Add Client'; }
+}
+
+/* ── Visit Modal ── */
+function openVisitModal(clientId, clientName) {
+  document.getElementById('visit-client-id').value = clientId;
+  document.getElementById('visit-modal').classList.add('open');
+  document.getElementById('visit-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('visit-caregiver').value = '';
+  document.querySelector('#visit-modal .modal-title').textContent = `Record Visit — ${clientName}`;
+  setTimeout(() => document.getElementById('visit-caregiver').focus(), 100);
+}
+function closeVisitModal() { document.getElementById('visit-modal').classList.remove('open'); }
+async function saveVisit() {
+  const clientId = document.getElementById('visit-client-id').value;
+  const visitDate = document.getElementById('visit-date').value;
+  const caregiver = document.getElementById('visit-caregiver').value.trim();
+  if (!visitDate || !caregiver) { alert('Please fill in all fields.'); return; }
+  const btn = document.getElementById('save-visit-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const res = await fetch(`/api/clients/${clientId}/visit`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ visit_date: visitDate, caregiver_name: caregiver }),
+    });
+    if (!res.ok) throw new Error('Save failed');
+    closeVisitModal();
+    loadClients();
+  } catch(e) { alert('Could not record visit: ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Record Visit'; }
+}
+
+/* ══════════════════════════════════════
+   Settings
+══════════════════════════════════════ */
+function loadSettings() {
+  // Integration / env status check
+  const envVars = [
+    { name: 'DATABASE_URL',    purpose: 'Supabase / PostgreSQL connection',  id: 'db-status' },
+    { name: 'TWILIO_SID',      purpose: 'Twilio account SID (SMS)',          id: 'twilio-status' },
+    { name: 'TWILIO_TOKEN',    purpose: 'Twilio auth token (SMS)',           id: null },
+    { name: 'TWILIO_FROM',     purpose: 'Twilio from phone number',          id: null },
+    { name: 'SMTP_HOST',       purpose: 'SMTP server host (email)',          id: 'smtp-status' },
+    { name: 'GOOGLE_REVIEW_URL', purpose: 'Google Business review link',    id: 'google-status' },
+    { name: 'CRON_SECRET',     purpose: 'Cron job authorization secret',     id: null },
+  ];
+  const tbody = document.getElementById('env-table');
+  if (tbody) {
+    tbody.innerHTML = envVars.map(v => `
+      <tr>
+        <td style="padding:8px;font-family:monospace;font-size:12px;color:var(--navy);">${v.name}</td>
+        <td style="padding:8px;color:var(--muted);">${v.purpose}</td>
+        <td style="padding:8px;"><span class="badge badge-orange" style="font-size:11px;">Not set</span></td>
+      </tr>`).join('');
+  }
+}
+
+function switchSettings(panel, el) {
+  document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('settings-' + panel).classList.add('active');
+}
+
+function addEmailTag() {
+  const input = document.getElementById('add-email-input');
+  const val = input.value.trim();
+  if (!val || !val.includes('@')) return;
+  const tag = document.createElement('span');
+  tag.className = 'settings-tag';
+  tag.innerHTML = `${val} <span class="rm" onclick="this.parentElement.remove()">✕</span>`;
+  input.parentElement.previousElementSibling.appendChild(tag);
+  input.value = '';
+}
+
+/* ══════════════════════════════════════
+   Boot
+══════════════════════════════════════ */
+loadDashboard();
 </script>
 </body>
 </html>

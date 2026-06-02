@@ -6,25 +6,23 @@
   <meta name="theme-color" content="#2D3250" />
   <title>Share Your Feedback — Arise Cares</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --navy:       #2D3250;
-      --navy-dark:  #1E2340;
-      --gold:       #F5A623;
-      --gold-dark:  #E09510;
-      --gold-light: #FFF8EC;
-      --green:      #10B981;
-      --red:        #EF4444;
-      --text:       #2D3250;
-      --muted:      #64748B;
-      --border:     #E2E8F0;
-      --bg:         #F8F7F4;
-      --card:       #FFFFFF;
-      --radius:     24px;
-      --shadow:     0 8px 40px rgba(45,50,80,0.12);
+      --navy:      #2D3250;
+      --navy-dark: #1E2340;
+      --navy-mid:  #3D4570;
+      --gold:      #F5A623;
+      --gold-dark: #E09510;
+      --gold-light:#FFF8EC;
+      --green:     #10B981;
+      --red:       #EF4444;
+      --text:      #1A1D2E;
+      --muted:     #64748B;
+      --border:    #E2E8F0;
+      --bg:        #F4F5F9;
+      --card:      #FFFFFF;
     }
 
     html, body {
@@ -34,263 +32,219 @@
       color: var(--text);
       -webkit-font-smoothing: antialiased;
     }
-
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px 16px;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px 16px;
     }
 
+    /* ── Outer card ── */
     .card {
       background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      width: 100%;
-      max-width: 460px;
+      border-radius: 24px;
+      box-shadow: 0 12px 48px rgba(45,50,80,0.14), 0 2px 8px rgba(45,50,80,0.06);
+      width: 100%; max-width: 460px;
       overflow: hidden;
     }
 
-    /* Header */
+    /* ── Header ── */
     .header {
-      background: linear-gradient(135deg, #2D3250 0%, #3D4570 100%);
-      padding: 28px 32px 24px;
+      background: linear-gradient(145deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-mid) 100%);
+      padding: 30px 32px 26px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: rgba(245,166,35,0.07);
+    }
+    .header::after {
+      content: '';
+      position: absolute; bottom: -30px; left: -30px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(245,166,35,0.05);
     }
     .header-logo {
-      height: 52px;
-      width: auto;
-      display: block;
-      margin: 0 auto;
-      color: #fff;
+      height: 48px; width: auto;
+      display: block; margin: 0 auto;
+      position: relative; z-index: 1;
     }
 
-    /* Steps */
+    /* ── Progress bar ── */
+    .progress-bar {
+      height: 3px; background: #E8ECF1;
+    }
+    .progress-fill {
+      height: 100%; background: var(--gold);
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── Steps ── */
     .step {
       display: none;
       padding: 32px 32px 36px;
-      animation: fadeSlideIn 0.35s ease forwards;
+      animation: fadeUp 0.3s ease forwards;
     }
     .step.active { display: block; }
-
-    @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(12px); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Step 1 — Rating */
+    /* ── Step 1 ── */
     .greeting {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.3;
-      margin-bottom: 8px;
+      font-size: 22px; font-weight: 800; color: var(--text);
+      line-height: 1.3; margin-bottom: 8px;
     }
     .visit-info {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 32px;
+      font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 32px;
     }
     .visit-info strong { color: var(--text); font-weight: 600; }
 
     .stars-wrapper { text-align: center; }
-    .stars {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+    .stars-row {
+      display: flex; justify-content: center; gap: 8px;
       margin-bottom: 14px;
     }
-    .star {
-      font-size: 52px;
-      cursor: pointer;
-      color: #CBD5E1;
-      transition: transform 0.15s ease, color 0.15s ease;
-      line-height: 1;
-      user-select: none;
+    .star-btn {
+      background: none; border: none; cursor: pointer;
+      padding: 4px; border-radius: 10px;
+      transition: transform 0.15s, filter 0.15s;
       -webkit-tap-highlight-color: transparent;
+      outline: none;
     }
-    .star:hover,
-    .star.hover { color: var(--gold); transform: scale(1.2); }
-    .star.selected { color: var(--gold); }
-    .star.selected ~ .star { color: #CBD5E1; }
+    .star-btn:hover { transform: scale(1.15); }
+    .star-btn.selected { transform: scale(1.08); }
+    .star-svg { width: 52px; height: 52px; transition: fill 0.15s; }
+    .star-svg path { fill: #DDE3EE; transition: fill 0.15s; }
+    .star-btn.lit .star-svg path,
+    .star-btn.hover-lit .star-svg path { fill: var(--gold); }
 
     .star-label {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--muted);
-      height: 22px;
-      transition: color 0.2s;
+      font-size: 15px; font-weight: 600; color: var(--muted);
+      height: 22px; transition: color 0.2s;
     }
     .star-label.rated { color: var(--gold); }
 
-    /* Step 2 — Comment */
-    .step2-heading {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 6px;
+    /* ── Step 2 ── */
+    .step2-heading { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .step2-sub { font-size: 14px; color: var(--muted); margin-bottom: 22px; line-height: 1.6; }
+
+    .quick-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .quick-tag {
+      padding: 7px 14px; border-radius: 99px;
+      border: 1.5px solid var(--border); background: #FAFBFC;
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      cursor: pointer; transition: all 0.15s; user-select: none;
     }
-    .step2-sub {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
+    .quick-tag:hover { border-color: var(--navy); color: var(--navy); background: #F0F1FF; }
+    .quick-tag.selected { border-color: var(--navy); color: var(--navy); background: #EEF0FF; font-weight: 600; }
+
     textarea {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 15px;
-      font-family: inherit;
-      color: var(--text);
-      resize: none;
-      rows: 4;
-      min-height: 110px;
-      outline: none;
-      transition: border-color 0.2s;
-      background: #FAFAFA;
+      width: 100%; border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 14px 16px; font-size: 15px; font-family: inherit;
+      color: var(--text); resize: none; min-height: 110px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #FAFBFC;
     }
-    textarea:focus { border-color: var(--navy); background: #fff; }
+    textarea:focus { border-color: var(--navy); background: #fff; box-shadow: 0 0 0 3px rgba(45,50,80,0.06); }
     textarea::placeholder { color: #94A3B8; }
+    .char-count { font-size: 12px; color: #CBD5E1; text-align: right; margin-top: 6px; }
 
     .submit-btn {
-      display: block;
-      width: 100%;
-      margin-top: 16px;
-      padding: 16px;
-      border: none;
-      border-radius: 50px;
-      background: linear-gradient(135deg, #2D3250, #F5A623);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
+      display: block; width: 100%; margin-top: 16px;
+      padding: 16px; border: none; border-radius: 14px;
+      background: var(--navy);
+      color: #fff; font-size: 16px; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(45,50,80,0.25);
       letter-spacing: 0.2px;
     }
-    .submit-btn:hover { opacity: 0.92; }
-    .submit-btn:active { transform: scale(0.98); }
-    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .submit-btn:hover { background: var(--navy-mid); box-shadow: 0 6px 20px rgba(45,50,80,0.3); }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     .privacy-note {
-      font-size: 12px;
-      color: #94A3B8;
-      text-align: center;
-      margin-top: 12px;
-      line-height: 1.5;
+      font-size: 12px; color: #94A3B8;
+      text-align: center; margin-top: 12px; line-height: 1.5;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
     }
 
-    /* Step 3 — Thank you */
-    .thankyou-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      margin: 0 auto 20px;
-    }
-    .thankyou-icon.positive { background: linear-gradient(135deg, #FFF3CD, #FFE5A0); }
-    .thankyou-icon.negative { background: linear-gradient(135deg, #E8EAF6, #C5CAE9); }
+    /* ── Step 3 positive ── */
+    .celebration-wrap { text-align: center; padding-top: 8px; }
+    .confetti-icon { font-size: 56px; margin-bottom: 16px; display: block; }
     .thankyou-heading {
-      font-size: 22px;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 10px;
+      font-size: 24px; font-weight: 800; margin-bottom: 10px;
     }
     .thankyou-body {
-      font-size: 15px;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.7;
-      margin-bottom: 28px;
+      font-size: 15px; color: var(--muted);
+      text-align: center; line-height: 1.7; margin-bottom: 28px;
     }
-
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0 0 24px;
-    }
-
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0 0 24px; }
     .google-prompt {
-      font-size: 14px;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.6;
-      margin-bottom: 16px;
+      font-size: 14px; color: var(--muted);
+      text-align: center; line-height: 1.6; margin-bottom: 14px;
     }
-
     .google-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 14px 20px;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 50px;
-      background: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: inherit;
-      color: var(--text);
-      text-decoration: none;
-      cursor: pointer;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px 20px;
+      border: 1.5px solid #E2E8F0; border-radius: 14px;
+      background: #fff; font-size: 15px; font-weight: 600;
+      font-family: inherit; color: var(--text); text-decoration: none;
+      cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .google-btn:hover {
-      border-color: #F5A623;
-      box-shadow: 0 4px 16px rgba(66,133,244,0.18);
+      border-color: var(--gold);
+      box-shadow: 0 4px 20px rgba(245,166,35,0.2);
     }
 
-    /* Loading & Error */
-    .loading {
-      text-align: center;
-      padding: 40px 32px;
-      color: var(--muted);
+    /* ── Step 3 negative ── */
+    .care-wrap { text-align: center; padding-top: 8px; }
+    .care-icon {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: linear-gradient(135deg, #EEF0FF, #D8DEFF);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; margin: 0 auto 20px;
     }
+
+    /* ── Loading & Error ── */
+    .loading { text-align: center; padding: 44px 32px; color: var(--muted); }
     .spinner {
-      width: 36px;
-      height: 36px;
-      border: 3px solid var(--border);
-      border-top-color: var(--navy);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      width: 36px; height: 36px;
+      border: 3px solid var(--border); border-top-color: var(--navy);
+      border-radius: 50%; animation: spin 0.7s linear infinite;
       margin: 0 auto 16px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .error-state {
-      text-align: center;
-      padding: 40px 32px;
-    }
-    .error-icon { font-size: 48px; margin-bottom: 16px; }
-    .error-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-    .error-body { font-size: 14px; color: var(--muted); }
-
-    .already-done {
-      text-align: center;
-      padding: 40px 32px;
-    }
+    .error-state, .already-done { text-align: center; padding: 44px 32px; }
+    .error-icon { font-size: 52px; margin-bottom: 16px; }
+    .error-title { font-size: 19px; font-weight: 800; margin-bottom: 8px; }
+    .error-body { font-size: 14px; color: var(--muted); line-height: 1.6; }
 
     @media (max-width: 480px) {
       body { padding: 0; align-items: flex-start; }
       .card { border-radius: 0; min-height: 100vh; box-shadow: none; }
       .header { padding: 24px 24px 20px; }
-      .step { padding: 28px 24px 32px; }
-      .star { font-size: 46px; }
+      .step { padding: 26px 22px 30px; }
+      .star-svg { width: 46px; height: 46px; }
     }
   </style>
 </head>
 <body>
-
 <div class="card">
+
+  <!-- Header -->
   <div class="header">
     <img src="/logo.svg" alt="Arise Cares" class="header-logo" />
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress" style="width:33%"></div>
   </div>
 
   <!-- Loading -->
@@ -304,16 +258,16 @@
     <div class="error-state">
       <div class="error-icon">😕</div>
       <div class="error-title">Link Not Found</div>
-      <div class="error-body">This feedback link may have expired or already been used. Please contact Arise Cares if you need help.</div>
+      <div class="error-body">This feedback link may have expired or already been used.<br/>Please contact Arise Cares if you need assistance.</div>
     </div>
   </div>
 
   <!-- Already submitted -->
   <div id="already-done" class="step" style="display:none;">
     <div class="already-done">
-      <div class="thankyou-icon positive">✓</div>
-      <div class="thankyou-heading">Already Submitted</div>
-      <p class="thankyou-body">We already received your feedback — thank you! Your response helps us provide the best care possible.</p>
+      <div class="error-icon">✅</div>
+      <div class="error-title">Already Submitted</div>
+      <div class="error-body">We already received your feedback — thank you!<br/>Your response helps us provide the best care possible.</div>
     </div>
   </div>
 
@@ -321,14 +275,23 @@
   <div id="step1" class="step">
     <div class="greeting" id="greeting">Hi there! 👋</div>
     <p class="visit-info" id="visit-info">How was your recent visit?</p>
-
     <div class="stars-wrapper">
-      <div class="stars" id="stars">
-        <span class="star" data-value="1">★</span>
-        <span class="star" data-value="2">★</span>
-        <span class="star" data-value="3">★</span>
-        <span class="star" data-value="4">★</span>
-        <span class="star" data-value="5">★</span>
+      <div class="stars-row" id="stars">
+        <button class="star-btn" data-value="1" aria-label="1 star">
+          <svg class="star-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.582 7.647H22.5l-6.382 4.617 2.382 7.647L12 17.294l-6.5 4.617 2.382-7.647L1.5 9.647H9.418z"/></svg>
+        </button>
+        <button class="star-btn" data-value="2" aria-label="2 stars">
+          <svg class="star-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.582 7.647H22.5l-6.382 4.617 2.382 7.647L12 17.294l-6.5 4.617 2.382-7.647L1.5 9.647H9.418z"/></svg>
+        </button>
+        <button class="star-btn" data-value="3" aria-label="3 stars">
+          <svg class="star-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.582 7.647H22.5l-6.382 4.617 2.382 7.647L12 17.294l-6.5 4.617 2.382-7.647L1.5 9.647H9.418z"/></svg>
+        </button>
+        <button class="star-btn" data-value="4" aria-label="4 stars">
+          <svg class="star-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.582 7.647H22.5l-6.382 4.617 2.382 7.647L12 17.294l-6.5 4.617 2.382-7.647L1.5 9.647H9.418z"/></svg>
+        </button>
+        <button class="star-btn" data-value="5" aria-label="5 stars">
+          <svg class="star-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.582 7.647H22.5l-6.382 4.617 2.382 7.647L12 17.294l-6.5 4.617 2.382-7.647L1.5 9.647H9.418z"/></svg>
+        </button>
       </div>
       <div class="star-label" id="star-label">Tap a star to rate</div>
     </div>
@@ -336,20 +299,24 @@
 
   <!-- Step 2: Comment -->
   <div id="step2" class="step">
-    <div class="step2-heading" id="step2-heading">Thanks for the rating! ⭐</div>
-    <p class="step2-sub">Would you like to share anything about your experience?</p>
-    <textarea id="comment" placeholder="Tell us more… (optional)" maxlength="500"></textarea>
-    <button class="submit-btn" id="submit-btn" onclick="submitFeedback()">Share My Feedback</button>
-    <p class="privacy-note">Your feedback is private and helps us improve the quality of care we provide.</p>
+    <div class="step2-heading" id="step2-heading">Thanks for your rating! ⭐</div>
+    <p class="step2-sub">Would you like to tell us more about your experience?</p>
+    <div class="quick-tags" id="quick-tags"></div>
+    <textarea id="comment" placeholder="Share any details… (optional)" maxlength="500" oninput="updateCharCount()"></textarea>
+    <div class="char-count"><span id="char-count">0</span> / 500</div>
+    <button class="submit-btn" id="submit-btn" onclick="submitFeedback()">Submit Feedback</button>
+    <p class="privacy-note">🔒 Your feedback is private and helps us improve the care we provide.</p>
   </div>
 
-  <!-- Step 3: Thank You (Positive) -->
+  <!-- Step 3: Positive -->
   <div id="step3-positive" class="step">
-    <div class="thankyou-icon positive">🎉</div>
-    <div class="thankyou-heading" id="thanks-name">Thank you!</div>
-    <p class="thankyou-body" id="thanks-body-positive">We're so glad to hear you had a wonderful experience. It means the world to us.</p>
+    <div class="celebration-wrap">
+      <span class="confetti-icon">🎉</span>
+      <div class="thankyou-heading" id="thanks-name">Thank you!</div>
+      <p class="thankyou-body" id="thanks-body-positive">We're so glad you had a wonderful experience. It means the world to us.</p>
+    </div>
     <hr class="divider" />
-    <p class="google-prompt">If you have a moment, a Google review helps other families find trusted home care near them.</p>
+    <p class="google-prompt">If you have a moment, a Google review helps other families find trusted home care near them. 💛</p>
     <a class="google-btn" id="google-btn" href="#" target="_blank" rel="noopener">
       <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" fill="#FFC107"/>
@@ -361,103 +328,125 @@
     </a>
   </div>
 
-  <!-- Step 3: Thank You (Neutral/Negative) -->
+  <!-- Step 3: Negative / Neutral -->
   <div id="step3-negative" class="step">
-    <div class="thankyou-icon negative">💙</div>
-    <div class="thankyou-heading">Thank you for your honesty.</div>
-    <p class="thankyou-body">Your feedback helps us do better. A member of our Arise Cares team will personally reach out to you shortly.</p>
+    <div class="care-wrap">
+      <div class="care-icon">💙</div>
+      <div class="thankyou-heading">Thank you for your honesty.</div>
+      <p class="thankyou-body">Your feedback helps us do better. A member of our Arise Cares team will personally reach out to you shortly.</p>
+    </div>
   </div>
+
 </div>
 
 <script>
   const token = location.pathname.split('/').pop();
-  const POSITIVE_THRESHOLD = 4;
+  const THRESHOLD = 4;
   let selectedRating = 0;
   let visitInfo = null;
 
-  const labels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent!'];
+  const LABELS     = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent!'];
+  const TAGS_POS   = ['Professional caregiver', 'Kind & attentive', 'On time', 'Great communication', 'Would recommend'];
+  const TAGS_NEG   = ['Late arrival', 'Communication issues', 'Needed more attention', 'Scheduling problem', 'Other concern'];
+
+  const steps = ['loading','error','already-done','step1','step2','step3-positive','step3-negative'];
+  const progressMap = { step1: '33%', step2: '66%', 'step3-positive': '100%', 'step3-negative': '100%' };
 
   function showStep(id) {
-    ['loading','error','already-done','step1','step2','step3-positive','step3-negative'].forEach(s => {
+    steps.forEach(s => {
       const el = document.getElementById(s);
       if (el) { el.style.display = 'none'; el.classList.remove('active'); }
     });
     const el = document.getElementById(id);
     if (el) { el.style.display = 'block'; el.classList.add('active'); }
+    const prog = progressMap[id];
+    if (prog) document.getElementById('progress').style.width = prog;
   }
 
-  // Fetch visit info
+  // Load visit info
   fetch(`/api/feedback/info/${token}`)
     .then(r => r.json())
     .then(data => {
       if (data.error) { showStep('error'); return; }
       if (data.alreadySubmitted) { showStep('already-done'); return; }
-
       visitInfo = data;
       const date = data.visit_date
         ? new Date(data.visit_date).toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' })
         : 'your recent visit';
-
       document.getElementById('greeting').textContent = `Hi ${data.client_name}! 👋`;
       document.getElementById('visit-info').innerHTML =
         `How was your visit with <strong>${data.caregiver_name}</strong> on <strong>${date}</strong>?`;
-
       showStep('step1');
       initStars();
     })
     .catch(() => showStep('error'));
 
   function initStars() {
-    const stars = document.querySelectorAll('.star');
+    const starBtns = document.querySelectorAll('.star-btn');
     const label = document.getElementById('star-label');
 
-    stars.forEach(star => {
-      const val = parseInt(star.dataset.value);
+    starBtns.forEach(btn => {
+      const val = parseInt(btn.dataset.value);
 
-      star.addEventListener('mouseenter', () => {
-        stars.forEach(s => {
-          s.classList.toggle('hover', parseInt(s.dataset.value) <= val);
-        });
-        label.textContent = labels[val];
+      btn.addEventListener('mouseenter', () => {
+        starBtns.forEach(b => b.classList.toggle('hover-lit', parseInt(b.dataset.value) <= val));
+        label.textContent = LABELS[val];
         label.classList.add('rated');
       });
 
-      star.addEventListener('mouseleave', () => {
-        stars.forEach(s => s.classList.remove('hover'));
+      btn.addEventListener('mouseleave', () => {
+        starBtns.forEach(b => b.classList.remove('hover-lit'));
         if (selectedRating) {
-          label.textContent = labels[selectedRating];
+          label.textContent = LABELS[selectedRating];
         } else {
           label.textContent = 'Tap a star to rate';
           label.classList.remove('rated');
         }
       });
 
-      star.addEventListener('click', () => {
+      btn.addEventListener('click', () => {
         selectedRating = val;
-        stars.forEach(s => {
-          s.classList.toggle('selected', parseInt(s.dataset.value) <= val);
+        starBtns.forEach(b => {
+          b.classList.toggle('lit', parseInt(b.dataset.value) <= val);
+          b.classList.remove('hover-lit');
         });
-        label.textContent = labels[val];
+        label.textContent = LABELS[val];
         label.classList.add('rated');
-
-        // Auto-advance to comment step
-        setTimeout(() => {
-          const heading = val >= POSITIVE_THRESHOLD
-            ? `You gave us ${val} stars! ⭐`
-            : `Thank you for the ${val}-star rating.`;
-          document.getElementById('step2-heading').textContent = heading;
-          showStep('step2');
-        }, 400);
+        setTimeout(() => advanceToStep2(val), 350);
       });
     });
+  }
+
+  function advanceToStep2(val) {
+    document.getElementById('step2-heading').textContent =
+      val >= THRESHOLD ? `You gave us ${val} stars! 🌟` : `Thank you for the ${val}-star rating.`;
+    const tags = val >= THRESHOLD ? TAGS_POS : TAGS_NEG;
+    document.getElementById('quick-tags').innerHTML = tags.map(t =>
+      `<span class="quick-tag" onclick="toggleTag(this)">${t}</span>`
+    ).join('');
+    showStep('step2');
+  }
+
+  function toggleTag(el) {
+    el.classList.toggle('selected');
+    const textarea = document.getElementById('comment');
+    const tag = el.textContent;
+    if (el.classList.contains('selected')) {
+      const current = textarea.value.trim();
+      textarea.value = current ? current + (current.endsWith('.') ? ' ' : '. ') + tag + '.' : tag + '.';
+    }
+    updateCharCount();
+  }
+
+  function updateCharCount() {
+    const len = document.getElementById('comment').value.length;
+    document.getElementById('char-count').textContent = len;
   }
 
   async function submitFeedback() {
     const btn = document.getElementById('submit-btn');
     const comment = document.getElementById('comment').value.trim();
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-
+    btn.disabled = true; btn.textContent = 'Sending…';
     try {
       const res = await fetch('/api/feedback/submit', {
         method: 'POST',
@@ -465,23 +454,20 @@
         body: JSON.stringify({ token, rating: selectedRating, comment: comment || null }),
       });
       const data = await res.json();
-
-      if (selectedRating >= POSITIVE_THRESHOLD) {
+      if (selectedRating >= THRESHOLD) {
         const name = visitInfo?.client_name?.split(' ')[0] || 'you';
         const caregiver = visitInfo?.caregiver_name || 'your caregiver';
         document.getElementById('thanks-name').textContent = `Thank you, ${name}! 🎉`;
         document.getElementById('thanks-body-positive').textContent =
           `We're so glad ${caregiver} took great care of you. It means everything to our team.`;
-        if (data.googleReviewUrl) {
-          document.getElementById('google-btn').href = data.googleReviewUrl;
-        }
+        if (data.googleReviewUrl) document.getElementById('google-btn').href = data.googleReviewUrl;
         showStep('step3-positive');
       } else {
         showStep('step3-negative');
       }
     } catch {
       btn.disabled = false;
-      btn.textContent = 'Share My Feedback';
+      btn.textContent = 'Submit Feedback';
       alert('Something went wrong. Please try again.');
     }
   }
