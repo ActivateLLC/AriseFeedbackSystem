@@ -48,6 +48,15 @@ router.post('/submit', async (req, res) => {
   }
 });
 
+// Public config endpoint — only safe, non-sensitive values
+router.get('/config', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  return res.json({
+    googleReviewUrl: process.env.GOOGLE_REVIEW_URL || null,
+    businessName: 'Arise Cares',
+  });
+});
+
 router.get('/unsubscribe/:token', async (req, res) => {
   try {
     const row = await queryOne(

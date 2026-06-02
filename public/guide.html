@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started — Arise Cares Feedback System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #2D3250; --navy-dark: #1E2340; --gold: #F5A623;
+      --text: #1A1D2E; --muted: #64748B; --border: #E8ECF1;
+      --bg: #F4F5F9; --card: #fff; --green: #10B981;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    /* Nav */
+    .topnav { background: var(--navy); padding: 14px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .topnav img { height: 32px; }
+    .topnav-links { display: flex; gap: 20px; }
+    .topnav-links a { color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500; text-decoration: none; }
+    .topnav-links a:hover { color: #fff; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(145deg, var(--navy-dark) 0%, var(--navy) 60%, #3D4570 100%);
+      padding: 72px 40px 64px; text-align: center;
+    }
+    .hero-tag { display: inline-block; background: rgba(245,166,35,0.2); color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 14px; border-radius: 99px; margin-bottom: 20px; }
+    .hero-title { font-size: 42px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 16px; }
+    .hero-title span { color: var(--gold); }
+    .hero-sub { font-size: 17px; color: rgba(255,255,255,0.65); line-height: 1.7; max-width: 600px; margin: 0 auto 36px; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; border: none; font-family: inherit; transition: all 0.15s; }
+    .btn-gold { background: var(--gold); color: var(--navy); }
+    .btn-gold:hover { background: #E09510; }
+    .btn-outline-white { background: transparent; border: 1.5px solid rgba(255,255,255,0.3); color: #fff; }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.08); }
+
+    /* Feature pills */
+    .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 28px 40px; background: var(--navy); border-top: 1px solid rgba(255,255,255,0.06); }
+    .pill { display: flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 99px; background: rgba(255,255,255,0.07); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); }
+
+    /* Layout */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 64px 0 0; }
+    .section-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gold); margin-bottom: 10px; }
+    .section-title { font-size: 28px; font-weight: 800; margin-bottom: 10px; }
+    .section-sub { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 20px; }
+    .step-card {
+      background: var(--card); border-radius: 16px; padding: 26px 28px;
+      display: flex; gap: 20px; align-items: flex-start;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+      background: var(--navy); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 800;
+    }
+    .step-body {}
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .step-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .step-desc code { background: #EEF0FF; color: var(--navy); padding: 2px 7px; border-radius: 5px; font-size: 12px; font-family: 'SF Mono','Fira Code',monospace; }
+    .step-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none; }
+    .step-link:hover { color: var(--gold); }
+
+    /* Feature cards */
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .feature-card {
+      background: var(--card); border-radius: 14px; padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    }
+    .feature-icon { font-size: 28px; margin-bottom: 12px; }
+    .feature-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .feature-tag { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; }
+    .tag-live { background: #ECFDF5; color: #065F46; }
+    .tag-config { background: #FFF8EC; color: #92400E; }
+    .tag-optional { background: #EEF0FF; color: var(--navy); }
+
+    /* Env table */
+    .env-table { width: 100%; border-collapse: collapse; font-size: 13px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .env-table thead th { background: #F8F9FC; padding: 11px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+    .env-table tbody tr:last-child td { border-bottom: none; }
+    .env-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .env-table td:first-child { font-family: 'SF Mono','Fira Code',monospace; font-size: 12px; color: var(--navy); white-space: nowrap; }
+    .env-table td:last-child { font-size: 12px; }
+    .req-badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 700; }
+    .req-yes { background: #FEF2F2; color: #DC2626; }
+    .req-no  { background: #F1F5F9; color: var(--muted); }
+
+    /* Embed box */
+    .code-box { background: var(--navy-dark); border-radius: 12px; padding: 20px 22px; font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; color: #A5B4FC; line-height: 1.7; overflow-x: auto; margin: 16px 0; }
+    .code-box .hl { color: var(--gold); }
+    .code-box .cm { color: #64748B; }
+
+    /* Flow diagram */
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0; margin: 24px 0; }
+    .flow-node {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 16px; text-align: center;
+      font-size: 13px; font-weight: 600; min-width: 120px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+    }
+    .flow-node.gold { background: #FFF8EC; border-color: var(--gold); color: #92400E; }
+    .flow-node.green { background: #ECFDF5; border-color: #6EE7B7; color: #065F46; }
+    .flow-node.orange { background: #FFF7ED; border-color: #FED7AA; color: #9A3412; }
+    .flow-node.navy { background: #EEF0FF; border-color: #C7D2FE; color: var(--navy); }
+    .flow-arrow { font-size: 20px; color: var(--muted); padding: 0 6px; flex-shrink: 0; }
+
+    /* FAQ */
+    .faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 12px; }
+    .faq-q { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* CTA footer */
+    .cta-section { background: var(--navy); margin-top: 72px; padding: 56px 40px; text-align: center; }
+    .cta-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .cta-sub { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 28px; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero { padding: 48px 20px 40px; }
+      .hero-title { font-size: 28px; }
+      .container { padding: 0 16px; }
+      .topnav { padding: 14px 20px; }
+      .pills { padding: 20px; }
+      .flow { flex-direction: column; align-items: flex-start; }
+      .flow-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="topnav">
+  <img src="/logo.svg" alt="Arise Cares" style="filter:brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(5deg);" />
+  <div class="topnav-links">
+    <a href="/dashboard.html">Dashboard</a>
+    <a href="/widget-preview.html">Widget Preview</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">Getting Started Guide</div>
+  <div class="hero-title">The <span>Arise Cares</span><br/>Feedback System</div>
+  <div class="hero-sub">A fully automated post-visit feedback platform — collect ratings, route reviews to Google, flag concerns internally, and display testimonials on your website.</div>
+  <div class="hero-btns">
+    <a href="/dashboard.html" class="btn btn-gold">Open Dashboard →</a>
+    <a href="/widget-preview.html" class="btn btn-outline-white">Preview Review Widget</a>
+  </div>
+</div>
+
+<div class="pills">
+  <div class="pill">📱 SMS + Email delivery</div>
+  <div class="pill">⭐ Smart Google routing</div>
+  <div class="pill">🔔 Internal alerts</div>
+  <div class="pill">🤖 Fully automated</div>
+  <div class="pill">📊 Live dashboard</div>
+  <div class="pill">🌐 Embeddable widget</div>
+  <div class="pill">🔒 Privacy-first</div>
+</div>
+
+<div class="container">
+
+  <!-- ── How it works ── -->
+  <div class="section">
+    <div class="section-tag">Overview</div>
+    <div class="section-title">How the System Works</div>
+    <div class="section-sub">From the moment a visit is logged, everything runs automatically — no manual steps required.</div>
+    <div class="flow">
+      <div class="flow-node navy">📅 Visit Logged</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">📨 SMS / Email Sent</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node gold">⭐ Client Rates 1–5★</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node green">4–5★ → Google Review</div>
+    </div>
+    <div class="flow" style="margin-top:8px;">
+      <div class="flow-node" style="visibility:hidden;min-width:120px;"></div>
+      <div class="flow-arrow" style="visibility:hidden;">→</div>
+      <div class="flow-node" style="visibility:hidden;"></div>
+      <div class="flow-arrow" style="visibility:hidden;">→</div>
+      <div class="flow-node" style="visibility:hidden;"></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node orange">1–3★ → Team Alert</div>
+    </div>
+  </div>
+
+  <!-- ── Setup steps ── -->
+  <div class="section">
+    <div class="section-tag">Setup</div>
+    <div class="section-title">Go Live in 4 Steps</div>
+    <div class="section-sub">The system runs in Demo Mode out of the box. Follow these steps to connect real services.</div>
+    <div class="steps">
+
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Connect your database (Supabase)</div>
+          <div class="step-desc">
+            Create a free project at <strong>supabase.com</strong>, then copy the connection string into your Vercel environment variables as <code>DATABASE_URL</code>. Run the schema migrations in <code>schema.sql</code> to create all tables automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Add your Twilio credentials for SMS</div>
+          <div class="step-desc">
+            Sign up at <strong>twilio.com</strong>, get a phone number, then set <code>TWILIO_SID</code>, <code>TWILIO_TOKEN</code>, and <code>TWILIO_FROM</code> in Vercel. SMS will activate automatically — no code changes needed.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Set your Google Business review link</div>
+          <div class="step-desc">
+            Go to your Google Business Profile → Get more reviews → copy the direct link. Set it as <code>GOOGLE_REVIEW_URL</code> in Vercel. Clients who rate 4–5★ will see a button that opens directly to your Google review form.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Embed the reviews widget on your website</div>
+          <div class="step-desc">
+            Paste two lines of code anywhere on your Webflow or website page. The widget auto-loads verified 4–5★ reviews with client names and comments. Supports light and dark themes.
+          </div>
+          <a href="/widget-preview.html" class="step-link">Preview &amp; copy embed code →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Features ── -->
+  <div class="section">
+    <div class="section-tag">Features</div>
+    <div class="section-title">Everything Included</div>
+    <div class="section-sub">All features work in Demo Mode. Real SMS/email/Google routing activates when env vars are set.</div>
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">📨</div>
+        <div class="feature-title">Automated Feedback Requests</div>
+        <div class="feature-desc">Triggered automatically when a visit is logged. Sent via SMS (preferred) or email. Personalized with client and caregiver name.</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⭐</div>
+        <div class="feature-title">1–5 Star Rating Form</div>
+        <div class="feature-desc">Mobile-first form, under 30 seconds. One tap to rate, optional comment with smart quick-tags. No login required.</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🌟</div>
+        <div class="feature-title">Smart Google Routing</div>
+        <div class="feature-desc">4–5★ ratings show a "Leave a Google Review" button with a direct link. 1–3★ ratings go internal — never to Google.</div>
+        <span class="feature-tag tag-config">Needs GOOGLE_REVIEW_URL</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">Internal Alerts</div>
+        <div class="feature-desc">Low ratings are flagged and tracked in the dashboard. Team notification emails can be configured in Settings.</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">SMS Delivery (Twilio)</div>
+        <div class="feature-desc">Personalized text message sent to client's phone. Includes opt-out link per compliance requirements.</div>
+        <span class="feature-tag tag-config">Needs Twilio keys</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📧</div>
+        <div class="feature-title">Email Delivery (SMTP)</div>
+        <div class="feature-desc">Branded email sent when SMS is unavailable or email is preferred. Configurable sender name and address.</div>
+        <span class="feature-tag tag-config">Needs SMTP keys</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">Follow-Up Automation</div>
+        <div class="feature-desc">If a client doesn't respond within 3 days, a gentle reminder is sent automatically via Vercel Cron Jobs (daily).</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <div class="feature-title">Client Management</div>
+        <div class="feature-desc">Add clients, record visits, edit contact preferences, toggle opt-out status — all from the Clients page.</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Reporting Dashboard</div>
+        <div class="feature-desc">Live stats: response rate, average rating, Google reviews prompted, flagged responses, rating distribution.</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-title">Embeddable Reviews Widget</div>
+        <div class="feature-desc">Drop verified client reviews onto any page — Webflow, WordPress, or plain HTML. Light and dark themes. One script tag.</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <div class="feature-title">Settings Panel</div>
+        <div class="feature-desc">Configure routing thresholds, alert recipients, SMS/email templates, integrations, and team info — all in the UI.</div>
+        <span class="feature-tag tag-live">✓ Live in Demo</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Privacy &amp; Compliance</div>
+        <div class="feature-desc">Every feedback link is single-use and tokenized. Clients can opt out with one tap. No data shared with Google without consent.</div>
+        <span class="feature-tag tag-live">✓ Built-in</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Env vars ── -->
+  <div class="section">
+    <div class="section-tag">Configuration</div>
+    <div class="section-title">Environment Variables</div>
+    <div class="section-sub">Set these in your Vercel project settings under <strong>Settings → Environment Variables</strong>.</div>
+    <table class="env-table">
+      <thead>
+        <tr><th>Variable</th><th>Purpose</th><th>Required?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DATABASE_URL</td><td>Supabase / PostgreSQL connection string. Without it, app runs in Demo Mode with in-memory data.</td><td><span class="req-badge req-yes">Production</span></td></tr>
+        <tr><td>TWILIO_SID</td><td>Twilio Account SID for SMS sending</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>TWILIO_TOKEN</td><td>Twilio Auth Token</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>TWILIO_FROM</td><td>Twilio phone number (e.g. <code>+15550001234</code>)</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>SMTP_HOST</td><td>SMTP server hostname for email sending</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>SMTP_PORT</td><td>SMTP port (default: 587)</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>SMTP_USER</td><td>SMTP username / email address</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>SMTP_PASS</td><td>SMTP password or app password</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>SMTP_FROM</td><td>From address shown to client (e.g. <code>feedback@arisecares.com</code>)</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>GOOGLE_REVIEW_URL</td><td>Your Google Business direct review link. Shown to 4–5★ clients.</td><td><span class="req-badge req-no">Optional</span></td></tr>
+        <tr><td>BASE_URL</td><td>Your public URL (e.g. <code>https://arisecares.vercel.app</code>) — used in SMS/email links</td><td><span class="req-badge req-yes">Production</span></td></tr>
+        <tr><td>CRON_SECRET</td><td>Secret token for securing automated cron job endpoints</td><td><span class="req-badge req-yes">Production</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Widget embed ── -->
+  <div class="section">
+    <div class="section-tag">Website Integration</div>
+    <div class="section-title">Embedding Reviews on Your Website</div>
+    <div class="section-sub">Add the following two lines anywhere in your page HTML. Works in Webflow custom code, WordPress, or any site builder.</div>
+    <div class="code-box">
+      <span class="cm">&lt;!-- 1. Target container (place where you want the widget) --&gt;</span><br/>
+      &lt;<span class="hl">div</span> id=<span class="hl">"arise-reviews"</span>&gt;&lt;/div&gt;<br/><br/>
+      <span class="cm">&lt;!-- 2. Widget script (paste before &lt;/body&gt;) --&gt;</span><br/>
+      &lt;<span class="hl">script</span><br/>
+      &nbsp;&nbsp;src=<span class="hl">"https://YOUR-DOMAIN.com/widget.js"</span><br/>
+      &nbsp;&nbsp;data-limit=<span class="hl">"6"</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">&lt;!-- number of reviews to show --&gt;</span><br/>
+      &nbsp;&nbsp;data-theme=<span class="hl">"light"</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">&lt;!-- "light" or "dark" --&gt;</span><br/>
+      &nbsp;&nbsp;data-target=<span class="hl">"arise-reviews"</span> <span class="cm">&lt;!-- matches the div id above --&gt;</span><br/>
+      &gt;&lt;/<span class="hl">script</span>&gt;
+    </div>
+    <a href="/widget-preview.html" class="btn btn-gold" style="font-size:14px;">See Live Preview &amp; Copy Code →</a>
+  </div>
+
+  <!-- ── FAQ ── -->
+  <div class="section" style="padding-bottom:0;">
+    <div class="section-tag">FAQ</div>
+    <div class="section-title">Common Questions</div>
+    <div class="section-sub" style="margin-bottom:24px;"></div>
+
+    <div class="faq-item">
+      <div class="faq-q">Does this work without real API keys?</div>
+      <div class="faq-a">Yes — the system runs in Demo Mode automatically when no <code>DATABASE_URL</code> is set. All features are fully testable with in-memory mock data. Click "Load Sample Data" on the dashboard to populate it.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can clients opt out of feedback messages?</div>
+      <div class="faq-a">Yes. Every feedback request includes an unsubscribe link. Clicking it marks the client as opted-out and they won't receive future messages. You can also toggle opt-out manually per client in the Clients page.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What happens to negative reviews — do they go to Google?</div>
+      <div class="faq-a">Never. Ratings of 1–3★ are routed internally only. The client sees a warm message saying the team will follow up. Only 4–5★ clients are prompted to leave a Google review.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How are feedback requests triggered?</div>
+      <div class="faq-a">When a visit is recorded via the Clients page (or via API), a feedback request is created and sent automatically. Cron jobs run daily to process pending requests and send follow-up reminders.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Are client names shown publicly in the widget?</div>
+      <div class="faq-a">No — the widget shows only the first name and last initial (e.g. "Margaret J."), never the full name. Comments are shown verbatim only if they were submitted.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I customize the message templates?</div>
+      <div class="faq-a">Yes — go to Settings → Messaging to edit the SMS and email templates. Templates support <code>{client_name}</code>, <code>{caregiver_name}</code>, and <code>{link}</code> variables.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-title">Ready to go live?</div>
+  <div class="cta-sub">Add your Supabase, Twilio, and Google Review URL to Vercel — the system handles everything else automatically.</div>
+  <div class="hero-btns">
+    <a href="/dashboard.html" class="btn btn-gold">Open Dashboard →</a>
+    <a href="/widget-preview.html" class="btn btn-outline-white">Preview Widget</a>
+  </div>
+</div>
+
+</body>
+</html>

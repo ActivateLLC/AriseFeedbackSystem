@@ -431,12 +431,39 @@
       .stats-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <!-- Intro.js -->
+  <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css" />
+  <style>
+    /* Override intro.js to match brand */
+    .introjs-tooltip { border-radius: 14px !important; box-shadow: 0 12px 40px rgba(45,50,80,0.2) !important; font-family: 'Inter', sans-serif !important; max-width: 320px !important; }
+    .introjs-tooltiptext { font-size: 14px !important; line-height: 1.65 !important; color: #1A1D2E !important; }
+    .introjs-tooltip-title { font-size: 15px !important; font-weight: 700 !important; color: #2D3250 !important; }
+    .introjs-button { border-radius: 8px !important; font-family: 'Inter', sans-serif !important; font-size: 13px !important; font-weight: 600 !important; border: none !important; }
+    .introjs-nextbutton { background: #2D3250 !important; color: #fff !important; text-shadow: none !important; }
+    .introjs-nextbutton:hover { background: #3D4570 !important; }
+    .introjs-prevbutton { background: #F1F5F9 !important; color: #64748B !important; text-shadow: none !important; }
+    .introjs-donebutton { background: #F5A623 !important; color: #2D3250 !important; text-shadow: none !important; }
+    .introjs-donebutton:hover { background: #E09510 !important; }
+    .introjs-bullets a.active { background: #2D3250 !important; }
+    .introjs-progressbar { background: #F5A623 !important; }
+    .introjs-helperLayer { border-radius: 12px !important; }
+    .tour-btn {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: var(--navy); color: #fff;
+      border: none; border-radius: 50px; padding: 12px 20px;
+      font-size: 13px; font-weight: 700; font-family: 'Inter', sans-serif;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(45,50,80,0.3);
+      display: flex; align-items: center; gap: 8px;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .tour-btn:hover { background: #3D4570; transform: translateY(-1px); }
+  </style>
 </head>
 <body>
 <div class="layout">
 
   <!-- ══ Sidebar ══ -->
-  <aside class="sidebar">
+  <aside class="sidebar" data-intro="Welcome to the <strong>Arise Cares Feedback System</strong>. This sidebar is your main navigation — switch between Dashboard, Clients, Settings, and more." data-step="1" data-title="Navigation">
     <div class="sidebar-brand">
       <img src="/logo.svg" alt="Arise Cares" class="sidebar-logo" />
     </div>
@@ -445,12 +472,18 @@
       <a class="nav-item active" onclick="navigate('dashboard', this)">
         <span class="nav-icon-wrap">📊</span> Dashboard
       </a>
-      <a class="nav-item" onclick="navigate('clients', this)">
+      <a class="nav-item" onclick="navigate('clients', this)" data-intro="The <strong>Clients page</strong> lets you add new clients, record visits, edit contact preferences, and toggle opt-out status. Recording a visit automatically triggers a feedback request." data-step="3" data-title="Clients">
         <span class="nav-icon-wrap">👥</span> Clients
       </a>
       <div class="nav-section-label" style="margin-top:8px;">System</div>
       <a class="nav-item" onclick="navigate('settings', this)">
         <span class="nav-icon-wrap">⚙️</span> Settings
+      </a>
+      <a class="nav-item" href="/widget-preview.html" target="_blank">
+        <span class="nav-icon-wrap">🌐</span> Review Widget
+      </a>
+      <a class="nav-item" href="/guide.html" target="_blank">
+        <span class="nav-icon-wrap">📖</span> Guide
       </a>
     </nav>
     <div class="sidebar-footer">
@@ -480,7 +513,7 @@
     <div class="content">
 
       <!-- ══ Demo banner ══ -->
-      <div class="demo-banner" id="demo-banner">
+      <div class="demo-banner" id="demo-banner" data-intro="You're in <strong>Demo Mode</strong> — the system runs entirely on in-memory mock data, so you can explore every feature without any API keys. Click <em>Load Sample Data</em> to populate the dashboard with example clients, visits, and responses." data-step="4" data-title="🧪 Demo Mode">
         <div class="demo-banner-text">
           🧪 <strong>Demo Mode</strong> &mdash; <small>Running with in-memory mock data. No API keys required.</small>
         </div>
@@ -489,7 +522,7 @@
 
       <!-- ══ Dashboard Page ══ -->
       <div class="page active" id="page-dashboard">
-        <div class="stats-grid">
+        <div class="stats-grid" data-intro="These <strong>four summary cards</strong> give you a live overview — total feedback requests sent, average star rating, response rate, and how many clients were prompted to leave a Google review." data-step="2" data-title="📊 Summary Stats">
           <div class="stat-card">
             <div class="stat-icon blue">📨</div>
             <div class="stat-label">Total Requests</div>
@@ -522,7 +555,7 @@
 
         <div class="grid-2">
           <div>
-            <div class="panel" style="margin-bottom:16px;">
+            <div class="panel" style="margin-bottom:16px;" data-intro="The <strong>Rating Distribution</strong> bar chart shows how client ratings break down across 1–5 stars. Useful for spotting trends — if 4★ and 5★ dominate, your Google review pipeline is working." data-step="5" data-title="⭐ Rating Distribution">
               <div class="panel-header">
                 <span class="panel-title">Rating Distribution</span>
               </div>
@@ -544,7 +577,7 @@
             </div>
           </div>
 
-          <div class="panel">
+          <div class="panel" data-intro="The <strong>Recent Responses table</strong> shows every submitted response — client name, caregiver, visit date, star rating, comment, and whether they were routed to Google Review or flagged for internal follow-up." data-step="6" data-title="📋 Recent Responses">
             <div class="panel-header">
               <span class="panel-title">Recent Responses</span>
               <span id="total-count-label" style="font-size:13px;color:var(--muted);"></span>
@@ -1308,6 +1341,87 @@ function addEmailTag() {
    Boot
 ══════════════════════════════════════ */
 loadDashboard();
+</script>
+
+<!-- ══ Intro.js Tour ══ -->
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+
+<button class="tour-btn" onclick="startTour()" title="Take a guided tour">
+  ❓ Tour
+</button>
+
+<script>
+function startTour() {
+  introJs().setOptions({
+    steps: [
+      {
+        title: '👋 Welcome to Arise Cares Feedback',
+        intro: 'This is your <strong>automated client feedback system</strong>. Take a 60-second tour to learn how everything works — or skip and dive right in.',
+      },
+      {
+        element: document.querySelector('.sidebar'),
+        title: '🗂️ Navigation',
+        intro: 'Use the sidebar to switch between <strong>Dashboard</strong>, <strong>Clients</strong>, <strong>Settings</strong>, the <strong>Review Widget</strong>, and the full <strong>Guide</strong>.',
+        position: 'right',
+      },
+      {
+        element: document.querySelector('.stats-grid'),
+        title: '📊 Summary Stats',
+        intro: 'Four live metrics: <strong>total requests sent</strong>, <strong>average star rating</strong>, <strong>response rate</strong>, and <strong>clients prompted to leave a Google review</strong>.',
+        position: 'bottom',
+      },
+      {
+        element: document.getElementById('demo-banner'),
+        title: '🧪 Demo Mode',
+        intro: 'No API keys? No problem. The system runs fully in-memory. Click <em>Load Sample Data</em> to see the dashboard populated with realistic example data.',
+        position: 'bottom',
+      },
+      {
+        element: document.querySelector('[data-step="5"]'),
+        title: '⭐ Rating Distribution',
+        intro: 'See how ratings break down across 1–5 stars. The bars update live as responses come in. High 4–5★ counts mean your Google review pipeline is firing.',
+        position: 'right',
+      },
+      {
+        element: document.querySelector('[data-step="6"]'),
+        title: '📋 Recent Responses',
+        intro: 'Every submitted response appears here — with client, caregiver, rating, comment, and routing outcome: <strong>Google Review</strong> or <strong>Internal Follow-up</strong>.',
+        position: 'left',
+      },
+      {
+        title: '👥 Clients Page',
+        intro: 'Head to <strong>Clients</strong> in the sidebar to add clients, record visits, and manage contact preferences. Recording a visit <em>automatically triggers a feedback request</em>.',
+      },
+      {
+        title: '⚙️ Settings',
+        intro: 'In <strong>Settings</strong> you can configure routing thresholds, notification recipients, SMS/email templates, and connect real integrations (Twilio, SMTP, Google Reviews, Supabase).',
+      },
+      {
+        title: '🌐 Reviews Widget',
+        intro: 'From the sidebar, open <strong>Review Widget</strong> to get an embeddable code snippet. Paste it into your Webflow or website to display verified client testimonials automatically.',
+      },
+      {
+        title: '🚀 Ready to Go Live?',
+        intro: 'Add your environment variables in Vercel (<code>DATABASE_URL</code>, <code>TWILIO_SID</code>, <code>GOOGLE_REVIEW_URL</code>, etc.) and the system activates fully — no code changes needed. Visit the <strong>Guide</strong> for step-by-step instructions.',
+      },
+    ],
+    showProgress: true,
+    showBullets: false,
+    exitOnOverlayClick: true,
+    scrollToElement: true,
+    nextLabel: 'Next →',
+    prevLabel: '← Back',
+    doneLabel: 'Got it! ✓',
+    tooltipClass: '',
+    highlightClass: '',
+  }).start();
+}
+
+// Auto-start tour for first-time visitors
+if (!localStorage.getItem('ac_tour_done')) {
+  setTimeout(startTour, 1200);
+  localStorage.setItem('ac_tour_done', '1');
+}
 </script>
 </body>
 </html>

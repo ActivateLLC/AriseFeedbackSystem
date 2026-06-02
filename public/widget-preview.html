@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews Widget Preview — Arise Cares</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #F4F5F9; color: #1A1D2E; -webkit-font-smoothing: antialiased; }
+    .topnav {
+      background: #2D3250; padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .topnav img { height: 32px; }
+    .topnav a { color: rgba(255,255,255,0.6); font-size: 13px; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .topnav a:hover { color: #fff; }
+    .hero { background: #2D3250; padding: 56px 32px 48px; text-align: center; }
+    .hero-title { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .hero-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.6; max-width: 520px; margin: 0 auto 28px; }
+    .embed-box {
+      background: #1E2340; border-radius: 14px; padding: 20px 24px;
+      max-width: 680px; margin: 0 auto; text-align: left;
+    }
+    .embed-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .embed-code {
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px;
+      color: #A5B4FC; line-height: 1.6; word-break: break-all;
+    }
+    .copy-btn {
+      margin-top: 14px; padding: 8px 16px;
+      background: #F5A623; color: #2D3250; border: none;
+      border-radius: 8px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+    }
+    .copy-btn:hover { background: #E09510; }
+    .divider { border: none; border-top: 2px dashed #E2E8F0; margin: 0; }
+    .section-label {
+      text-align: center; padding: 32px 16px 12px;
+      font-size: 12px; font-weight: 700; color: #94A3B8;
+      text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .preview-wrapper { background: #fff; }
+    .dark-wrapper { background: #1E2340; }
+    .theme-toggle {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 16px; background: #F4F5F9;
+    }
+    .theme-btn {
+      padding: 8px 18px; border-radius: 8px; border: 1.5px solid #E2E8F0;
+      background: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: inherit; color: #64748B; transition: all 0.15s;
+    }
+    .theme-btn.active { background: #2D3250; color: #fff; border-color: #2D3250; }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <img src="/logo.svg" alt="Arise Cares" style="filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(5deg);" />
+  <a href="/dashboard.html">← Back to Dashboard</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-title">Reviews Widget</div>
+  <div class="hero-sub">Embed verified client reviews directly on your website with a single line of code.</div>
+  <div class="embed-box">
+    <div class="embed-label">Embed Code — paste into your website's HTML</div>
+    <div class="embed-code" id="embed-code-display">
+      &lt;div id="arise-reviews"&gt;&lt;/div&gt;<br/>
+      &lt;script src="<span id="widget-origin">https://your-domain.com</span>/widget.js"
+        data-limit="6"
+        data-theme="light"&gt;&lt;/script&gt;
+    </div>
+    <button class="copy-btn" onclick="copyEmbed()">📋 Copy Embed Code</button>
+  </div>
+</div>
+
+<div class="theme-toggle">
+  <span style="font-size:13px;color:#64748B;font-weight:600;">Preview theme:</span>
+  <button class="theme-btn active" onclick="setTheme('light', this)">☀️ Light</button>
+  <button class="theme-btn" onclick="setTheme('dark', this)">🌙 Dark</button>
+</div>
+
+<div class="section-label">Live Preview</div>
+
+<div id="preview-wrapper" class="preview-wrapper">
+  <div id="arise-reviews"></div>
+</div>
+
+<script>
+  // Fix origin display
+  document.getElementById('widget-origin').textContent = location.origin;
+
+  function copyEmbed() {
+    const code = `<div id="arise-reviews"></div>\n<script src="${location.origin}/widget.js" data-limit="6" data-theme="light"><\/script>`;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = event.target;
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy Embed Code', 2000);
+    });
+  }
+
+  var currentTheme = 'light';
+  function setTheme(theme, btn) {
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('preview-wrapper').className = theme === 'dark' ? 'dark-wrapper' : 'preview-wrapper';
+    document.getElementById('arise-reviews').innerHTML = '';
+    currentTheme = theme;
+    loadWidget(theme);
+  }
+
+  function loadWidget(theme) {
+    var existing = document.getElementById('arise-widget-styles');
+    if (existing) existing.remove();
+    var s = document.createElement('script');
+    s.src = '/widget.js?t=' + Date.now();
+    s.setAttribute('data-limit', '6');
+    s.setAttribute('data-theme', theme);
+    s.setAttribute('data-target', 'arise-reviews');
+    document.body.appendChild(s);
+  }
+
+  loadWidget('light');
+</script>
+</body>
+</html>

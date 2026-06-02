@@ -14,6 +14,7 @@ const rateLimit = require('express-rate-limit');
 const feedbackRoutes  = require('./routes/feedback');
 const clientsRoutes   = require('./routes/clients');
 const dashboardRoutes = require('./routes/dashboard');
+const widgetRoutes    = require('./routes/widget');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +32,7 @@ app.use('/api', apiLimiter);
 app.use('/api/feedback',  feedbackRoutes);
 app.use('/api/clients',   clientsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/widget',    widgetRoutes);
 
 app.get('/feedback/:token', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'feedback.html'));

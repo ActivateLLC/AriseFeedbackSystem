@@ -221,6 +221,21 @@ async function query(text, params = []) {
     return [];
   }
 
+  // Widget reviews — positive only with comments
+  if (sql.includes('from feedback_responses') && sql.includes('rating >= 4') && sql.includes('comment is not null')) {
+    const limit = parseInt(params[0]) || 12;
+    return store.feedback_responses
+      .filter(r => r.rating >= 4 && r.comment && r.comment.trim())
+      .sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at))
+      .slice(0, limit)
+      .map(resp => {
+        const fr = store.feedback_requests.find(r => r.id === resp.feedback_request_id) || {};
+        const client = store.clients.find(c => c.id === resp.client_id) || {};
+        const visit = store.visits.find(v => v.id === fr.visit_id) || {};
+        return { rating: resp.rating, comment: resp.comment, submitted_at: resp.submitted_at, client_name: client.name, caregiver_name: visit.caregiver_name };
+      });
+  }
+
   // Dashboard responses list
   if (sql.includes('from feedback_responses') && sql.includes('order by')) {
     const limit = parseInt(params[0]) || 50;
