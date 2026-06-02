@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#2d9cdb" />
+  <title>Share Your Feedback — Arise Cares</title>
+  <style>
+    /* ── Reset & Base ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:      #2d9cdb;
+      --green:     #27ae60;
+      --blue-dark: #1a7bbf;
+      --red:       #e74c3c;
+      --text:      #1a1a2e;
+      --muted:     #6b7280;
+      --bg:        #f0f7f4;
+      --card:      #ffffff;
+      --border:    #e5e7eb;
+      --star-on:   #f59e0b;
+      --star-off:  #d1d5db;
+      --radius:    20px;
+      --shadow:    0 4px 32px rgba(0,0,0,0.10);
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 48px;
+    }
+
+    .header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
+      padding: 32px 24px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header-logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .header-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.80);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* ── Card ───────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px 28px;
+      margin: -24px 16px 0;
+      width: calc(100% - 32px);
+      max-width: 480px;
+      position: relative;
+    }
+
+    /* ── Steps (shown/hidden) ───────────────────────────── */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* ── Loading / Error ────────────────────────────────── */
+    #loading, #error-state {
+      text-align: center;
+      padding: 32px 0 8px;
+    }
+
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #error-state { color: var(--red); }
+    #error-state p { margin-top: 8px; font-size: 15px; color: var(--muted); }
+
+    /* ── Greeting ───────────────────────────────────────── */
+    .greeting {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .visit-info {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .visit-info strong { color: var(--text); }
+
+    /* ── Star Rating ────────────────────────────────────── */
+    .rating-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .star {
+      font-size: 52px;
+      cursor: pointer;
+      color: var(--star-off);
+      transition: color 0.15s ease, transform 0.12s ease;
+      line-height: 1;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .star:hover,
+    .star.hovered,
+    .star.selected {
+      color: var(--star-on);
+      transform: scale(1.12);
+    }
+
+    .star.selected { transform: scale(1.18); }
+
+    .rating-hint {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      height: 20px;
+      transition: opacity 0.2s;
+    }
+
+    /* ── Comment textarea ───────────────────────────────── */
+    .comment-section {
+      margin-top: 28px;
+    }
+
+    .comment-label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .optional-badge {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 6px;
+    }
+
+    textarea {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      resize: vertical;
+      min-height: 110px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fafafa;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      border-color: var(--blue);
+      background: #fff;
+    }
+
+    textarea::placeholder { color: #b0b8c4; }
+
+    /* ── Submit Button ──────────────────────────────────── */
+    .btn-submit {
+      display: block;
+      width: 100%;
+      margin-top: 24px;
+      padding: 17px 24px;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+      box-shadow: 0 4px 18px rgba(45,156,219,0.38);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(45,156,219,0.45);
+    }
+
+    .btn-submit:active:not(:disabled) { transform: translateY(0); }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── Thank You Screen ───────────────────────────────── */
+    .thankyou {
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    .thankyou-icon {
+      font-size: 60px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .thankyou h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .thankyou p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    /* Google Review Button */
+    .btn-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      margin-top: 28px;
+      padding: 17px 24px;
+      background: #fff;
+      color: #3c4043;
+      font-size: 16px;
+      font-weight: 700;
+      border: 2px solid var(--border);
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-google:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+      border-color: #4285f4;
+      transform: translateY(-1px);
+    }
+
+    .btn-google:active { transform: translateY(0); }
+
+    .google-logo {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Already submitted ──────────────────────────────── */
+    .already-done {
+      text-align: center;
+      padding: 16px 0;
+    }
+    .already-done .icon { font-size: 48px; margin-bottom: 12px; display: block; }
+    .already-done h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .already-done p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      padding: 0 16px;
+    }
+    .footer a { color: var(--blue); text-decoration: none; }
+
+    /* ── Responsive tweaks ──────────────────────────────── */
+    @media (min-width: 520px) {
+      .card { padding: 40px 40px; }
+      .star { font-size: 56px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">Arise Cares</div>
+    <div class="header-sub">Home Care Feedback</div>
+  </div>
+
+  <!-- Main card -->
+  <div class="card">
+
+    <!-- Loading state -->
+    <div id="loading">
+      <div class="spinner"></div>
+      <p style="color:var(--muted);font-size:15px;">Loading your feedback form…</p>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" class="step" style="display:none;">
+      <span style="font-size:40px;">😕</span>
+      <p id="error-message">This link is invalid or has expired.</p>
+    </div>
+
+    <!-- Step 1: Star Rating -->
+    <div id="step-rating" class="step">
+      <p class="greeting" id="greeting-text">Hi there!</p>
+      <p class="visit-info" id="visit-info-text">How was your recent visit?</p>
+
+      <div class="rating-label">How would you rate your experience?</div>
+
+      <div class="stars" id="stars" role="group" aria-label="Star rating">
+        <span class="star" data-value="1" role="radio" aria-label="1 star" tabindex="0">★</span>
+        <span class="star" data-value="2" role="radio" aria-label="2 stars" tabindex="0">★</span>
+        <span class="star" data-value="3" role="radio" aria-label="3 stars" tabindex="0">★</span>
+        <span class="star" data-value="4" role="radio" aria-label="4 stars" tabindex="0">★</span>
+        <span class="star" data-value="5" role="radio" aria-label="5 stars" tabindex="0">★</span>
+      </div>
+      <div class="rating-hint" id="rating-hint">Tap a star to rate</div>
+    </div>
+
+    <!-- Step 2: Comment -->
+    <div id="step-comment" class="step">
+      <p class="greeting" id="selected-rating-text"></p>
+
+      <div class="comment-section">
+        <label class="comment-label" for="comment-input">
+          Tell us more <span class="optional-badge">(optional)</span>
+        </label>
+        <textarea
+          id="comment-input"
+          placeholder="What did you love? Is there anything we could do better? Your words mean a lot to us…"
+          rows="4"
+          maxlength="1000"
+        ></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-submit">Share My Feedback</button>
+    </div>
+
+    <!-- Step 3: Thank You (positive) -->
+    <div id="step-thankyou-positive" class="step">
+      <div class="thankyou">
+        <span class="thankyou-icon">💙</span>
+        <h2>Thank You So Much!</h2>
+        <p>
+          We're so glad to hear you had a wonderful experience with us.
+          Your kind words truly make a difference to our entire care team.
+        </p>
+
+        <div class="divider">Share the love</div>
+
+        <p style="font-size:14px;color:var(--muted);margin-bottom:0;">
+          If you have a moment, a quick Google review helps other families
+          find trusted care — and means the world to us. 🌟
+        </p>
+
+        <a id="google-review-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-google">
+          <!-- Google "G" logo inline SVG -->
+          <svg class="google-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Leave a Google Review
+        </a>
+      </div>
+    </div>
+
+    <!-- Step 3: Thank You (neutral/negative) -->
+    <div id="step-thankyou-neutral" class="step">
+      <div class="thankyou">
+        <span class="thankyou-icon">🙏</span>
+        <h2>Thank You for Sharing</h2>
+        <p>
+          Your feedback helps us improve the care we provide every day.
+          A member of our team will personally follow up with you shortly.
+        </p>
+      </div>
+    </div>
+
+    <!-- Already submitted -->
+    <div id="step-already-done" class="step">
+      <div class="already-done">
+        <span class="icon">✅</span>
+        <h3>Feedback Already Received</h3>
+        <p>It looks like you've already shared your feedback for this visit.<br>
+           Thank you — we truly appreciate it!</p>
+      </div>
+    </div>
+
+  </div><!-- /card -->
+
+  <!-- Footer -->
+  <div class="footer" id="footer-unsubscribe" style="display:none;">
+    <a id="unsubscribe-link" href="#">Unsubscribe from feedback requests</a>
+  </div>
+</div><!-- /page -->
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Helpers ────────────────────────────────────────────
+  function getToken() {
+    var parts = window.location.pathname.split('/');
+    return parts[parts.length - 1] || '';
+  }
+
+  function showStep(id) {
+    var steps = document.querySelectorAll('.step');
+    steps.forEach(function (el) { el.classList.remove('active'); });
+    var target = document.getElementById(id);
+    if (target) target.classList.add('active');
+  }
+
+  function hideLoading() {
+    document.getElementById('loading').style.display = 'none';
+  }
+
+  function showError(msg) {
+    hideLoading();
+    document.getElementById('error-message').textContent = msg || 'Something went wrong. Please try again.';
+    var el = document.getElementById('error-state');
+    el.style.display = 'block';
+    el.classList.add('active');
+  }
+
+  function formatDate(iso) {
+    try {
+      var d = new Date(iso);
+      return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (e) { return iso; }
+  }
+
+  // ── State ──────────────────────────────────────────────
+  var token = getToken();
+  var selectedRating = 0;
+  var visitInfo = null;
+  var unsubscribeUrl = '/api/feedback/unsubscribe/' + token;
+
+  // ── Rating hint labels ─────────────────────────────────
+  var hints = ['', 'Very Dissatisfied', 'Not Satisfied', 'It Was Okay', 'Very Satisfied', 'Excellent!'];
+
+  // ── Fetch visit info ───────────────────────────────────
+  function loadInfo() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/feedback/info/' + encodeURIComponent(token), true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+      if (xhr.status === 200) {
+        try {
+          visitInfo = JSON.parse(xhr.responseText);
+          hideLoading();
+          if (visitInfo.alreadySubmitted) {
+            showStep('step-already-done');
+          } else {
+            populateForm(visitInfo);
+            showStep('step-rating');
+          }
+          // Show unsubscribe link
+          document.getElementById('footer-unsubscribe').style.display = 'block';
+          document.getElementById('unsubscribe-link').href = unsubscribeUrl;
+        } catch (e) {
+          showError('Could not load your feedback form.');
+        }
+      } else if (xhr.status === 404) {
+        showError('This feedback link is invalid or has expired.');
+      } else {
+        showError('Unable to load feedback form. Please try again later.');
+      }
+    };
+    xhr.onerror = function () { showError('Network error. Please check your connection.'); };
+    xhr.send();
+  }
+
+  function populateForm(info) {
+    var greeting = document.getElementById('greeting-text');
+    var visitText = document.getElementById('visit-info-text');
+    var firstName = (info.client_name || '').split(' ')[0];
+    greeting.textContent = 'Hi ' + firstName + '! 👋';
+    var dateStr = info.visit_date ? formatDate(info.visit_date) : 'your recent visit';
+    visitText.innerHTML =
+      'How was your visit with <strong>' + escHtml(info.caregiver_name || 'your caregiver') +
+      '</strong> on <strong>' + escHtml(dateStr) + '</strong>?';
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ── Star Rating ────────────────────────────────────────
+  var stars = document.querySelectorAll('.star');
+
+  function renderStars(hovered, selected) {
+    stars.forEach(function (star, i) {
+      var val = i + 1;
+      star.classList.remove('hovered', 'selected');
+      if (hovered && val <= hovered) {
+        star.classList.add('hovered');
+      } else if (!hovered && selected && val <= selected) {
+        star.classList.add('selected');
+      }
+    });
+    var active = hovered || selected;
+    var hint = document.getElementById('rating-hint');
+    hint.textContent = active ? hints[active] : 'Tap a star to rate';
+    hint.style.opacity = active ? '1' : '0.6';
+  }
+
+  stars.forEach(function (star) {
+    star.addEventListener('mouseover', function () {
+      renderStars(parseInt(star.dataset.value, 10), selectedRating);
+    });
+    star.addEventListener('mouseleave', function () {
+      renderStars(0, selectedRating);
+    });
+    star.addEventListener('click', function () {
+      selectedRating = parseInt(star.dataset.value, 10);
+      renderStars(0, selectedRating);
+      // Short delay then advance to comment step
+      setTimeout(function () {
+        var label = hints[selectedRating] || '';
+        var emoji = selectedRating >= 4 ? '😊' : selectedRating === 3 ? '😐' : '😔';
+        document.getElementById('selected-rating-text').textContent =
+          'You rated us ' + selectedRating + ' out of 5 — ' + emoji + ' ' + label;
+        showStep('step-comment');
+        document.getElementById('comment-input').focus();
+      }, 320);
+    });
+    // Keyboard support
+    star.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        star.click();
+      }
+    });
+  });
+
+  // ── Submit ─────────────────────────────────────────────
+  document.getElementById('btn-submit').addEventListener('click', function () {
+    if (!selectedRating) return;
+    var btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    var comment = document.getElementById('comment-input').value.trim();
+    var payload = JSON.stringify({ token: token, rating: selectedRating, comment: comment || null });
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/feedback/submit', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+      btn.disabled = false;
+      btn.textContent = 'Share My Feedback';
+
+      if (xhr.status === 200) {
+        try {
+          var result = JSON.parse(xhr.responseText);
+          if (result.googleReviewUrl) {
+            document.getElementById('google-review-btn').href = result.googleReviewUrl;
+            showStep('step-thankyou-positive');
+          } else {
+            showStep('step-thankyou-neutral');
+          }
+          document.getElementById('footer-unsubscribe').style.display = 'none';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (e) {
+          showStep('step-thankyou-neutral');
+        }
+      } else if (xhr.status === 429) {
+        alert('Too many requests. Please wait a moment and try again.');
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    };
+    xhr.onerror = function () {
+      btn.disabled = false;
+      btn.textContent = 'Share My Feedback';
+      alert('Network error. Please check your connection and try again.');
+    };
+    xhr.send(payload);
+  });
+
+  // ── Init ───────────────────────────────────────────────
+  if (!token) {
+    showError('No feedback token found in the URL.');
+  } else {
+    loadInfo();
+  }
+})();
+</script>
+</body>
+</html>
