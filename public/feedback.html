@@ -3,662 +3,499 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#2d9cdb" />
+  <meta name="theme-color" content="#2563EB" />
   <title>Share Your Feedback — Arise Cares</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & Base ───────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue:      #2d9cdb;
-      --green:     #27ae60;
-      --blue-dark: #1a7bbf;
-      --red:       #e74c3c;
-      --text:      #1a1a2e;
-      --muted:     #6b7280;
-      --bg:        #f0f7f4;
-      --card:      #ffffff;
-      --border:    #e5e7eb;
-      --star-on:   #f59e0b;
-      --star-off:  #d1d5db;
-      --radius:    20px;
-      --shadow:    0 4px 32px rgba(0,0,0,0.10);
+      --blue:       #2563EB;
+      --blue-light: #EFF6FF;
+      --teal:       #0D9488;
+      --gold:       #F59E0B;
+      --gold-light: #FFFBEB;
+      --green:      #10B981;
+      --red:        #EF4444;
+      --text:       #0F172A;
+      --muted:      #64748B;
+      --border:     #E2E8F0;
+      --bg:         #F1F5F9;
+      --card:       #FFFFFF;
+      --radius:     24px;
+      --shadow:     0 8px 40px rgba(15,23,42,0.12);
     }
 
     html, body {
       min-height: 100%;
       background: var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text);
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Layout ─────────────────────────────────────────── */
-    .page {
-      min-height: 100vh;
+    body {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      padding: 0 0 48px;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 16px;
     }
 
-    .header {
-      width: 100%;
-      background: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
-      padding: 32px 24px 40px;
-      text-align: center;
-      position: relative;
-    }
-
-    .header-logo {
-      font-size: 22px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.5px;
-      margin-bottom: 4px;
-    }
-
-    .header-sub {
-      font-size: 13px;
-      color: rgba(255,255,255,0.80);
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    /* ── Card ───────────────────────────────────────────── */
     .card {
       background: var(--card);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 32px 28px;
-      margin: -24px 16px 0;
-      width: calc(100% - 32px);
-      max-width: 480px;
-      position: relative;
+      width: 100%;
+      max-width: 460px;
+      overflow: hidden;
     }
 
-    /* ── Steps (shown/hidden) ───────────────────────────── */
-    .step { display: none; }
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #2563EB 0%, #0D9488 100%);
+      padding: 28px 32px 24px;
+      text-align: center;
+    }
+    .header-logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .header-logo span { opacity: 0.9; }
+    .header-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Steps */
+    .step {
+      display: none;
+      padding: 32px 32px 36px;
+      animation: fadeSlideIn 0.35s ease forwards;
+    }
     .step.active { display: block; }
 
-    /* ── Loading / Error ────────────────────────────────── */
-    #loading, #error-state {
-      text-align: center;
-      padding: 32px 0 8px;
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .spinner {
-      width: 40px; height: 40px;
-      border: 3px solid var(--border);
-      border-top-color: var(--blue);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    #error-state { color: var(--red); }
-    #error-state p { margin-top: 8px; font-size: 15px; color: var(--muted); }
-
-    /* ── Greeting ───────────────────────────────────────── */
+    /* Step 1 — Rating */
     .greeting {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--text);
-      line-height: 1.35;
+      line-height: 1.3;
       margin-bottom: 8px;
     }
-
     .visit-info {
       font-size: 15px;
       color: var(--muted);
       line-height: 1.6;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
     }
+    .visit-info strong { color: var(--text); font-weight: 600; }
 
-    .visit-info strong { color: var(--text); }
-
-    /* ── Star Rating ────────────────────────────────────── */
-    .rating-label {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
+    .stars-wrapper { text-align: center; }
     .stars {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
-
     .star {
       font-size: 52px;
       cursor: pointer;
-      color: var(--star-off);
-      transition: color 0.15s ease, transform 0.12s ease;
+      color: #CBD5E1;
+      transition: transform 0.15s ease, color 0.15s ease;
       line-height: 1;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
-
     .star:hover,
-    .star.hovered,
-    .star.selected {
-      color: var(--star-on);
-      transform: scale(1.12);
-    }
+    .star.hover { color: var(--gold); transform: scale(1.2); }
+    .star.selected { color: var(--gold); }
+    .star.selected ~ .star { color: #CBD5E1; }
 
-    .star.selected { transform: scale(1.18); }
-
-    .rating-hint {
-      text-align: center;
-      font-size: 13px;
-      color: var(--muted);
-      height: 20px;
-      transition: opacity 0.2s;
-    }
-
-    /* ── Comment textarea ───────────────────────────────── */
-    .comment-section {
-      margin-top: 28px;
-    }
-
-    .comment-label {
-      display: block;
+    .star-label {
       font-size: 15px;
       font-weight: 600;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .optional-badge {
-      font-size: 12px;
-      font-weight: 400;
       color: var(--muted);
-      margin-left: 6px;
+      height: 22px;
+      transition: color 0.2s;
     }
+    .star-label.rated { color: var(--gold); }
 
+    /* Step 2 — Comment */
+    .step2-heading {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .step2-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
     textarea {
       width: 100%;
-      border: 2px solid var(--border);
-      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
       padding: 14px 16px;
       font-size: 15px;
       font-family: inherit;
       color: var(--text);
-      resize: vertical;
+      resize: none;
+      rows: 4;
       min-height: 110px;
       outline: none;
       transition: border-color 0.2s;
-      background: #fafafa;
-      line-height: 1.6;
+      background: #FAFAFA;
     }
+    textarea:focus { border-color: var(--blue); background: #fff; }
+    textarea::placeholder { color: #94A3B8; }
 
-    textarea:focus {
-      border-color: var(--blue);
-      background: #fff;
-    }
-
-    textarea::placeholder { color: #b0b8c4; }
-
-    /* ── Submit Button ──────────────────────────────────── */
-    .btn-submit {
+    .submit-btn {
       display: block;
       width: 100%;
-      margin-top: 24px;
-      padding: 17px 24px;
-      background: linear-gradient(135deg, var(--blue), var(--green));
-      color: #fff;
-      font-size: 17px;
-      font-weight: 700;
+      margin-top: 16px;
+      padding: 16px;
       border: none;
       border-radius: 50px;
+      background: linear-gradient(135deg, #2563EB, #0D9488);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
       cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
       letter-spacing: 0.2px;
-      box-shadow: 0 4px 18px rgba(45,156,219,0.38);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
-      -webkit-tap-highlight-color: transparent;
     }
+    .submit-btn:hover { opacity: 0.92; }
+    .submit-btn:active { transform: scale(0.98); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-    .btn-submit:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(45,156,219,0.45);
-    }
-
-    .btn-submit:active:not(:disabled) { transform: translateY(0); }
-
-    .btn-submit:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* ── Thank You Screen ───────────────────────────────── */
-    .thankyou {
+    .privacy-note {
+      font-size: 12px;
+      color: #94A3B8;
       text-align: center;
-      padding: 8px 0;
+      margin-top: 12px;
+      line-height: 1.5;
     }
 
+    /* Step 3 — Thank you */
     .thankyou-icon {
-      font-size: 60px;
-      margin-bottom: 16px;
-      display: block;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 20px;
     }
-
-    .thankyou h2 {
+    .thankyou-icon.positive {
+      background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+    }
+    .thankyou-icon.negative {
+      background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+    }
+    .thankyou-heading {
       font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 12px;
-      line-height: 1.3;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 10px;
     }
-
-    .thankyou p {
+    .thankyou-body {
       font-size: 15px;
       color: var(--muted);
+      text-align: center;
       line-height: 1.7;
-      margin-bottom: 0;
+      margin-bottom: 28px;
     }
 
-    /* Google Review Button */
-    .btn-google {
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 24px;
+    }
+
+    .google-prompt {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .google-btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       width: 100%;
-      margin-top: 28px;
-      padding: 17px 24px;
-      background: #fff;
-      color: #3c4043;
-      font-size: 16px;
-      font-weight: 700;
-      border: 2px solid var(--border);
+      padding: 14px 20px;
+      border: 1.5px solid #E2E8F0;
       border-radius: 50px;
-      cursor: pointer;
+      background: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text);
       text-decoration: none;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s;
-      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .google-btn:hover {
+      border-color: #4285F4;
+      box-shadow: 0 4px 16px rgba(66,133,244,0.18);
     }
 
-    .btn-google:hover {
-      box-shadow: 0 4px 20px rgba(0,0,0,0.14);
-      border-color: #4285f4;
-      transform: translateY(-1px);
-    }
-
-    .btn-google:active { transform: translateY(0); }
-
-    .google-logo {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-    }
-
-    /* Divider */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 24px 0;
+    /* Loading & Error */
+    .loading {
+      text-align: center;
+      padding: 40px 32px;
       color: var(--muted);
-      font-size: 13px;
     }
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 16px;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Already submitted ──────────────────────────────── */
+    .error-state {
+      text-align: center;
+      padding: 40px 32px;
+    }
+    .error-icon { font-size: 48px; margin-bottom: 16px; }
+    .error-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .error-body { font-size: 14px; color: var(--muted); }
+
     .already-done {
       text-align: center;
-      padding: 16px 0;
+      padding: 40px 32px;
     }
-    .already-done .icon { font-size: 48px; margin-bottom: 12px; display: block; }
-    .already-done h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-    .already-done p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
 
-    /* ── Footer ─────────────────────────────────────────── */
-    .footer {
-      margin-top: 24px;
-      font-size: 12px;
-      color: var(--muted);
-      text-align: center;
-      padding: 0 16px;
-    }
-    .footer a { color: var(--blue); text-decoration: none; }
-
-    /* ── Responsive tweaks ──────────────────────────────── */
-    @media (min-width: 520px) {
-      .card { padding: 40px 40px; }
-      .star { font-size: 56px; }
+    @media (max-width: 480px) {
+      body { padding: 0; align-items: flex-start; }
+      .card { border-radius: 0; min-height: 100vh; box-shadow: none; }
+      .header { padding: 24px 24px 20px; }
+      .step { padding: 28px 24px 32px; }
+      .star { font-size: 46px; }
     }
   </style>
 </head>
 <body>
-<div class="page">
-  <!-- Header -->
+
+<div class="card">
   <div class="header">
-    <div class="header-logo">Arise Cares</div>
-    <div class="header-sub">Home Care Feedback</div>
+    <div class="header-logo">❤️ Arise Cares</div>
+    <div class="header-subtitle">Home Care Feedback</div>
   </div>
 
-  <!-- Main card -->
-  <div class="card">
-
-    <!-- Loading state -->
-    <div id="loading">
-      <div class="spinner"></div>
-      <p style="color:var(--muted);font-size:15px;">Loading your feedback form…</p>
-    </div>
-
-    <!-- Error state -->
-    <div id="error-state" class="step" style="display:none;">
-      <span style="font-size:40px;">😕</span>
-      <p id="error-message">This link is invalid or has expired.</p>
-    </div>
-
-    <!-- Step 1: Star Rating -->
-    <div id="step-rating" class="step">
-      <p class="greeting" id="greeting-text">Hi there!</p>
-      <p class="visit-info" id="visit-info-text">How was your recent visit?</p>
-
-      <div class="rating-label">How would you rate your experience?</div>
-
-      <div class="stars" id="stars" role="group" aria-label="Star rating">
-        <span class="star" data-value="1" role="radio" aria-label="1 star" tabindex="0">★</span>
-        <span class="star" data-value="2" role="radio" aria-label="2 stars" tabindex="0">★</span>
-        <span class="star" data-value="3" role="radio" aria-label="3 stars" tabindex="0">★</span>
-        <span class="star" data-value="4" role="radio" aria-label="4 stars" tabindex="0">★</span>
-        <span class="star" data-value="5" role="radio" aria-label="5 stars" tabindex="0">★</span>
-      </div>
-      <div class="rating-hint" id="rating-hint">Tap a star to rate</div>
-    </div>
-
-    <!-- Step 2: Comment -->
-    <div id="step-comment" class="step">
-      <p class="greeting" id="selected-rating-text"></p>
-
-      <div class="comment-section">
-        <label class="comment-label" for="comment-input">
-          Tell us more <span class="optional-badge">(optional)</span>
-        </label>
-        <textarea
-          id="comment-input"
-          placeholder="What did you love? Is there anything we could do better? Your words mean a lot to us…"
-          rows="4"
-          maxlength="1000"
-        ></textarea>
-      </div>
-
-      <button class="btn-submit" id="btn-submit">Share My Feedback</button>
-    </div>
-
-    <!-- Step 3: Thank You (positive) -->
-    <div id="step-thankyou-positive" class="step">
-      <div class="thankyou">
-        <span class="thankyou-icon">💙</span>
-        <h2>Thank You So Much!</h2>
-        <p>
-          We're so glad to hear you had a wonderful experience with us.
-          Your kind words truly make a difference to our entire care team.
-        </p>
-
-        <div class="divider">Share the love</div>
-
-        <p style="font-size:14px;color:var(--muted);margin-bottom:0;">
-          If you have a moment, a quick Google review helps other families
-          find trusted care — and means the world to us. 🌟
-        </p>
-
-        <a id="google-review-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-google">
-          <!-- Google "G" logo inline SVG -->
-          <svg class="google-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
-          Leave a Google Review
-        </a>
-      </div>
-    </div>
-
-    <!-- Step 3: Thank You (neutral/negative) -->
-    <div id="step-thankyou-neutral" class="step">
-      <div class="thankyou">
-        <span class="thankyou-icon">🙏</span>
-        <h2>Thank You for Sharing</h2>
-        <p>
-          Your feedback helps us improve the care we provide every day.
-          A member of our team will personally follow up with you shortly.
-        </p>
-      </div>
-    </div>
-
-    <!-- Already submitted -->
-    <div id="step-already-done" class="step">
-      <div class="already-done">
-        <span class="icon">✅</span>
-        <h3>Feedback Already Received</h3>
-        <p>It looks like you've already shared your feedback for this visit.<br>
-           Thank you — we truly appreciate it!</p>
-      </div>
-    </div>
-
-  </div><!-- /card -->
-
-  <!-- Footer -->
-  <div class="footer" id="footer-unsubscribe" style="display:none;">
-    <a id="unsubscribe-link" href="#">Unsubscribe from feedback requests</a>
+  <!-- Loading -->
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading your feedback form…</p>
   </div>
-</div><!-- /page -->
+
+  <!-- Error -->
+  <div id="error" class="step" style="display:none;">
+    <div class="error-state">
+      <div class="error-icon">😕</div>
+      <div class="error-title">Link Not Found</div>
+      <div class="error-body">This feedback link may have expired or already been used. Please contact Arise Cares if you need help.</div>
+    </div>
+  </div>
+
+  <!-- Already submitted -->
+  <div id="already-done" class="step" style="display:none;">
+    <div class="already-done">
+      <div class="thankyou-icon positive">✓</div>
+      <div class="thankyou-heading">Already Submitted</div>
+      <p class="thankyou-body">We already received your feedback — thank you! Your response helps us provide the best care possible.</p>
+    </div>
+  </div>
+
+  <!-- Step 1: Star Rating -->
+  <div id="step1" class="step">
+    <div class="greeting" id="greeting">Hi there! 👋</div>
+    <p class="visit-info" id="visit-info">How was your recent visit?</p>
+
+    <div class="stars-wrapper">
+      <div class="stars" id="stars">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
+      </div>
+      <div class="star-label" id="star-label">Tap a star to rate</div>
+    </div>
+  </div>
+
+  <!-- Step 2: Comment -->
+  <div id="step2" class="step">
+    <div class="step2-heading" id="step2-heading">Thanks for the rating! ⭐</div>
+    <p class="step2-sub">Would you like to share anything about your experience?</p>
+    <textarea id="comment" placeholder="Tell us more… (optional)" maxlength="500"></textarea>
+    <button class="submit-btn" id="submit-btn" onclick="submitFeedback()">Share My Feedback</button>
+    <p class="privacy-note">Your feedback is private and helps us improve the quality of care we provide.</p>
+  </div>
+
+  <!-- Step 3: Thank You (Positive) -->
+  <div id="step3-positive" class="step">
+    <div class="thankyou-icon positive">🎉</div>
+    <div class="thankyou-heading" id="thanks-name">Thank you!</div>
+    <p class="thankyou-body" id="thanks-body-positive">We're so glad to hear you had a wonderful experience. It means the world to us.</p>
+    <hr class="divider" />
+    <p class="google-prompt">If you have a moment, a Google review helps other families find trusted home care near them.</p>
+    <a class="google-btn" id="google-btn" href="#" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" fill="#FFC107"/>
+        <path d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z" fill="#FF3D00"/>
+        <path d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z" fill="#4CAF50"/>
+        <path d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z" fill="#1976D2"/>
+      </svg>
+      Leave a Google Review
+    </a>
+  </div>
+
+  <!-- Step 3: Thank You (Neutral/Negative) -->
+  <div id="step3-negative" class="step">
+    <div class="thankyou-icon negative">💙</div>
+    <div class="thankyou-heading">Thank you for your honesty.</div>
+    <p class="thankyou-body">Your feedback helps us do better. A member of our Arise Cares team will personally reach out to you shortly.</p>
+  </div>
+</div>
 
 <script>
-(function () {
-  'use strict';
+  const token = location.pathname.split('/').pop();
+  const POSITIVE_THRESHOLD = 4;
+  let selectedRating = 0;
+  let visitInfo = null;
 
-  // ── Helpers ────────────────────────────────────────────
-  function getToken() {
-    var parts = window.location.pathname.split('/');
-    return parts[parts.length - 1] || '';
-  }
+  const labels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent!'];
 
   function showStep(id) {
-    var steps = document.querySelectorAll('.step');
-    steps.forEach(function (el) { el.classList.remove('active'); });
-    var target = document.getElementById(id);
-    if (target) target.classList.add('active');
+    ['loading','error','already-done','step1','step2','step3-positive','step3-negative'].forEach(s => {
+      const el = document.getElementById(s);
+      if (el) { el.style.display = 'none'; el.classList.remove('active'); }
+    });
+    const el = document.getElementById(id);
+    if (el) { el.style.display = 'block'; el.classList.add('active'); }
   }
 
-  function hideLoading() {
-    document.getElementById('loading').style.display = 'none';
-  }
+  // Fetch visit info
+  fetch(`/api/feedback/info/${token}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.error) { showStep('error'); return; }
+      if (data.alreadySubmitted) { showStep('already-done'); return; }
 
-  function showError(msg) {
-    hideLoading();
-    document.getElementById('error-message').textContent = msg || 'Something went wrong. Please try again.';
-    var el = document.getElementById('error-state');
-    el.style.display = 'block';
-    el.classList.add('active');
-  }
+      visitInfo = data;
+      const date = data.visit_date
+        ? new Date(data.visit_date).toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' })
+        : 'your recent visit';
 
-  function formatDate(iso) {
-    try {
-      var d = new Date(iso);
-      return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    } catch (e) { return iso; }
-  }
+      document.getElementById('greeting').textContent = `Hi ${data.client_name}! 👋`;
+      document.getElementById('visit-info').innerHTML =
+        `How was your visit with <strong>${data.caregiver_name}</strong> on <strong>${date}</strong>?`;
 
-  // ── State ──────────────────────────────────────────────
-  var token = getToken();
-  var selectedRating = 0;
-  var visitInfo = null;
-  var unsubscribeUrl = '/api/feedback/unsubscribe/' + token;
+      showStep('step1');
+      initStars();
+    })
+    .catch(() => showStep('error'));
 
-  // ── Rating hint labels ─────────────────────────────────
-  var hints = ['', 'Very Dissatisfied', 'Not Satisfied', 'It Was Okay', 'Very Satisfied', 'Excellent!'];
+  function initStars() {
+    const stars = document.querySelectorAll('.star');
+    const label = document.getElementById('star-label');
 
-  // ── Fetch visit info ───────────────────────────────────
-  function loadInfo() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/api/feedback/info/' + encodeURIComponent(token), true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
-      if (xhr.status === 200) {
-        try {
-          visitInfo = JSON.parse(xhr.responseText);
-          hideLoading();
-          if (visitInfo.alreadySubmitted) {
-            showStep('step-already-done');
-          } else {
-            populateForm(visitInfo);
-            showStep('step-rating');
-          }
-          // Show unsubscribe link
-          document.getElementById('footer-unsubscribe').style.display = 'block';
-          document.getElementById('unsubscribe-link').href = unsubscribeUrl;
-        } catch (e) {
-          showError('Could not load your feedback form.');
+    stars.forEach(star => {
+      const val = parseInt(star.dataset.value);
+
+      star.addEventListener('mouseenter', () => {
+        stars.forEach(s => {
+          s.classList.toggle('hover', parseInt(s.dataset.value) <= val);
+        });
+        label.textContent = labels[val];
+        label.classList.add('rated');
+      });
+
+      star.addEventListener('mouseleave', () => {
+        stars.forEach(s => s.classList.remove('hover'));
+        if (selectedRating) {
+          label.textContent = labels[selectedRating];
+        } else {
+          label.textContent = 'Tap a star to rate';
+          label.classList.remove('rated');
         }
-      } else if (xhr.status === 404) {
-        showError('This feedback link is invalid or has expired.');
-      } else {
-        showError('Unable to load feedback form. Please try again later.');
-      }
-    };
-    xhr.onerror = function () { showError('Network error. Please check your connection.'); };
-    xhr.send();
+      });
+
+      star.addEventListener('click', () => {
+        selectedRating = val;
+        stars.forEach(s => {
+          s.classList.toggle('selected', parseInt(s.dataset.value) <= val);
+        });
+        label.textContent = labels[val];
+        label.classList.add('rated');
+
+        // Auto-advance to comment step
+        setTimeout(() => {
+          const heading = val >= POSITIVE_THRESHOLD
+            ? `You gave us ${val} stars! ⭐`
+            : `Thank you for the ${val}-star rating.`;
+          document.getElementById('step2-heading').textContent = heading;
+          showStep('step2');
+        }, 400);
+      });
+    });
   }
 
-  function populateForm(info) {
-    var greeting = document.getElementById('greeting-text');
-    var visitText = document.getElementById('visit-info-text');
-    var firstName = (info.client_name || '').split(' ')[0];
-    greeting.textContent = 'Hi ' + firstName + '! 👋';
-    var dateStr = info.visit_date ? formatDate(info.visit_date) : 'your recent visit';
-    visitText.innerHTML =
-      'How was your visit with <strong>' + escHtml(info.caregiver_name || 'your caregiver') +
-      '</strong> on <strong>' + escHtml(dateStr) + '</strong>?';
-  }
-
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  // ── Star Rating ────────────────────────────────────────
-  var stars = document.querySelectorAll('.star');
-
-  function renderStars(hovered, selected) {
-    stars.forEach(function (star, i) {
-      var val = i + 1;
-      star.classList.remove('hovered', 'selected');
-      if (hovered && val <= hovered) {
-        star.classList.add('hovered');
-      } else if (!hovered && selected && val <= selected) {
-        star.classList.add('selected');
-      }
-    });
-    var active = hovered || selected;
-    var hint = document.getElementById('rating-hint');
-    hint.textContent = active ? hints[active] : 'Tap a star to rate';
-    hint.style.opacity = active ? '1' : '0.6';
-  }
-
-  stars.forEach(function (star) {
-    star.addEventListener('mouseover', function () {
-      renderStars(parseInt(star.dataset.value, 10), selectedRating);
-    });
-    star.addEventListener('mouseleave', function () {
-      renderStars(0, selectedRating);
-    });
-    star.addEventListener('click', function () {
-      selectedRating = parseInt(star.dataset.value, 10);
-      renderStars(0, selectedRating);
-      // Short delay then advance to comment step
-      setTimeout(function () {
-        var label = hints[selectedRating] || '';
-        var emoji = selectedRating >= 4 ? '😊' : selectedRating === 3 ? '😐' : '😔';
-        document.getElementById('selected-rating-text').textContent =
-          'You rated us ' + selectedRating + ' out of 5 — ' + emoji + ' ' + label;
-        showStep('step-comment');
-        document.getElementById('comment-input').focus();
-      }, 320);
-    });
-    // Keyboard support
-    star.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        star.click();
-      }
-    });
-  });
-
-  // ── Submit ─────────────────────────────────────────────
-  document.getElementById('btn-submit').addEventListener('click', function () {
-    if (!selectedRating) return;
-    var btn = document.getElementById('btn-submit');
+  async function submitFeedback() {
+    const btn = document.getElementById('submit-btn');
+    const comment = document.getElementById('comment').value.trim();
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
-    var comment = document.getElementById('comment-input').value.trim();
-    var payload = JSON.stringify({ token: token, rating: selectedRating, comment: comment || null });
+    try {
+      const res = await fetch('/api/feedback/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, rating: selectedRating, comment: comment || null }),
+      });
+      const data = await res.json();
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/api/feedback/submit', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4) return;
-      btn.disabled = false;
-      btn.textContent = 'Share My Feedback';
-
-      if (xhr.status === 200) {
-        try {
-          var result = JSON.parse(xhr.responseText);
-          if (result.googleReviewUrl) {
-            document.getElementById('google-review-btn').href = result.googleReviewUrl;
-            showStep('step-thankyou-positive');
-          } else {
-            showStep('step-thankyou-neutral');
-          }
-          document.getElementById('footer-unsubscribe').style.display = 'none';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } catch (e) {
-          showStep('step-thankyou-neutral');
+      if (selectedRating >= POSITIVE_THRESHOLD) {
+        const name = visitInfo?.client_name?.split(' ')[0] || 'you';
+        const caregiver = visitInfo?.caregiver_name || 'your caregiver';
+        document.getElementById('thanks-name').textContent = `Thank you, ${name}! 🎉`;
+        document.getElementById('thanks-body-positive').textContent =
+          `We're so glad ${caregiver} took great care of you. It means everything to our team.`;
+        if (data.googleReviewUrl) {
+          document.getElementById('google-btn').href = data.googleReviewUrl;
         }
-      } else if (xhr.status === 429) {
-        alert('Too many requests. Please wait a moment and try again.');
+        showStep('step3-positive');
       } else {
-        alert('Something went wrong. Please try again.');
+        showStep('step3-negative');
       }
-    };
-    xhr.onerror = function () {
+    } catch {
       btn.disabled = false;
       btn.textContent = 'Share My Feedback';
-      alert('Network error. Please check your connection and try again.');
-    };
-    xhr.send(payload);
-  });
-
-  // ── Init ───────────────────────────────────────────────
-  if (!token) {
-    showError('No feedback token found in the URL.');
-  } else {
-    loadInfo();
+      alert('Something went wrong. Please try again.');
+    }
   }
-})();
 </script>
 </body>
 </html>
