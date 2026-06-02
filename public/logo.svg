@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 72" fill="none">
   <!-- Gold location pin icon -->
   <g transform="translate(4, 6)">
     <path d="M28 0C17.0 0 8 9.0 8 20c0 15 20 36 20 36S48 35 48 20C48 9.0 39 0 28 0z" fill="#F5A623"/>
     <path d="M28 12c-3.0 0-5.5 2.5-5.5 5.5 0 1.2 0.4 2.3 1.1 3.2L28 27l4.4-6.3c0.7-0.9 1.1-2 1.1-3.2C33.5 14.5 31 12 28 12z" fill="white"/>
   </g>
-  <!-- Wordmark - navy for light bg, white for dark bg (controlled per-use via CSS) -->
+  <!-- Wordmark -->
   <text x="64" y="32" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="700" fill="#F5A623" letter-spacing="2">arise cares</text>
   <!-- Tagline -->
-  <text x="65" y="52" font-family="Arial, sans-serif" font-size="11" fill="#F5A623" letter-spacing="3">home care &amp; aging services</text>
+  <text x="65" y="52" font-family="Arial, sans-serif" font-size="11" fill="#F5A623" letter-spacing="1.5">home care &amp; aging services</text>
 </svg>
