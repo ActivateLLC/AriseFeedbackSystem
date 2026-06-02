@@ -30,6 +30,8 @@ app.get('/feedback/:token', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'feedback.html'));
 });
 
+app.get('/', (req, res) => res.redirect('/dashboard.html'));
+
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
